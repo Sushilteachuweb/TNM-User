@@ -121,6 +121,7 @@ class JobModel {
   final String experience;
   final String postedDate;
   final List<String> skills;
+  final List<String> perks; // Added perks field
   final String education;
   final String description;
   final String salaryType;
@@ -150,6 +151,7 @@ class JobModel {
     required this.experience,
     required this.postedDate,
     required this.skills,
+    required this.perks, // Added perks parameter
     required this.education,
     required this.description,
     required this.salaryType,
@@ -169,39 +171,86 @@ class JobModel {
   });
 
   factory JobModel.fromJson(Map<String, dynamic> json) {
+    // Helper function to safely parse integers
+    int parseInt(dynamic value) {
+      if (value == null) return 0;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value) ?? 0;
+      return 0;
+    }
+
+    // Helper function to safely parse strings
+    String parseString(dynamic value) {
+      if (value == null) return "";
+      return value.toString().trim();
+    }
+
+    // Helper function to parse skills (NOT perks)
+    List<String> parseSkills(Map<String, dynamic> json) {
+      List<String> skills = [];
+      
+      // Try skills-specific field names first (avoid perks)
+      if (json["skills"] != null && json["skills"] is List) {
+        skills.addAll(List<String>.from(json["skills"]));
+      }
+      if (json["requiredSkills"] != null && json["requiredSkills"] is List) {
+        skills.addAll(List<String>.from(json["requiredSkills"]));
+      }
+      if (json["skillsRequired"] != null && json["skillsRequired"] is List) {
+        skills.addAll(List<String>.from(json["skillsRequired"]));
+      }
+      
+      // Remove duplicates and empty strings
+      return skills.where((skill) => skill.trim().isNotEmpty).toSet().toList();
+    }
+
+    // Helper function to parse perks separately
+    List<String> parsePerks(Map<String, dynamic> json) {
+      List<String> perks = [];
+      
+      if (json["additionalPerks"] != null && json["additionalPerks"] is List) {
+        perks.addAll(List<String>.from(json["additionalPerks"]));
+      }
+      if (json["perks"] != null && json["perks"] is List) {
+        perks.addAll(List<String>.from(json["perks"]));
+      }
+      if (json["benefits"] != null && json["benefits"] is List) {
+        perks.addAll(List<String>.from(json["benefits"]));
+      }
+      
+      return perks.where((perk) => perk.trim().isNotEmpty).toSet().toList();
+    }
+
     return JobModel(
-      id: json["_id"] ?? "",
-      title: json["title"] ?? "",
-      companyName: json["companyName"] ?? "",
-      jobType: json["jobType"] ?? "",
-      workLocation: json["workLocation"] ?? "",
-      minSalary: json["salaryRange"]?["min"] ?? 0,
-      maxSalary: json["salaryRange"]?["max"] ?? 0,
-
-      vacancies: json["openings"] ?? 0,
-      experience: json["totalExperience"] ?? json["experience"] ?? "Not specified",
-      postedDate: json["postedDate"] ?? json["createdAt"] ?? "N/A",
-      skills: json["additionalPerks"] != null
-          ? List<String>.from(json["additionalPerks"])
-          : (json["skills"] != null ? List<String>.from(json["skills"]) : []),
-      education: json["minimumEducation"] ?? json["education"] ?? "Not specified",
-
-      description: json["jobDescription"] ?? "",
-      salaryType: json["salaryType"] ?? "",
-      jobCategory: json["jobCategory"] ?? "",
-      jobLocation: json["jobLocation"] ?? "",
-      officeAddress: json["officeAddress"] ?? "",
-      floorDetails: json["floorDetails"] ?? "",
-      communicationPreference: json["communicationPreference"] ?? "",
-      englishLevel: json["englishLevel"] ?? "",
-      preferredLocation: json["preferredLocation"] ?? "",
-      gender: json["gender"] ?? "",
+      id: parseString(json["_id"]),
+      title: parseString(json["title"]),
+      companyName: parseString(json["companyName"]),
+      jobType: parseString(json["jobType"]),
+      workLocation: parseString(json["workLocation"]),
+      minSalary: parseInt(json["salaryRange"]?["min"]),
+      maxSalary: parseInt(json["salaryRange"]?["max"]),
+      vacancies: parseInt(json["openings"] ?? json["vacancies"]),
+      experience: parseString(json["totalExperience"] ?? json["experience"] ?? "Any Experience"),
+      postedDate: parseString(json["postedDate"] ?? json["createdAt"]),
+      skills: parseSkills(json),
+      perks: parsePerks(json), // Added perks parsing
+      education: parseString(json["minimumEducation"] ?? json["education"]),
+      description: parseString(json["jobDescription"] ?? json["description"]),
+      salaryType: parseString(json["salaryType"]),
+      jobCategory: parseString(json["jobCategory"]),
+      jobLocation: parseString(json["jobLocation"]),
+      officeAddress: parseString(json["officeAddress"]),
+      floorDetails: parseString(json["floorDetails"]),
+      communicationPreference: parseString(json["communicationPreference"]),
+      englishLevel: parseString(json["englishLevel"]),
+      preferredLocation: parseString(json["preferredLocation"]),
+      gender: parseString(json["gender"]),
       planType: (json["planType"] != null && json["planType"] is List)
           ? json["planType"].join(", ")
-          : "",   //
-      hrId: json["hrId"] ?? "",
-      createdAt: DateTime.tryParse(json["createdAt"] ?? "") ?? DateTime.now(),
-      updatedAt: DateTime.tryParse(json["updatedAt"] ?? "") ?? DateTime.now(),
+          : parseString(json["planType"]),
+      hrId: parseString(json["hrId"]),
+      createdAt: DateTime.tryParse(parseString(json["createdAt"])) ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(parseString(json["updatedAt"])) ?? DateTime.now(),
       isApplied: false,
     );
   }
@@ -220,7 +269,8 @@ class JobModel {
       "openings": vacancies,
       "totalExperience": experience,
       "createdAt": createdAt.toIso8601String(),
-      "additionalPerks": skills,
+      "skills": skills,
+      "additionalPerks": perks, // Added perks to JSON
       "minimumEducation": education,
       "jobDescription": description,
       "salaryType": salaryType,

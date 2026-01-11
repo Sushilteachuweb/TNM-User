@@ -640,13 +640,13 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -659,11 +659,11 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white.withOpacity(0.3), width: 3),
+                  border: Border.all(color: AppColors.primary.withOpacity(0.2), width: 3),
                 ),
                 child: CircleAvatar(
                   radius: 45,
-                  backgroundColor: Colors.white.withOpacity(0.2),
+                  backgroundColor: AppColors.background,
                   child: ClipOval(
                     child: _buildProfileImage(profile?.image),
                   ),
@@ -718,23 +718,16 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           Text(
             profile?.fullName ?? "Guest User",
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.headingText,
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 3,
-                  offset: const Offset(0, 1),
-                ),
-              ],
             ),
           ),
           const SizedBox(height: 4),
           Text(
             profile?.jobCategory ?? "Job Seeker",
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: AppColors.bodyText,
               fontSize: 14,
             ),
           ),
@@ -754,19 +747,19 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
+        color: AppColors.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white, size: 14),
+          Icon(icon, color: AppColors.primary, size: 14),
           const SizedBox(width: 6),
           Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppColors.primary,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

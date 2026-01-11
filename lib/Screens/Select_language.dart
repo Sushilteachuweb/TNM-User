@@ -10,11 +10,11 @@ class SelectLanguage extends StatefulWidget {
 
 class _SelectLanguageState extends State<SelectLanguage> with SingleTickerProviderStateMixin {
   final List<String> languages = [
-    // 'हिंदी',
+    'हिंदी',
     'English',
-    // 'ਪੰਜਾਬੀ',
-    // 'ગુજરાતી',
-    // 'मराठी',
+    'ਪੰਜਾਬੀ',
+    'ગુજરાતી',
+    'मराठी',
   ];
   String selectedLanguage = '';
   late AnimationController _animationController;

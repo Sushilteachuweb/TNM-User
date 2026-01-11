@@ -79,9 +79,9 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
             children: [
               _buildModernHeader(),
               const SizedBox(height: 16),
-              _buildModernSearchBar(jobProvider.jobs),
-              const SizedBox(height: 20),
               _buildJobStats(),
+              const SizedBox(height: 20),
+              _buildModernSearchBar(jobProvider.jobs),
               const SizedBox(height: 16),
               Expanded(
                 child: _buildJobsList(),
@@ -167,7 +167,7 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.primary.withOpacity(0.3)),
               ),
-              child: Icon(Icons.tune, color: AppColors.primary, size: 18),
+              child: Icon(Icons.notifications_outlined, color: AppColors.primary, size: 18),
             ),
           ),
         ],
