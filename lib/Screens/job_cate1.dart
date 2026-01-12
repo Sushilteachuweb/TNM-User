@@ -350,9 +350,9 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:naukri_mitra_jobs/Home_screens/home_screen.dart';
 import 'package:naukri_mitra_jobs/Screens/fresher_screen.dart';
 import 'package:naukri_mitra_jobs/main_Screen/main_screen.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class JobCate1 extends StatefulWidget {
   final String title;
@@ -482,9 +482,9 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
           ),
         ),
         const SizedBox(width: 16),
-        const Text(
-          'Experience Level',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.experienceLevel,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Color(0xFF2E3A59),
@@ -510,9 +510,9 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Rozgar Ka Digital Sathi',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.rozgarDigitalSaathi,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
               color: Color(0xFF2E3A59),
@@ -579,7 +579,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
             children: [
               Expanded(
                 child: _buildToggleButton(
-                  "I'm Experienced", 
+                  AppLocalizations.of(context)!.imExperienced, 
                   isExperienced, 
                   () => setState(() => isExperienced = true),
                 ),
@@ -587,7 +587,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
               const SizedBox(width: 12),
               Expanded(
                 child: _buildToggleButton(
-                  "I'm a Fresher", 
+                  AppLocalizations.of(context)!.imFresher, 
                   !isExperienced, 
                   () {
                     setState(() => isExperienced = false);
@@ -654,9 +654,9 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Experience Details',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.experienceDetails,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: Color(0xFF2E3A59),
@@ -679,9 +679,9 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
           ),
           child: DropdownButtonFormField<String>(
             value: selectedExperience,
-            hint: const Text(
-              "Select Experience Level",
-              style: TextStyle(color: Colors.grey),
+            hint: Text(
+              AppLocalizations.of(context)!.selectExperienceLevel,
+              style: const TextStyle(color: Colors.grey),
             ),
             isExpanded: true,
             decoration: const InputDecoration(
@@ -729,12 +729,12 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
               color: Color(0xFF2E3A59),
               fontWeight: FontWeight.w500,
             ),
-            decoration: const InputDecoration(
-              hintText: 'Current Salary (₹)',
-              hintStyle: TextStyle(color: Colors.grey),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)!.currentSalary,
+              hintStyle: const TextStyle(color: Colors.grey),
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              prefixIcon: Icon(Icons.currency_rupee, color: Colors.grey),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              prefixIcon: const Icon(Icons.currency_rupee, color: Colors.grey),
             ),
           ),
         ),
@@ -754,9 +754,9 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
             ),
             child: TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Back',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.back,
+                style: const TextStyle(
                   color: Color(0xFF4A90E2),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -782,7 +782,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
                 if (selectedExperience == null || salaryController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text('Please complete all fields'),
+                      content: Text(AppLocalizations.of(context)!.pleaseCompleteAllFields),
                       backgroundColor: Colors.red[400],
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(
@@ -816,9 +816,9 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              child: const Text(
-                'Continue',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.continueButton,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

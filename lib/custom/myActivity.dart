@@ -103,25 +103,7 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
             ),
           ),
           
-          // Center - Logo (exactly matching home and job screens)
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: Image.asset('images/logo3.png', height: 24),
-            ),
-          ),
+
           
           // Right side - Notification (matching home and job screens)
           Align(

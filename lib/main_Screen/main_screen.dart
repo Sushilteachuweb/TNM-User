@@ -1,15 +1,12 @@
 
-// working hai 09-09-2025
-//
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:naukri_mitra_jobs/custom/JobSearch.dart';
 import 'package:naukri_mitra_jobs/custom/ProfileScreen.dart';
 import 'package:naukri_mitra_jobs/custom/VideoScreen.dart';
 import 'package:naukri_mitra_jobs/custom/myActivity.dart';
 import '../Home_screens/home_screen.dart';
-import '../provider/AppliedJobsProvider.dart';
+import '../widgets/modern_bottom_nav.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
@@ -85,21 +82,11 @@ class _MainScreenState extends State<MainScreen> {
             ProfileScreen(),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: ModernBottomNav(
           currentIndex: _currentIndex,
           onTap: (index) {
             setState(() => _currentIndex = index);
           },
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.work), label: "Jobs"),
-            BottomNavigationBarItem(icon: Icon(Icons.assignment), label: "Activity"),
-            BottomNavigationBarItem(icon: Icon(Icons.video_library), label: "Video"),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-          ],
         ),
       ),
     );

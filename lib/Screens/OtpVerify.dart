@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:naukri_mitra_jobs/Screens/Login.dart';
 import '../main_Screen/main_screen.dart';
 import '../provider/Auth_Provider.dart';
+import '../generated/l10n/app_localizations.dart';
 import 'CreateProfile.dart';
 
 class OtpVerify extends StatefulWidget {
@@ -285,11 +286,11 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
                           onPressed: () => Navigator.pop(context),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Verify Phone Number',
+                          AppLocalizations.of(context).verifyPhoneNumber,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: Colors.black87,
@@ -320,9 +321,9 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
                   const SizedBox(height: 32),
                   
                   // Main Title
-                  const Text(
-                    'Enter Verification Code',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context).enterVerificationCode,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
                       color: Colors.black87,
@@ -342,7 +343,7 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
                         height: 1.4,
                       ),
                       children: [
-                        const TextSpan(text: 'We sent a 4-digit code to\n'),
+                        TextSpan(text: '${AppLocalizations.of(context).weSentCodeTo}\n'),
                         TextSpan(
                           text: widget.phone,
                           style: const TextStyle(
@@ -372,7 +373,7 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
                       color: Colors.grey[600],
                     ),
                     label: Text(
-                      'Change phone number',
+                      AppLocalizations.of(context).changePhoneNumber,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
@@ -462,7 +463,7 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
                         Text(
                           _canResend
                               ? "Didn't receive the code?"
-                              : "Resend code in 00:${_start.toString().padLeft(2, '0')}",
+                              : "${AppLocalizations.of(context).resendCode} 00:${_start.toString().padLeft(2, '0')}",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -486,7 +487,7 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
                                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                                     minimumSize: Size.zero,
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     'Resend',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -526,14 +527,14 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
                                 strokeWidth: 2.5,
                               ),
                             )
-                          : const Row(
+                          : Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.verified_user_outlined, size: 20),
-                                SizedBox(width: 8),
+                                const Icon(Icons.verified_user_outlined, size: 20),
+                                const SizedBox(width: 8),
                                 Text(
-                                  'Verify Code',
-                                  style: TextStyle(
+                                  AppLocalizations.of(context).verifyCode,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 0.3,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../Home_screens/home_screen.dart';
 import '../provider/Auth_Provider.dart';
+import '../generated/l10n/app_localizations.dart';
 import 'OtpVerify.dart';
 
 class Login extends StatefulWidget {
@@ -163,7 +164,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   
                   // Welcome Back Section
                   Text(
-                    'Welcome Back!',
+                    AppLocalizations.of(context).welcomeBack,
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -173,7 +174,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue your job search',
+                    AppLocalizations.of(context).signInToContinue,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -187,7 +188,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Phone Number',
+                      AppLocalizations.of(context).phoneNumber,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -227,7 +228,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             size: 22,
                           ),
                         ),
-                        hintText: 'Enter 10-digit number',
+                        hintText: AppLocalizations.of(context).enter10DigitNumber,
                         hintStyle: TextStyle(
                           color: Colors.grey[400],
                           fontSize: 16,
@@ -300,7 +301,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                             });
                           },
                           child: Text(
-                            'I agree to the terms and conditions to log in to the app.',
+                            AppLocalizations.of(context).agreeToTerms,
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -357,7 +358,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'Verify Phone Number',
+                                    AppLocalizations.of(context).verifyPhoneNumber,
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,

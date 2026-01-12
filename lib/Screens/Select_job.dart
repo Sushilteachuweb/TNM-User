@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:naukri_mitra_jobs/Screens/CreateProfile.dart';
 import 'package:naukri_mitra_jobs/Screens/Login.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class SelectJob extends StatefulWidget {
   final String phone;
@@ -263,7 +264,7 @@ class _SelectJobState extends State<SelectJob> with TickerProviderStateMixin {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Your Job Search Partner',
+                      AppLocalizations.of(context).jobSearchPartner,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -276,7 +277,7 @@ class _SelectJobState extends State<SelectJob> with TickerProviderStateMixin {
                     
                     // Professional Job Button
                     _buildProfessionalButton(
-                      title: 'I want a Job',
+                      title: AppLocalizations.of(context).iWantJob,
                       icon: Icons.work_outline_rounded,
                       gradientColors: [
                         const Color(0xFFFF6B35),
@@ -298,7 +299,7 @@ class _SelectJobState extends State<SelectJob> with TickerProviderStateMixin {
                     
                     // Professional Hire Button
                     _buildProfessionalButton(
-                      title: 'I want to Hire',
+                      title: AppLocalizations.of(context).iWantToHire,
                       icon: Icons.business_center_outlined,
                       gradientColors: [
                         const Color(0xff2196f3),

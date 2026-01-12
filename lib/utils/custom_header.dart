@@ -19,13 +19,7 @@ class CustomHeader extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Centered Logo (absolute center of screen)
-          Center(
-            child: Image.asset(
-              'images/logo3.png',
-              height: 34,
-            ),
-          ),
+
 
           // Location and Notification positioned on sides
           Row(

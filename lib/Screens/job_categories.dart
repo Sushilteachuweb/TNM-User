@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:naukri_mitra_jobs/Screens/job_cate1.dart';
-import 'package:naukri_mitra_jobs/utils/app_colors.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class JobCategories extends StatefulWidget {
   final String fullName;
@@ -119,16 +119,16 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                               onPressed: () => Navigator.pop(context),
                             ),
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Text(
-                              'Job Categories',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black87,
-                              ),
+                            AppLocalizations.of(context)!.jobCategories,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
                             ),
+                          ),
                           ),
                           const SizedBox(width: 48), // Balance the back button
                         ],
@@ -137,9 +137,9 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                       const SizedBox(height: 32),
                       
                       // Main Title
-                      const Text(
-                        'Choose Your Career Path',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.chooseYourCareerPath,
+                        style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w800,
                           color: Colors.black87,
@@ -150,7 +150,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                       const SizedBox(height: 8),
                       
                       Text(
-                        'Select a job category that matches your skills',
+                        AppLocalizations.of(context)!.selectJobCategoryMatching,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
@@ -179,7 +179,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                             color: Colors.black87,
                           ),
                           decoration: InputDecoration(
-                            hintText: "Search job categories...",
+                            hintText: AppLocalizations.of(context)!.searchJobCategoriesPlaceholder,
                             hintStyle: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 16,
@@ -370,9 +370,9 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
             ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            'No categories found',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.noCategoriesFound,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
@@ -380,7 +380,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
           ),
           const SizedBox(height: 8),
           Text(
-            'Try searching with different keywords',
+            AppLocalizations.of(context)!.trySearchingDifferentKeywords,
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey[600],

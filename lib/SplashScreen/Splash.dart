@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:naukri_mitra_jobs/main_Screen/main_screen.dart';
+import 'package:naukri_mitra_jobs/provider/LocalizationProvider.dart';
+import '../generated/l10n/app_localizations.dart';
 
 import '../Screens/Select_language.dart';
 
@@ -79,6 +82,9 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
   }
 
   void _navigate() async {
+    // Initialize localization
+    await context.read<LocalizationProvider>().initializeLocale();
+    
     await Future.delayed(const Duration(seconds: 3));
     bool loggedIn = await SessionManager.isLoggedIn();
 
@@ -150,12 +156,12 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
                   position: _slideAnimation,
                   child: Column(
                     children: [
-                      const Text.rich(
+                      Text.rich(
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Rozgar ka ',
-                              style: TextStyle(
+                              text: AppLocalizations.of(context).rozgarDigitalSaathi.split(' ')[0] + ' ' + AppLocalizations.of(context).rozgarDigitalSaathi.split(' ')[1] + ' ',
+                              style: const TextStyle(
                                 color: Colors.blue,
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
@@ -163,8 +169,8 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
                               ),
                             ),
                             TextSpan(
-                              text: 'Digital Saathi',
-                              style: TextStyle(
+                              text: AppLocalizations.of(context).rozgarDigitalSaathi.split(' ').skip(2).join(' '),
+                              style: const TextStyle(
                                 color: Colors.orange,
                                 fontSize: 22,
                                 fontWeight: FontWeight.w700,
@@ -177,7 +183,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Your Job Search Partner',
+                        AppLocalizations.of(context).jobSearchPartner,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w500,

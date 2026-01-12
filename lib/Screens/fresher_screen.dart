@@ -286,6 +286,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:naukri_mitra_jobs/main_Screen/main_screen.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class FresherScreen extends StatefulWidget {
   final String title;
@@ -450,9 +451,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
           ),
         ),
         const SizedBox(width: 16),
-        const Text(
-          'Add Your Skills',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.addYourSkills,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Color(0xFF2E3A59),
@@ -478,9 +479,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Rozgar Ka Digital Sathi',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.rozgarDigitalSaathi,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
               color: Color(0xFF2E3A59),
@@ -544,7 +545,7 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Fresher Position',
+                    AppLocalizations.of(context)!.fresherPosition,
                     style: TextStyle(
                       color: Colors.green[700],
                       fontSize: 12,
@@ -564,9 +565,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Add Your Skills',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.addYourSkills,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: Color(0xFF2E3A59),
@@ -596,12 +597,12 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
                     color: Color(0xFF2E3A59),
                     fontWeight: FontWeight.w500,
                   ),
-                  decoration: const InputDecoration(
-                    hintText: 'Type a custom skill...',
-                    hintStyle: TextStyle(color: Colors.grey),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.typeCustomSkillPlaceholder,
+                    hintStyle: const TextStyle(color: Colors.grey),
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                    prefixIcon: Icon(Icons.add_circle_outline, color: Colors.grey),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    prefixIcon: const Icon(Icons.add_circle_outline, color: Colors.grey),
                   ),
                   onSubmitted: (value) => _addSkill(value),
                 ),
@@ -627,9 +628,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
         const SizedBox(height: 24),
 
         // Suggested skills
-        const Text(
-          'Popular Skills',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.popularSkills,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color(0xFF2E3A59),
@@ -683,9 +684,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
       children: [
         Row(
           children: [
-            const Text(
-              'Selected Skills',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)!.selectedSkills,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF2E3A59),
@@ -783,9 +784,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
             ),
             child: TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Back',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.back,
+                style: const TextStyle(
                   color: Color(0xFF4A90E2),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -811,7 +812,7 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
                 if (_selectedSkills.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: const Text('Please add at least one skill'),
+                      content: Text(AppLocalizations.of(context)!.pleaseAddAtLeastOneSkill),
                       backgroundColor: Colors.red[400],
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(
@@ -845,9 +846,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              child: const Text(
-                'Continue',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.continueButton,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

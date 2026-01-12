@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:naukri_mitra_jobs/Screens/job_categories.dart';
 import '../provider/CreateProfileProvider.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class CreateProfile extends StatefulWidget {
   final String phone;
@@ -21,6 +22,32 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
   String? selectedGender;
   String? selectedEducation;
   String? selectedExperience;
+  
+  // Helper methods to map localized values to API values
+  String _getApiGenderValue(String localizedGender) {
+    final context = this.context;
+    if (localizedGender == AppLocalizations.of(context).male) return 'male';
+    if (localizedGender == AppLocalizations.of(context).female) return 'female';
+    if (localizedGender == AppLocalizations.of(context).other) return 'other';
+    return 'male'; // default fallback
+  }
+  
+  String _getApiEducationValue(String localizedEducation) {
+    final context = this.context;
+    if (localizedEducation == AppLocalizations.of(context).tenthPass) return '10th Pass';
+    if (localizedEducation == AppLocalizations.of(context).twelfthPass) return '12th Pass';
+    if (localizedEducation == AppLocalizations.of(context).diploma) return 'Diploma';
+    if (localizedEducation == AppLocalizations.of(context).graduate) return 'Graduate';
+    if (localizedEducation == AppLocalizations.of(context).postGraduate) return 'Post Graduate';
+    return 'Graduate'; // default fallback
+  }
+  
+  String _getApiExperienceValue(String localizedExperience) {
+    final context = this.context;
+    if (localizedExperience == AppLocalizations.of(context).iAmFresher) return 'Fresher';
+    if (localizedExperience == AppLocalizations.of(context).iHaveExperience) return 'Experienced';
+    return 'Fresher'; // default fallback
+  }
   File? selectedImage;
 
   final ImagePicker picker = ImagePicker();
@@ -335,11 +362,11 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                           onPressed: () => Navigator.pop(context),
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          'Create Profile',
+                          AppLocalizations.of(context).createProfile,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: Colors.black87,
@@ -441,7 +468,7 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                           ),
                           child: Text(
-                            selectedImage != null ? 'Change Photo' : 'Add Photo',
+                            selectedImage != null ? AppLocalizations.of(context).changePhoto : AppLocalizations.of(context).addPhoto,
                             style: const TextStyle(
                               color: Color(0xFF2196F3),
                               fontWeight: FontWeight.w600,
@@ -460,11 +487,11 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Full Name Field
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Full Name",
-                          style: TextStyle(
+                          AppLocalizations.of(context).fullName,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.black87,
@@ -507,11 +534,11 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                       const SizedBox(height: 20),
 
                       // Email Field
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Email Address",
-                          style: TextStyle(
+                          AppLocalizations.of(context).emailAddress,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.black87,
@@ -554,25 +581,25 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
 
                       // Professional Option Sections
                       _buildOptions(
-                        title: "Gender",
-                        options: ["Male", "Female", "Other"],
+                        title: AppLocalizations.of(context).gender,
+                        options: [AppLocalizations.of(context).male, AppLocalizations.of(context).female, AppLocalizations.of(context).other],
                         selectedValue: selectedGender,
                         onSelected: (val) => setState(() => selectedGender = val),
                       ),
                       _buildOptions(
-                        title: "Work Experience",
-                        options: ["I am a fresher", "I have experience"],
+                        title: AppLocalizations.of(context).workExperience,
+                        options: [AppLocalizations.of(context).iAmFresher, AppLocalizations.of(context).iHaveExperience],
                         selectedValue: selectedExperience,
                         onSelected: (val) => setState(() => selectedExperience = val),
                       ),
                       _buildOptions(
-                        title: "Education",
+                        title: AppLocalizations.of(context).education,
                         options: [
-                          "10th Pass",
-                          "12th Pass",
-                          "Diploma",
-                          "Graduate",
-                          "Post Graduate"
+                          AppLocalizations.of(context).tenthPass,
+                          AppLocalizations.of(context).twelfthPass,
+                          AppLocalizations.of(context).diploma,
+                          AppLocalizations.of(context).graduate,
+                          AppLocalizations.of(context).postGraduate
                         ],
                         selectedValue: selectedEducation,
                         onSelected: (val) => setState(() => selectedEducation = val),
@@ -651,13 +678,13 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                             selectedEducation != null &&
                             selectedExperience != null &&
                             selectedImage != null) {
-                          final boolExp = selectedExperience == "I have experience";
+                          final boolExp = selectedExperience == AppLocalizations.of(context).iHaveExperience;
 
                           final result = await provider.saveProfile(
                             context,
                             fullName: nameController.text.trim(),
-                            gender: selectedGender!,
-                            education: selectedEducation!,
+                            gender: _getApiGenderValue(selectedGender!),
+                            education: _getApiEducationValue(selectedEducation!),
                             isExperienced: boolExp,
                             currentSalary: 50000,
                             email: emailController.text.trim(),
@@ -695,9 +722,9 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                                 MaterialPageRoute(
                                   builder: (context) => JobCategories(
                                     fullName: nameController.text,
-                                    gender: selectedGender!,
-                                    education: selectedEducation!,
-                                    workExperience: selectedExperience!,
+                                    gender: _getApiGenderValue(selectedGender!),
+                                    education: _getApiEducationValue(selectedEducation!),
+                                    workExperience: _getApiExperienceValue(selectedExperience!),
                                     imageFile: selectedImage!,
                                     skills: [],
                                   ),

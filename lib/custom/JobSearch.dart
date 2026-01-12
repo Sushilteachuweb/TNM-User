@@ -137,25 +137,7 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
             ),
           ),
           
-          // Center - Logo
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 6,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: Image.asset('images/logo3.png', height: 24),
-            ),
-          ),
+
           
           // Right side - Filter
           Align(

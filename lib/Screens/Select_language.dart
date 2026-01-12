@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:naukri_mitra_jobs/Screens/Select_job.dart';
+import 'package:naukri_mitra_jobs/provider/LocalizationProvider.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class SelectLanguage extends StatefulWidget {
   const SelectLanguage({super.key});
@@ -24,6 +27,9 @@ class _SelectLanguageState extends State<SelectLanguage> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
+    // Set English as default selected language
+    selectedLanguage = 'English';
+    
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
@@ -68,9 +74,9 @@ class _SelectLanguageState extends State<SelectLanguage> with SingleTickerProvid
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 80),
-                    const Text(
-                      'Select Your Language',
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context).selectYourLanguage,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFF333333),
@@ -103,7 +109,7 @@ class _SelectLanguageState extends State<SelectLanguage> with SingleTickerProvid
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'More languages will be added soon!',
+                              AppLocalizations.of(context).moreLanguagesComingSoon,
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -144,6 +150,8 @@ class _SelectLanguageState extends State<SelectLanguage> with SingleTickerProvid
                                 setState(() {
                                   selectedLanguage = lang;
                                 });
+                                // Save language selection
+                                context.read<LocalizationProvider>().changeLanguageByName(lang);
                               },
                               borderRadius: BorderRadius.circular(12),
                               child: AnimatedContainer(
@@ -242,9 +250,9 @@ class _SelectLanguageState extends State<SelectLanguage> with SingleTickerProvid
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
-                                  'Continue',
-                                  style: TextStyle(
+                                Text(
+                                  AppLocalizations.of(context).continueButton,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
