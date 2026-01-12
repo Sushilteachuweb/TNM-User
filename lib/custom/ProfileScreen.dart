@@ -412,6 +412,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../generated/l10n/app_localizations.dart';
 import '../UpdateProfileScreen/UpdateProfileScreen.dart';
 import '../provider/ProfileProvider.dart';
 import '../utils/app_colors.dart';
@@ -598,7 +599,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           Align(
             alignment: Alignment.center,
             child: Text(
-              "My Profile",
+              AppLocalizations.of(context)!.myProfile,
               style: TextStyle(
                 color: AppColors.headingText,
                 fontSize: 18,
@@ -716,7 +717,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           ),
           const SizedBox(height: 16),
           Text(
-            profile?.fullName ?? "Guest User",
+            profile?.fullName ?? AppLocalizations.of(context)!.guestUser,
             style: TextStyle(
               color: AppColors.headingText,
               fontSize: 22,
@@ -725,7 +726,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           ),
           const SizedBox(height: 4),
           Text(
-            profile?.jobCategory ?? "Job Seeker",
+            profile?.jobCategory ?? AppLocalizations.of(context)!.jobSeeker,
             style: TextStyle(
               color: AppColors.bodyText,
               fontSize: 14,
@@ -773,16 +774,16 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildWorkExperienceSection(dynamic profile) {
     return Column(
       children: [
-        _buildSectionHeader("Work Experience", "Add New", AppColors.primary, null),
+        _buildSectionHeader(AppLocalizations.of(context)!.workExperience, AppLocalizations.of(context)!.addNew, AppColors.primary, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: _buildModernCard(
             icon: Icons.business_center,
-            title: "Experience",
+            title: AppLocalizations.of(context)!.experience,
             subtitle: profile?.isExperienced == true
-                ? "${profile?.totalExperience} Years"
-                : "Fresher",
+                ? "${profile?.totalExperience} ${AppLocalizations.of(context)!.years}"
+                : AppLocalizations.of(context)!.fresher,
             color: AppColors.primary,
             isUrgent: profile?.isExperienced == true,
           ),
@@ -795,7 +796,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildPersonalInfoSection(dynamic profile) {
     return Column(
       children: [
-        _buildSectionHeader("Personal Information", "Edit", AppColors.secondary, () {
+        _buildSectionHeader(AppLocalizations.of(context)!.personalInformation, AppLocalizations.of(context)!.edit, AppColors.secondary, () {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
@@ -834,11 +835,11 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
           ),
           child: Column(
             children: [
-              _buildInfoRow(Icons.email_outlined, "Email", profile?.email ?? "Not Provided"),
+              _buildInfoRow(Icons.email_outlined, AppLocalizations.of(context)!.email, profile?.email ?? AppLocalizations.of(context)!.notProvided),
               const SizedBox(height: 12),
-              _buildInfoRow(Icons.person_outline, "Gender", profile?.gender ?? "Not Provided"),
+              _buildInfoRow(Icons.person_outline, AppLocalizations.of(context)!.gender, profile?.gender ?? AppLocalizations.of(context)!.notProvided),
               const SizedBox(height: 12),
-              _buildInfoRow(Icons.school_outlined, "Education", profile?.education ?? "Not Provided"),
+              _buildInfoRow(Icons.school_outlined, AppLocalizations.of(context)!.educationLevel, profile?.education ?? AppLocalizations.of(context)!.notProvided),
             ],
           ),
         ),
@@ -850,14 +851,14 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildLanguagesSection() {
     return Column(
       children: [
-        _buildSectionHeader("Languages", "Coming Soon", AppColors.info, null),
+        _buildSectionHeader(AppLocalizations.of(context)!.languages, AppLocalizations.of(context)!.comingSoon, AppColors.info, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: _buildModernCard(
             icon: Icons.language,
-            title: "English Level",
-            subtitle: "Good English",
+            title: AppLocalizations.of(context)!.englishLevel,
+            subtitle: AppLocalizations.of(context)!.goodEnglish,
             color: AppColors.info,
           ),
         ),
@@ -869,7 +870,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildSkillsSection() {
     return Column(
       children: [
-        _buildSectionHeader("Skills", "Edit", AppColors.success, () async {
+        _buildSectionHeader(AppLocalizations.of(context)!.skills, AppLocalizations.of(context)!.edit, AppColors.success, () async {
           final updatedSkills = await BottomSheetHelper.showSkillsSelector(
             context: context,
             currentSkills: skills,
@@ -924,7 +925,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildResumeSection(dynamic profile) {
     return Column(
       children: [
-        _buildSectionHeader("Resume", "Update", AppColors.warning, () async {
+        _buildSectionHeader(AppLocalizations.of(context)!.resume, AppLocalizations.of(context)!.update, AppColors.warning, () async {
           final filePath = await ResumeService.pickResume(context);
           if (filePath != null) {
             setState(() {
@@ -948,7 +949,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildRatingSection() {
     return Column(
       children: [
-        _buildSectionHeader("Rate Your Experience", "Coming Soon", Colors.purple, null),
+        _buildSectionHeader(AppLocalizations.of(context)!.rateYourExperience, AppLocalizations.of(context)!.comingSoon, Colors.purple, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -1062,9 +1063,9 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
-                "Active",
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.active,
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 10,
@@ -1121,21 +1122,21 @@ class _ResumeItem extends StatelessWidget {
 
   const _ResumeItem({this.resumeUrl, this.localPath});
 
-  String _getResumeFileName() {
+  String _getResumeFileName(BuildContext context) {
     if (resumeUrl != null && resumeUrl!.isNotEmpty) {
       return resumeUrl!.split('/').last;
     }
     if (localPath != null && localPath!.isNotEmpty) {
       return localPath!.split('/').last;
     }
-    return "No resume uploaded";
+    return AppLocalizations.of(context)!.noResumeUploaded;
   }
 
   Future<void> _openResume(BuildContext context) async {
     if (resumeUrl == null || resumeUrl!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("No resume available to open"),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.noResumeAvailable),
           backgroundColor: Colors.orange,
         ),
       );
@@ -1162,12 +1163,12 @@ class _ResumeItem extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text("Resume URL"),
+              title: Text(AppLocalizations.of(context)!.resumeUrl),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Copy this URL to open in browser:"),
+                  Text(AppLocalizations.of(context)!.copyUrlToBrowser),
                   const SizedBox(height: 8),
                   SelectableText(
                     fullUrl,
@@ -1178,7 +1179,7 @@ class _ResumeItem extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Close"),
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ],
             ),
@@ -1190,7 +1191,7 @@ class _ResumeItem extends StatelessWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Error opening resume: $e"),
+            content: Text("${AppLocalizations.of(context)!.errorOpeningResume}: $e"),
             backgroundColor: Colors.red,
           ),
         );
@@ -1226,7 +1227,7 @@ class _ResumeItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _getResumeFileName(),
+                    _getResumeFileName(context),
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
@@ -1236,9 +1237,9 @@ class _ResumeItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (hasResume)
-                    const Text(
-                      "Tap to view",
-                      style: TextStyle(
+                    Text(
+                      AppLocalizations.of(context)!.tapToView,
+                      style: const TextStyle(
                         fontSize: 11,
                         color: Colors.blue,
                       ),
@@ -1325,9 +1326,9 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  "Thank You!",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.thankYou,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24,
                     color: AppColors.success,
@@ -1335,7 +1336,7 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "We appreciate your valuable feedback",
+                  AppLocalizations.of(context)!.appreciateFeedback,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[600],
@@ -1346,9 +1347,9 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
             )
           : Column(
               children: [
-                const Text(
-                  "How was your profile experience?",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.howWasProfileExperience,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     color: AppColors.headingText,
@@ -1398,9 +1399,9 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                         ),
                         elevation: 0,
                       ),
-                      child: const Text(
-                        "Submit Rating",
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.submitRating,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

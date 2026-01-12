@@ -437,4 +437,276 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get pleaseAddAtLeastOneSkill => 'ਕਿਰਪਾ ਕਰਕੇ ਘੱਟੋ ਘੱਟ ਇੱਕ ਹੁਨਰ ਜੋੜੋ';
+
+  @override
+  String get chatHR => 'HR ਨਾਲ ਚੈਟ ਕਰੋ';
+
+  @override
+  String get callHR => 'HR ਨੂੰ ਕਾਲ ਕਰੋ';
+
+  @override
+  String get myActivity => 'ਮੇਰੀ ਗਤੀਵਿਧੀ';
+
+  @override
+  String get trackJobApplications =>
+      'ਆਪਣੀਆਂ ਨੌਕਰੀ ਅਰਜ਼ੀਆਂ ਅਤੇ ਪ੍ਰਗਤੀ ਨੂੰ ਟਰੈਕ ਕਰੋ';
+
+  @override
+  String get noApplicationsYet => 'ਅਜੇ ਤੱਕ ਕੋਈ ਅਰਜ਼ੀ ਨਹੀਂ';
+
+  @override
+  String get startApplyingJobs =>
+      'ਨੌਕਰੀਆਂ ਲਈ ਅਰਜ਼ੀ ਦੇਣਾ ਸ਼ੁਰੂ ਕਰੋ ਅਤੇ ਇੱਥੇ ਆਪਣੀਆਂ ਅਰਜ਼ੀਆਂ ਨੂੰ ਟਰੈਕ ਕਰੋ';
+
+  @override
+  String get browseJobs => 'ਨੌਕਰੀਆਂ ਬ੍ਰਾਊਜ਼ ਕਰੋ';
+
+  @override
+  String get callNow => 'ਹੁਣੇ ਕਾਲ ਕਰੋ';
+
+  @override
+  String get whatsapp => 'ਵਟਸਐਪ';
+
+  @override
+  String get callHRComingSoon => 'HR ਕਾਲ ਸੁਵਿਧਾ ਜਲਦੀ ਆ ਰਹੀ ਹੈ! 📞';
+
+  @override
+  String get whatsappHRComingSoon => 'ਵਟਸਐਪ HR ਸੁਵਿਧਾ ਜਲਦੀ ਆ ਰਹੀ ਹੈ! 💬';
+
+  @override
+  String get jobRequirements => 'ਨੌਕਰੀ ਦੀਆਂ ਲੋੜਾਂ';
+
+  @override
+  String get experienceRequired => 'ਲੋੜੀਂਦਾ ਤਜਰਬਾ';
+
+  @override
+  String get jobDescription => 'ਨੌਕਰੀ ਦਾ ਵਰਣਨ';
+
+  @override
+  String get skillsRequired => 'ਲੋੜੀਂਦੇ ਹੁਨਰ';
+
+  @override
+  String get openings => 'ਖਾਲੀ ਥਾਵਾਂ';
+
+  @override
+  String get salaryType => 'ਤਨਖਾਹ ਦੀ ਕਿਸਮ';
+
+  @override
+  String get careerDevelopmentVideos => 'ਕਰੀਅਰ ਵਿਕਾਸ ਵੀਡੀਓ';
+
+  @override
+  String get learnGrowAdvance => 'ਸਿੱਖੋ, ਵਧੋ ਅਤੇ ਆਪਣੇ ਕਰੀਅਰ ਨੂੰ ਅੱਗੇ ਵਧਾਓ';
+
+  @override
+  String get watchNow => 'ਹੁਣੇ ਦੇਖੋ';
+
+  @override
+  String get myProfile => 'ਮੇਰਾ ਪ੍ਰੋਫਾਈਲ';
+
+  @override
+  String get addNew => 'ਨਵਾਂ ਸ਼ਾਮਲ ਕਰੋ';
+
+  @override
+  String get personalInformation => 'ਨਿੱਜੀ ਜਾਣਕਾਰੀ';
+
+  @override
+  String get languages => 'ਭਾਸ਼ਾਵਾਂ';
+
+  @override
+  String get englishLevel => 'ਅੰਗਰੇਜ਼ੀ ਪੱਧਰ';
+
+  @override
+  String get goodEnglish => 'ਚੰਗੀ ਅੰਗਰੇਜ਼ੀ';
+
+  @override
+  String get discoverOpportunities => 'ਆਪਣੇ ਹੁਨਰਾਂ ਨਾਲ ਮੇਲ ਖਾਂਦੇ ਮੌਕੇ ਖੋਜੋ';
+
+  @override
+  String get searchPlaceholder => 'ਨੌਕਰੀਆਂ, ਕੰਪਨੀਆਂ, ਹੁਨਰ ਖੋਜੋ...';
+
+  @override
+  String get rateYourExperience => 'ਆਪਣੇ ਤਜਰਬੇ ਨੂੰ ਰੇਟ ਕਰੋ';
+
+  @override
+  String get chatWithUs => 'ਸਾਡੇ ਨਾਲ ਚੈਟ ਕਰੋ';
+
+  @override
+  String get supportAvailable => '24/7 ਸਹਾਇਤਾ ਉਪਲਬਧ';
+
+  @override
+  String get fullTime => 'ਪੂਰਾ ਸਮਾਂ';
+
+  @override
+  String get partTime => 'ਅੰਸ਼ਕ ਸਮਾਂ';
+
+  @override
+  String get remote => 'ਰਿਮੋਟ';
+
+  @override
+  String get internships => 'ਇੰਟਰਨਸ਼ਿਪ';
+
+  @override
+  String get freelance => 'ਫ੍ਰੀਲਾਂਸ';
+
+  @override
+  String get contract => 'ਕੰਟਰੈਕਟ';
+
+  @override
+  String get newJob => 'ਨਵੀਂ ਨੌਕਰੀ';
+
+  @override
+  String get vacancies => 'ਖਾਲੀ ਥਾਵਾਂ';
+
+  @override
+  String get urgent => 'ਤੁਰੰਤ';
+
+  @override
+  String get chooseProfilePhoto => 'ਪ੍ਰੋਫਾਈਲ ਫੋਟੋ ਚੁਣੋ';
+
+  @override
+  String get maxSize5MB => 'ਵੱਧ ਤੋਂ ਵੱਧ ਸਾਈਜ਼: 5MB';
+
+  @override
+  String get noImageSelected => 'ਕੋਈ ਤਸਵੀਰ ਚੁਣੀ ਨਹੀਂ';
+
+  @override
+  String get noResumeSelected => 'ਕੋਈ ਰਿਜ਼ਿਊਮੇ ਚੁਣਿਆ ਨਹੀਂ';
+
+  @override
+  String get locationRequired => 'ਸਥਾਨ ਲੋੜੀਂਦਾ';
+
+  @override
+  String get comingSoon => 'ਜਲਦੀ ਆ ਰਿਹਾ ਹੈ';
+
+  @override
+  String get additionalInformation => 'ਵਾਧੂ ਜਾਣਕਾਰੀ';
+
+  @override
+  String get posted => 'ਪੋਸਟ ਕੀਤਾ ਗਿਆ';
+
+  @override
+  String get weeksAgo => 'ਹਫ਼ਤੇ ਪਹਿਲਾਂ';
+
+  @override
+  String get fixedOnly => 'ਸਿਰਫ਼ ਨਿਸ਼ਚਿਤ';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get areYouSureLogout =>
+      'Are you sure you want to logout from your account?';
+
+  @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get hindi => 'हिंदी';
+
+  @override
+  String get punjabi => 'ਪੰਜਾਬੀ';
+
+  @override
+  String get gujarati => 'ગુજરાતી';
+
+  @override
+  String get marathi => 'मराठी';
+
+  @override
+  String get jobsFound => 'Jobs Found';
+
+  @override
+  String get findYourPerfectMatch => 'Find your perfect match';
+
+  @override
+  String get searchJobsCompaniesLocations =>
+      'Search jobs, companies, locations...';
+
+  @override
+  String get workFromHome => 'Work From Home';
+
+  @override
+  String get workFromOffice => 'Work From Office';
+
+  @override
+  String get itSoftware => 'IT & Software';
+
+  @override
+  String get salesMarketing => 'Sales & Marketing';
+
+  @override
+  String get customerService => 'Customer Service';
+
+  @override
+  String get howWasYourJobSearchExperience =>
+      'How was your job search experience?';
+
+  @override
+  String get submitRating => 'Submit Rating';
+
+  @override
+  String get resumeBuildingTips => 'Resume Building Tips';
+
+  @override
+  String get interviewPreparation => 'Interview Preparation';
+
+  @override
+  String get skillDevelopment => 'Skill Development';
+
+  @override
+  String get years => 'Years';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get educationLevel => 'Education Level';
+
+  @override
+  String get notProvided => 'Not Provided';
+
+  @override
+  String get resume => 'Resume';
+
+  @override
+  String get noResumeUploaded => 'No resume uploaded';
+
+  @override
+  String get tapToView => 'Tap to view';
+
+  @override
+  String get noResumeAvailable => 'No resume available to open';
+
+  @override
+  String get resumeUrl => 'Resume URL';
+
+  @override
+  String get copyUrlToBrowser => 'Copy this URL to open in browser:';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get errorOpeningResume => 'Error opening resume';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get thankYou => 'Thank You!';
+
+  @override
+  String get appreciateFeedback => 'We appreciate your valuable feedback';
+
+  @override
+  String get howWasProfileExperience => 'How was your profile experience?';
+
+  @override
+  String get guestUser => 'Guest User';
+
+  @override
+  String get jobSeeker => 'Job Seeker';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
@@ -142,7 +143,7 @@ class _VideoFeedScreenState extends State<VideoScreen> with TickerProviderStateM
                   Icon(Icons.location_on, color: AppColors.primary, size: 14),
                   const SizedBox(width: 4),
                   Text(
-                    "Location",
+                    AppLocalizations.of(context).location,
                     style: TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600,
@@ -197,7 +198,7 @@ class _VideoFeedScreenState extends State<VideoScreen> with TickerProviderStateM
       child: Column(
         children: [
           Text(
-            "Career Development Videos",
+            AppLocalizations.of(context).careerDevelopmentVideos,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -213,7 +214,7 @@ class _VideoFeedScreenState extends State<VideoScreen> with TickerProviderStateM
           ),
           const SizedBox(height: 4),
           Text(
-            "Learn, grow, and advance your career",
+            AppLocalizations.of(context).learnGrowAdvance,
             style: TextStyle(
               color: Colors.white.withOpacity(0.9),
               fontSize: 12,
@@ -415,14 +416,14 @@ class _VideoFeedScreenState extends State<VideoScreen> with TickerProviderStateM
                           gradient: AppColors.primaryGradient,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.play_arrow, color: Colors.white, size: 16),
-                            SizedBox(width: 6),
+                            const Icon(Icons.play_arrow, color: Colors.white, size: 16),
+                            const SizedBox(width: 6),
                             Text(
-                              "Watch Now",
-                              style: TextStyle(
+                              AppLocalizations.of(context).watchNow,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,

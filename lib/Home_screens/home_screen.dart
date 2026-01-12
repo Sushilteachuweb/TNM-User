@@ -10,6 +10,7 @@ import '../provider/ProfileProvider.dart';
 import '../provider/LocationProvider.dart';
 import '../utils/location_permission_dialog.dart';
 import '../utils/app_colors.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   final String title;
@@ -167,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                         Icon(Icons.location_on, color: AppColors.primary, size: 14),
                         const SizedBox(width: 4),
                         Text(
-                          "Location",
+                          AppLocalizations.of(context).location,
                           style: TextStyle(
                             color: AppColors.primary,
                             fontWeight: FontWeight.w600,
@@ -234,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
       child: Column(
         children: [
           Text(
-            "Find Your Dream Job",
+            AppLocalizations.of(context).findYourDreamJob,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -250,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
           ),
           const SizedBox(height: 4),
           Text(
-            "Discover opportunities that match your skills",
+            AppLocalizations.of(context).discoverOpportunities,
             style: TextStyle(
               color: Colors.white.withOpacity(0.9),
               fontSize: 12,
@@ -324,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   Widget _buildFeaturedJobsSection() {
     return Column(
       children: [
-        _buildSectionHeader("Featured Jobs", "View All", AppColors.primary, () {
+        _buildSectionHeader(AppLocalizations.of(context).featuredJobs, AppLocalizations.of(context).viewAll, AppColors.primary, () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -388,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   Widget _buildNearbyJobsSection() {
     return Column(
       children: [
-        _buildSectionHeader("Nearby Jobs", "Coming Soon", Colors.orange, null),
+        _buildSectionHeader(AppLocalizations.of(context).nearbyJobs, AppLocalizations.of(context).comingSoon, Colors.orange, null),
         const SizedBox(height: 15),
         SizedBox(
           height: 140,
@@ -412,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   Widget _buildCareerDevelopmentSection() {
     return Column(
       children: [
-        _buildSectionHeader("Career Development", "Coming Soon", AppColors.info, null),
+        _buildSectionHeader(AppLocalizations.of(context).careerDevelopment, AppLocalizations.of(context).comingSoon, AppColors.info, null),
         const SizedBox(height: 15),
         SizedBox(
           height: 200,
@@ -435,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   Widget _buildJobCategoriesSection() {
     return Column(
       children: [
-        _buildSectionHeader("Job Categories", "Coming Soon", AppColors.success, null),
+        _buildSectionHeader(AppLocalizations.of(context).jobCategories, AppLocalizations.of(context).comingSoon, AppColors.success, null),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -457,7 +458,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   Widget _buildAllJobsGrid() {
     return Column(
       children: [
-        _buildSectionHeader("All Jobs", "Coming Soon", AppColors.info, null),
+        _buildSectionHeader(AppLocalizations.of(context).allJobs, AppLocalizations.of(context).comingSoon, AppColors.info, null),
         const SizedBox(height: 15),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -465,21 +466,21 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
             children: [
               Row(
                 children: [
-                  Expanded(child: _buildModernJobTypeCard("Full Time", "150+ Jobs", Icons.work, AppColors.primary)),
+                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).fullTime, "150+ Jobs", Icons.work, AppColors.primary)),
                   const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard("Part Time", "80+ Jobs", Icons.access_time, AppColors.secondary)),
+                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).partTime, "80+ Jobs", Icons.access_time, AppColors.secondary)),
                   const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard("Remote", "45+ Jobs", Icons.home_work, AppColors.accent)),
+                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).remote, "45+ Jobs", Icons.home_work, AppColors.accent)),
                 ],
               ),
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Expanded(child: _buildModernJobTypeCard("Internships", "25+ Jobs", Icons.school, AppColors.warning)),
+                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).internships, "25+ Jobs", Icons.school, AppColors.warning)),
                   const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard("Freelance", "60+ Jobs", Icons.laptop_mac, AppColors.success)),
+                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).freelance, "60+ Jobs", Icons.laptop_mac, AppColors.success)),
                   const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard("Contract", "35+ Jobs", Icons.assignment, AppColors.error)),
+                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).contract, "35+ Jobs", Icons.assignment, AppColors.error)),
                 ],
               ),
             ],
@@ -493,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   Widget _buildRatingSection() {
     return Column(
       children: [
-        _buildSectionHeader("Rate Your Experience", "Coming Soon", Colors.purple, null),
+        _buildSectionHeader(AppLocalizations.of(context).rateYourExperience, AppLocalizations.of(context).comingSoon, Colors.purple, null),
         const SizedBox(height: 15),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -543,8 +544,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  "Chat With Us",
+                Text(
+                  AppLocalizations.of(context).chatWithUs,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -553,7 +554,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "24/7 Support Available",
+                  AppLocalizations.of(context).supportAvailable,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.8),
                     fontSize: 14,
@@ -569,8 +570,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.white.withOpacity(0.3)),
             ),
-            child: const Text(
-              "Coming Soon",
+            child: Text(
+              AppLocalizations.of(context).comingSoon,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -736,9 +737,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    _buildJobTag("New Job", AppColors.warning),
+                    _buildJobTag(AppLocalizations.of(context).newJob, AppColors.warning),
                     const SizedBox(width: 6),
-                    _buildJobTag("10 Vacancies", AppColors.info),
+                    _buildJobTag("10 ${AppLocalizations.of(context).vacancies}", AppColors.info),
                   ],
                 ),
               ],
@@ -1245,9 +1246,9 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
             )
           : Column(
               children: [
-                const Text(
-                  "How was your job search experience?",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context).howWasYourJobSearchExperience,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     color: AppColors.headingText,

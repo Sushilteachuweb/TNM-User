@@ -5,6 +5,7 @@ import 'package:naukri_mitra_jobs/all_job/job_full_details.dart';
 import '../model/JobModel.dart';
 import '../provider/JobProvider.dart';
 import '../utils/app_colors.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class JobSearch extends StatefulWidget {
   final List<JobModel> jobs;
@@ -125,7 +126,7 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
                   Icon(Icons.location_on, color: AppColors.primary, size: 14),
                   const SizedBox(width: 4),
                   Text(
-                    "Location",
+                    AppLocalizations.of(context).location,
                     style: TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600,
@@ -179,7 +180,7 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
           setState(() {});
         },
         decoration: InputDecoration(
-          hintText: "Search jobs, companies, locations...",
+          hintText: AppLocalizations.of(context).searchJobsCompaniesLocations,
           hintStyle: TextStyle(
             color: Colors.grey[400],
             fontSize: 14,
@@ -241,7 +242,7 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${filteredJobs.length} Jobs Found",
+                  "${filteredJobs.length} ${AppLocalizations.of(context).jobsFound}",
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -250,7 +251,7 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "Find your perfect match",
+                  AppLocalizations.of(context).findYourPerfectMatch,
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.9),
                     fontSize: 12,
@@ -428,8 +429,8 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
                         gradient: AppColors.primaryGradient,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Text(
-                        "Apply Now",
+                      child: Text(
+                        AppLocalizations.of(context).applyNow,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 12,

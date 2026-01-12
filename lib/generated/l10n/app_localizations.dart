@@ -955,6 +955,540 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please add at least one skill'**
   String get pleaseAddAtLeastOneSkill;
+
+  /// No description provided for @chatHR.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat HR'**
+  String get chatHR;
+
+  /// No description provided for @callHR.
+  ///
+  /// In en, this message translates to:
+  /// **'Call HR'**
+  String get callHR;
+
+  /// No description provided for @myActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'My Activity'**
+  String get myActivity;
+
+  /// No description provided for @trackJobApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your job applications and progress'**
+  String get trackJobApplications;
+
+  /// No description provided for @noApplicationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Applications Yet'**
+  String get noApplicationsYet;
+
+  /// No description provided for @startApplyingJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Start applying to jobs and track your applications here'**
+  String get startApplyingJobs;
+
+  /// No description provided for @browseJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Jobs'**
+  String get browseJobs;
+
+  /// No description provided for @callNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Now'**
+  String get callNow;
+
+  /// No description provided for @whatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get whatsapp;
+
+  /// No description provided for @callHRComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Call HR feature coming soon! 📞'**
+  String get callHRComingSoon;
+
+  /// No description provided for @whatsappHRComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp HR feature coming soon! 💬'**
+  String get whatsappHRComingSoon;
+
+  /// No description provided for @jobRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Requirements'**
+  String get jobRequirements;
+
+  /// No description provided for @experienceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience Required'**
+  String get experienceRequired;
+
+  /// No description provided for @jobDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Description'**
+  String get jobDescription;
+
+  /// No description provided for @skillsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills Required'**
+  String get skillsRequired;
+
+  /// No description provided for @openings.
+  ///
+  /// In en, this message translates to:
+  /// **'Openings'**
+  String get openings;
+
+  /// No description provided for @salaryType.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary Type'**
+  String get salaryType;
+
+  /// No description provided for @careerDevelopmentVideos.
+  ///
+  /// In en, this message translates to:
+  /// **'Career Development Videos'**
+  String get careerDevelopmentVideos;
+
+  /// No description provided for @learnGrowAdvance.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn, grow, and advance your career'**
+  String get learnGrowAdvance;
+
+  /// No description provided for @watchNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Now'**
+  String get watchNow;
+
+  /// No description provided for @myProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'My Profile'**
+  String get myProfile;
+
+  /// No description provided for @addNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New'**
+  String get addNew;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// No description provided for @languages.
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get languages;
+
+  /// No description provided for @englishLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'English Level'**
+  String get englishLevel;
+
+  /// No description provided for @goodEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'Good English'**
+  String get goodEnglish;
+
+  /// No description provided for @discoverOpportunities.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover opportunities that match your skills'**
+  String get discoverOpportunities;
+
+  /// No description provided for @searchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for jobs, companies, skills...'**
+  String get searchPlaceholder;
+
+  /// No description provided for @rateYourExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Your Experience'**
+  String get rateYourExperience;
+
+  /// No description provided for @chatWithUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat With Us'**
+  String get chatWithUs;
+
+  /// No description provided for @supportAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'24/7 Support Available'**
+  String get supportAvailable;
+
+  /// No description provided for @fullTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Time'**
+  String get fullTime;
+
+  /// No description provided for @partTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Part Time'**
+  String get partTime;
+
+  /// No description provided for @remote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote'**
+  String get remote;
+
+  /// No description provided for @internships.
+  ///
+  /// In en, this message translates to:
+  /// **'Internships'**
+  String get internships;
+
+  /// No description provided for @freelance.
+  ///
+  /// In en, this message translates to:
+  /// **'Freelance'**
+  String get freelance;
+
+  /// No description provided for @contract.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract'**
+  String get contract;
+
+  /// No description provided for @newJob.
+  ///
+  /// In en, this message translates to:
+  /// **'New Job'**
+  String get newJob;
+
+  /// No description provided for @vacancies.
+  ///
+  /// In en, this message translates to:
+  /// **'Vacancies'**
+  String get vacancies;
+
+  /// No description provided for @urgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get urgent;
+
+  /// No description provided for @chooseProfilePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Profile Photo'**
+  String get chooseProfilePhoto;
+
+  /// No description provided for @maxSize5MB.
+  ///
+  /// In en, this message translates to:
+  /// **'Max size: 5MB'**
+  String get maxSize5MB;
+
+  /// No description provided for @noImageSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No image selected'**
+  String get noImageSelected;
+
+  /// No description provided for @noResumeSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No resume selected'**
+  String get noResumeSelected;
+
+  /// No description provided for @locationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Required'**
+  String get locationRequired;
+
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get comingSoon;
+
+  /// No description provided for @additionalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Information'**
+  String get additionalInformation;
+
+  /// No description provided for @posted.
+  ///
+  /// In en, this message translates to:
+  /// **'Posted'**
+  String get posted;
+
+  /// No description provided for @weeksAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'weeks ago'**
+  String get weeksAgo;
+
+  /// No description provided for @fixedOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'fixed only'**
+  String get fixedOnly;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @areYouSureLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to logout from your account?'**
+  String get areYouSureLogout;
+
+  /// No description provided for @selectLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Language'**
+  String get selectLanguage;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @hindi.
+  ///
+  /// In en, this message translates to:
+  /// **'हिंदी'**
+  String get hindi;
+
+  /// No description provided for @punjabi.
+  ///
+  /// In en, this message translates to:
+  /// **'ਪੰਜਾਬੀ'**
+  String get punjabi;
+
+  /// No description provided for @gujarati.
+  ///
+  /// In en, this message translates to:
+  /// **'ગુજરાતી'**
+  String get gujarati;
+
+  /// No description provided for @marathi.
+  ///
+  /// In en, this message translates to:
+  /// **'मराठी'**
+  String get marathi;
+
+  /// No description provided for @jobsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs Found'**
+  String get jobsFound;
+
+  /// No description provided for @findYourPerfectMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your perfect match'**
+  String get findYourPerfectMatch;
+
+  /// No description provided for @searchJobsCompaniesLocations.
+  ///
+  /// In en, this message translates to:
+  /// **'Search jobs, companies, locations...'**
+  String get searchJobsCompaniesLocations;
+
+  /// No description provided for @workFromHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Work From Home'**
+  String get workFromHome;
+
+  /// No description provided for @workFromOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Work From Office'**
+  String get workFromOffice;
+
+  /// No description provided for @itSoftware.
+  ///
+  /// In en, this message translates to:
+  /// **'IT & Software'**
+  String get itSoftware;
+
+  /// No description provided for @salesMarketing.
+  ///
+  /// In en, this message translates to:
+  /// **'Sales & Marketing'**
+  String get salesMarketing;
+
+  /// No description provided for @customerService.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Service'**
+  String get customerService;
+
+  /// No description provided for @howWasYourJobSearchExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your job search experience?'**
+  String get howWasYourJobSearchExperience;
+
+  /// No description provided for @submitRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Rating'**
+  String get submitRating;
+
+  /// No description provided for @resumeBuildingTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume Building Tips'**
+  String get resumeBuildingTips;
+
+  /// No description provided for @interviewPreparation.
+  ///
+  /// In en, this message translates to:
+  /// **'Interview Preparation'**
+  String get interviewPreparation;
+
+  /// No description provided for @skillDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'Skill Development'**
+  String get skillDevelopment;
+
+  /// No description provided for @years.
+  ///
+  /// In en, this message translates to:
+  /// **'Years'**
+  String get years;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @educationLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Education Level'**
+  String get educationLevel;
+
+  /// No description provided for @notProvided.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Provided'**
+  String get notProvided;
+
+  /// No description provided for @resume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resume;
+
+  /// No description provided for @noResumeUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'No resume uploaded'**
+  String get noResumeUploaded;
+
+  /// No description provided for @tapToView.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to view'**
+  String get tapToView;
+
+  /// No description provided for @noResumeAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No resume available to open'**
+  String get noResumeAvailable;
+
+  /// No description provided for @resumeUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume URL'**
+  String get resumeUrl;
+
+  /// No description provided for @copyUrlToBrowser.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy this URL to open in browser:'**
+  String get copyUrlToBrowser;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @errorOpeningResume.
+  ///
+  /// In en, this message translates to:
+  /// **'Error opening resume'**
+  String get errorOpeningResume;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @thankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank You!'**
+  String get thankYou;
+
+  /// No description provided for @appreciateFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'We appreciate your valuable feedback'**
+  String get appreciateFeedback;
+
+  /// No description provided for @howWasProfileExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your profile experience?'**
+  String get howWasProfileExperience;
+
+  /// No description provided for @guestUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest User'**
+  String get guestUser;
+
+  /// No description provided for @jobSeeker.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Seeker'**
+  String get jobSeeker;
 }
 
 class _AppLocalizationsDelegate

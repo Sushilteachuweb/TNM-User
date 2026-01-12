@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/AppliedJobsProvider.dart';
 import '../utils/app_colors.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class MyActivity extends StatefulWidget {
   const MyActivity({super.key});
@@ -91,7 +92,7 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
                   Icon(Icons.location_on, color: AppColors.primary, size: 14),
                   const SizedBox(width: 4),
                   Text(
-                    "Location",
+                    AppLocalizations.of(context).location,
                     style: TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600,
@@ -143,7 +144,7 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
       child: Column(
         children: [
           Text(
-            "My Activity",
+            AppLocalizations.of(context).myActivity,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -159,7 +160,7 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 4),
           Text(
-            "Track your job applications and progress",
+            AppLocalizations.of(context).trackJobApplications,
             style: TextStyle(
               color: Colors.white.withOpacity(0.9),
               fontSize: 12,
@@ -262,7 +263,7 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
                     border: Border.all(color: AppColors.success.withOpacity(0.3)),
                   ),
                   child: Text(
-                    "Applied",
+                    AppLocalizations.of(context).applied,
                     style: TextStyle(
                       color: AppColors.success,
                       fontSize: 10,
@@ -339,14 +340,14 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
                           gradient: AppColors.primaryGradient,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.message_outlined, color: Colors.white, size: 16),
-                            SizedBox(width: 6),
+                            const Icon(Icons.message_outlined, color: Colors.white, size: 16),
+                            const SizedBox(width: 6),
                             Text(
-                              "Chat HR",
-                              style: TextStyle(
+                              AppLocalizations.of(context).chatHR,
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
@@ -370,7 +371,7 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
                             Icon(Icons.call_outlined, color: AppColors.primary, size: 16),
                             const SizedBox(width: 6),
                             Text(
-                              "Call HR",
+                              AppLocalizations.of(context).callHR,
                               style: TextStyle(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,
@@ -412,8 +413,8 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
-              "No Applications Yet",
+            Text(
+              AppLocalizations.of(context).noApplicationsYet,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -422,7 +423,7 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
             ),
             const SizedBox(height: 12),
             Text(
-              "Start applying to jobs and track your applications here",
+              AppLocalizations.of(context).startApplyingJobs,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey[600],
@@ -436,8 +437,8 @@ class _MyActivityState extends State<MyActivity> with TickerProviderStateMixin {
                 gradient: AppColors.primaryGradient,
                 borderRadius: BorderRadius.circular(25),
               ),
-              child: const Text(
-                "Browse Jobs",
+              child: Text(
+                AppLocalizations.of(context).browseJobs,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
