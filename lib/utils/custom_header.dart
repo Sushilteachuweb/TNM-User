@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../provider/LocationProvider.dart';
+import '../providers/LocationProvider.dart';
 
 class CustomHeader extends StatelessWidget {
   final bool showNotification;

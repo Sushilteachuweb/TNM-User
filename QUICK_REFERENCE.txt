@@ -1,0 +1,104 @@
+================================================================================
+TNM JOBS - QUICK REFERENCE CARD
+================================================================================
+
+✅ KEYSTORE: VERIFIED AND VALID
+   Location: C:\Users\sushi\upload-keystore.jks
+   Valid Until: 2053
+   Status: READY
+
+✅ PERMISSIONS: MINIMAL (PLAY STORE COMPLIANT)
+   Active: INTERNET only
+   Removed: CAMERA, STORAGE, LOCATION
+   Status: READY
+
+✅ IMAGE/FILE PICKERS: PROPERLY IMPLEMENTED
+   Profile Photos: image_picker package (no permissions needed)
+   Resume Upload: file_picker package (no permissions needed)
+   Status: READY
+
+✅ APP CONFIGURATION
+   Name: TNM Jobs
+   Package: com.arp.naukrimitra.jobs
+   Version: 1.0.0+1
+   Status: READY
+
+================================================================================
+BUILD COMMANDS
+================================================================================
+
+1. CLEAN:
+   flutter clean
+
+2. GET DEPENDENCIES:
+   flutter pub get
+
+3. BUILD APP BUNDLE (Play Store):
+   flutter build appbundle --release
+   
+   Output: build\app\outputs\bundle\release\app-release.aab
+
+4. BUILD APK (Testing):
+   flutter build apk --release --split-per-abi
+   
+   Output: build\app\outputs\flutter-apk\app-arm64-v8a-release.apk
+
+5. INSTALL ON DEVICE:
+   flutter install
+
+6. VERIFY SIGNING:
+   jarsigner -verify -verbose -certs build\app\outputs\bundle\release\app-release.aab
+
+================================================================================
+TESTING CHECKLIST
+================================================================================
+
+□ App launches successfully
+□ App name shows "TNM Jobs"
+□ Login/OTP works
+□ Profile creation with photo (camera/gallery) - NO PERMISSION DIALOGS
+□ Profile editing with photo - NO PERMISSION DIALOGS
+□ Resume upload (PDF) - NO PERMISSION DIALOGS
+□ Job browsing works
+□ Job application works
+□ No crashes or errors
+
+================================================================================
+DOCUMENTATION FILES
+================================================================================
+
+1. KEYSTORE_AND_PERMISSIONS_VERIFIED.md
+   → Complete verification report with all details
+
+2. DEPLOYMENT_SUMMARY.md
+   → Overview of all changes and configurations
+
+3. BUILD_RELEASE_GUIDE.md
+   → Step-by-step build instructions
+
+4. FINAL_CHECKLIST.md
+   → Pre-submission checklist for Play Store
+
+5. README_DEPLOYMENT.md
+   → Quick start guide
+
+6. QUICK_REFERENCE.txt
+   → This file - quick commands
+
+================================================================================
+IMPORTANT REMINDERS
+================================================================================
+
+⚠️ BACKUP KEYSTORE: If lost, cannot update app!
+⚠️ NEVER COMMIT: Keystore and passwords to version control
+✅ KEYSTORE IN .gitignore: Already configured
+✅ PERMISSIONS MINIMAL: Only INTERNET permission active
+✅ NO DIRECT PERMISSIONS: image_picker and file_picker handle everything
+
+================================================================================
+STATUS: ✅ READY FOR BUILD AND SUBMISSION
+================================================================================
+
+Next Step: flutter build appbundle --release
+
+================================================================================

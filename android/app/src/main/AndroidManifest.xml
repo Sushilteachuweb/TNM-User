@@ -1,19 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.arp.naukrimitra.jobs">
 
-    <!-- Internet for streaming and uploads -->
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
+    <!-- Internet permission for API calls and content loading -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Camera & microphone for video recording -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- Removed RECORD_AUDIO, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, READ_MEDIA_* to comply with Play Store policies for this app's use case -->
-
-    <!-- Location permissions removed as per policy concerns -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
-    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> -->
+    <!-- 
+    NOTE: No CAMERA, STORAGE, or LOCATION permissions needed!
+    - image_picker plugin handles camera/gallery access automatically
+    - file_picker plugin handles file access automatically
+    - These plugins use Android's built-in pickers which don't require explicit permissions
+    -->
 
     <application
         android:label="@string/app_name"
@@ -73,6 +69,11 @@
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="http" />
+        </intent>
+        
+        <!-- For YouTube player -->
+        <intent>
+            <action android:name="com.google.android.youtube.api.service.START" />
         </intent>
     </queries>
 

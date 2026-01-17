@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import '../provider/LocationProvider.dart';
+import '../providers/LocationProvider.dart';
 
 class LocationPermissionDialog {
   static Future<bool> checkAndShowDialog(BuildContext context) async {

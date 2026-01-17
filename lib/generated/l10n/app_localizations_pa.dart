@@ -591,122 +591,122 @@ class AppLocalizationsPa extends AppLocalizations {
   String get fixedOnly => 'ਸਿਰਫ਼ ਨਿਸ਼ਚਿਤ';
 
   @override
-  String get account => 'Account';
+  String get account => 'ਖਾਤਾ';
 
   @override
   String get areYouSureLogout =>
-      'Are you sure you want to logout from your account?';
+      'ਕੀ ਤੁਸੀਂ ਸੱਚਮੁੱਚ ਆਪਣੇ ਖਾਤੇ ਤੋਂ ਲਾਗਆਉਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?';
 
   @override
-  String get selectLanguage => 'Select Language';
+  String get selectLanguage => 'ਭਾਸ਼ਾ ਚੁਣੋ';
 
   @override
-  String get english => 'English';
+  String get english => 'ਅੰਗਰੇਜ਼ੀ';
 
   @override
-  String get hindi => 'हिंदी';
+  String get hindi => 'ਹਿੰਦੀ';
 
   @override
   String get punjabi => 'ਪੰਜਾਬੀ';
 
   @override
-  String get gujarati => 'ગુજરાતી';
+  String get gujarati => 'ਗੁਜਰਾਤੀ';
 
   @override
-  String get marathi => 'मराठी';
+  String get marathi => 'ਮਰਾਠੀ';
 
   @override
-  String get jobsFound => 'Jobs Found';
+  String get jobsFound => 'ਨੌਕਰੀਆਂ ਮਿਲੀਆਂ';
 
   @override
-  String get findYourPerfectMatch => 'Find your perfect match';
+  String get findYourPerfectMatch => 'ਆਪਣਾ ਸੰਪੂਰਨ ਮੈਚ ਲੱਭੋ';
 
   @override
-  String get searchJobsCompaniesLocations =>
-      'Search jobs, companies, locations...';
+  String get searchJobsCompaniesLocations => 'ਨੌਕਰੀਆਂ, ਕੰਪਨੀਆਂ, ਸਥਾਨ ਖੋਜੋ...';
 
   @override
-  String get workFromHome => 'Work From Home';
+  String get workFromHome => 'ਘਰੋਂ ਕੰਮ';
 
   @override
-  String get workFromOffice => 'Work From Office';
+  String get workFromOffice => 'ਦਫ਼ਤਰੋਂ ਕੰਮ';
 
   @override
-  String get itSoftware => 'IT & Software';
+  String get itSoftware => 'IT ਅਤੇ ਸਾਫਟਵੇਅਰ';
 
   @override
-  String get salesMarketing => 'Sales & Marketing';
+  String get salesMarketing => 'ਸੇਲਜ਼ ਅਤੇ ਮਾਰਕੇਟਿੰਗ';
 
   @override
-  String get customerService => 'Customer Service';
+  String get customerService => 'ਗਾਹਕ ਸੇਵਾ';
 
   @override
   String get howWasYourJobSearchExperience =>
-      'How was your job search experience?';
+      'ਤੁਹਾਡਾ ਨੌਕਰੀ ਖੋਜ ਦਾ ਤਜਰਬਾ ਕਿਵੇਂ ਸੀ?';
 
   @override
-  String get submitRating => 'Submit Rating';
+  String get submitRating => 'ਰੇਟਿੰਗ ਸਬਮਿਟ ਕਰੋ';
 
   @override
-  String get resumeBuildingTips => 'Resume Building Tips';
+  String get resumeBuildingTips => 'ਰਿਜ਼ਿਊਮੇ ਬਣਾਉਣ ਦੀਆਂ ਟਿਪਸ';
 
   @override
-  String get interviewPreparation => 'Interview Preparation';
+  String get interviewPreparation => 'ਇੰਟਰਵਿਊ ਦੀ ਤਿਆਰੀ';
 
   @override
-  String get skillDevelopment => 'Skill Development';
+  String get skillDevelopment => 'ਹੁਨਰ ਵਿਕਾਸ';
 
   @override
-  String get years => 'Years';
+  String get years => 'ਸਾਲ';
 
   @override
-  String get email => 'Email';
+  String get email => 'ਈਮੇਲ';
 
   @override
-  String get educationLevel => 'Education Level';
+  String get educationLevel => 'ਸਿੱਖਿਆ ਪੱਧਰ';
 
   @override
-  String get notProvided => 'Not Provided';
+  String get notProvided => 'ਪ੍ਰਦਾਨ ਨਹੀਂ ਕੀਤਾ ਗਿਆ';
 
   @override
-  String get resume => 'Resume';
+  String get resume => 'ਰਿਜ਼ਿਊਮੇ';
 
   @override
-  String get noResumeUploaded => 'No resume uploaded';
+  String get noResumeUploaded => 'ਕੋਈ ਰਿਜ਼ਿਊਮੇ ਅਪਲੋਡ ਨਹੀਂ ਕੀਤਾ ਗਿਆ';
 
   @override
-  String get tapToView => 'Tap to view';
+  String get tapToView => 'ਦੇਖਣ ਲਈ ਟੈਪ ਕਰੋ';
 
   @override
-  String get noResumeAvailable => 'No resume available to open';
+  String get noResumeAvailable => 'ਦੇਖਣ ਲਈ ਕੋਈ ਰਿਜ਼ਿਊਮੇ ਉਪਲਬਧ ਨਹੀਂ';
 
   @override
-  String get resumeUrl => 'Resume URL';
+  String get resumeUrl => 'ਰਿਜ਼ਿਊਮੇ URL';
 
   @override
-  String get copyUrlToBrowser => 'Copy this URL to open in browser:';
+  String get copyUrlToBrowser => 'ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਖੋਲ਼ਣ ਲਈ ਇਹ URL ਕਾਪੀ ਕਰੋ:';
 
   @override
-  String get close => 'Close';
+  String get close => 'ਬੰਦ ਕਰੋ';
 
   @override
-  String get errorOpeningResume => 'Error opening resume';
+  String get errorOpeningResume => 'ਰਿਜ਼ਿਊਮੇ ਖੋਲ਼ਣ ਵਿੱਚ ਗਲਤੀ';
 
   @override
-  String get active => 'Active';
+  String get active => 'ਸਰਗਰਮ';
 
   @override
-  String get thankYou => 'Thank You!';
+  String get thankYou => 'ਧੰਨਵਾਦ!';
 
   @override
-  String get appreciateFeedback => 'We appreciate your valuable feedback';
+  String get appreciateFeedback =>
+      'ਅਸੀਂ ਤੁਹਾਡੇ ਕੀਮਤੀ ਫੀਡਬੈਕ ਦੀ ਸ਼ਲਾਘਾ ਕਰਦੇ ਹਾਂ';
 
   @override
-  String get howWasProfileExperience => 'How was your profile experience?';
+  String get howWasProfileExperience => 'ਤੁਹਾਡਾ ਪ੍ਰੋਫਾਈਲ ਤਜਰਬਾ ਕਿਵੇਂ ਸੀ?';
 
   @override
-  String get guestUser => 'Guest User';
+  String get guestUser => 'ਮਹਿਮਾਨ ਵਰਤੋਂਕਾਰ';
 
   @override
-  String get jobSeeker => 'Job Seeker';
+  String get jobSeeker => 'ਨੌਕਰੀ ਖੋਜਣ ਵਾਲਾ';
 }

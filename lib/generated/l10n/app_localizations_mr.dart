@@ -439,274 +439,274 @@ class AppLocalizationsMr extends AppLocalizations {
   String get pleaseAddAtLeastOneSkill => 'कृपया किमान एक कौशल्य जोडा';
 
   @override
-  String get chatHR => 'Chat HR';
+  String get chatHR => 'HR शी चॅट करा';
 
   @override
-  String get callHR => 'Call HR';
+  String get callHR => 'HR ला कॉल करा';
 
   @override
-  String get myActivity => 'My Activity';
+  String get myActivity => 'माझी क्रियाकलाप';
 
   @override
-  String get trackJobApplications => 'Track your job applications and progress';
+  String get trackJobApplications =>
+      'तुमच्या नोकरी अर्जांचा आणि प्रगतीचा मागोवा घ्या';
 
   @override
-  String get noApplicationsYet => 'No Applications Yet';
+  String get noApplicationsYet => 'अजून कोणते अर्ज नाहीत';
 
   @override
   String get startApplyingJobs =>
-      'Start applying to jobs and track your applications here';
+      'नोकऱ्यांसाठी अर्ज करणे सुरू करा आणि येथे तुमच्या अर्जांचा मागोवा घ्या';
 
   @override
-  String get browseJobs => 'Browse Jobs';
+  String get browseJobs => 'नोकऱ्या ब्राउझ करा';
 
   @override
-  String get callNow => 'Call Now';
+  String get callNow => 'आता कॉल करा';
 
   @override
-  String get whatsapp => 'WhatsApp';
+  String get whatsapp => 'व्हाट्सअॅप';
 
   @override
-  String get callHRComingSoon => 'Call HR feature coming soon! 📞';
+  String get callHRComingSoon => 'HR कॉल फीचर लवकरच येत आहे! 📞';
 
   @override
-  String get whatsappHRComingSoon => 'WhatsApp HR feature coming soon! 💬';
+  String get whatsappHRComingSoon => 'व्हाट्सअॅप HR फीचर लवकरच येत आहे! 💬';
 
   @override
-  String get jobRequirements => 'Job Requirements';
+  String get jobRequirements => 'नोकरीच्या आवश्यकता';
 
   @override
-  String get experienceRequired => 'Experience Required';
+  String get experienceRequired => 'आवश्यक अनुभव';
 
   @override
-  String get jobDescription => 'Job Description';
+  String get jobDescription => 'नोकरीचे वर्णन';
 
   @override
-  String get skillsRequired => 'Skills Required';
+  String get skillsRequired => 'आवश्यक कौशल्ये';
 
   @override
-  String get openings => 'Openings';
+  String get openings => 'रिक्त जागा';
 
   @override
-  String get salaryType => 'Salary Type';
+  String get salaryType => 'पगाराचा प्रकार';
 
   @override
-  String get careerDevelopmentVideos => 'Career Development Videos';
+  String get careerDevelopmentVideos => 'करिअर विकास व्हिडिओ';
 
   @override
-  String get learnGrowAdvance => 'Learn, grow, and advance your career';
+  String get learnGrowAdvance => 'शिका, वाढा आणि तुमच्या करिअरला पुढे नेऊन जा';
 
   @override
-  String get watchNow => 'Watch Now';
+  String get watchNow => 'आता पहा';
 
   @override
-  String get myProfile => 'My Profile';
+  String get myProfile => 'माझे प्रोफाइल';
 
   @override
-  String get addNew => 'Add New';
+  String get addNew => 'नवीन जोडा';
 
   @override
-  String get personalInformation => 'Personal Information';
+  String get personalInformation => 'वैयक्तिक माहिती';
 
   @override
-  String get languages => 'Languages';
+  String get languages => 'भाषा';
 
   @override
-  String get englishLevel => 'English Level';
+  String get englishLevel => 'इंग्रजी पातळी';
 
   @override
-  String get goodEnglish => 'Good English';
+  String get goodEnglish => 'चांगली इंग्रजी';
 
   @override
-  String get discoverOpportunities =>
-      'Discover opportunities that match your skills';
+  String get discoverOpportunities => 'तुमच्या कौशल्यांशी जुळणाऱ्या संधी शोधा';
 
   @override
-  String get searchPlaceholder => 'Search for jobs, companies, skills...';
+  String get searchPlaceholder => 'नोकऱ्या, कंपन्या, कौशल्ये शोधा...';
 
   @override
-  String get rateYourExperience => 'Rate Your Experience';
+  String get rateYourExperience => 'तुमच्या अनुभवाला रेट करा';
 
   @override
-  String get chatWithUs => 'Chat With Us';
+  String get chatWithUs => 'आमच्याशी चॅट करा';
 
   @override
-  String get supportAvailable => '24/7 Support Available';
+  String get supportAvailable => '24/7 सपोर्ट उपलब्ध';
 
   @override
-  String get fullTime => 'Full Time';
+  String get fullTime => 'पूर्ण वेळ';
 
   @override
-  String get partTime => 'Part Time';
+  String get partTime => 'अर्धवेळ';
 
   @override
-  String get remote => 'Remote';
+  String get remote => 'रिमोट';
 
   @override
-  String get internships => 'Internships';
+  String get internships => 'इंटर्नशिप';
 
   @override
-  String get freelance => 'Freelance';
+  String get freelance => 'फ्रीलान्स';
 
   @override
-  String get contract => 'Contract';
+  String get contract => 'कॉन्ट्रॅक्ट';
 
   @override
-  String get newJob => 'New Job';
+  String get newJob => 'नवीन नोकरी';
 
   @override
-  String get vacancies => 'Vacancies';
+  String get vacancies => 'रिक्त जागा';
 
   @override
-  String get urgent => 'Urgent';
+  String get urgent => 'तातडीची';
 
   @override
-  String get chooseProfilePhoto => 'Choose Profile Photo';
+  String get chooseProfilePhoto => 'प्रोफाइल फोटो निवडा';
 
   @override
-  String get maxSize5MB => 'Max size: 5MB';
+  String get maxSize5MB => 'कमाल आकार: 5MB';
 
   @override
-  String get noImageSelected => 'No image selected';
+  String get noImageSelected => 'कोणती इमेज निवडली नाही';
 
   @override
-  String get noResumeSelected => 'No resume selected';
+  String get noResumeSelected => 'कोणता रिझ्यूमे निवडला नाही';
 
   @override
-  String get locationRequired => 'Location Required';
+  String get locationRequired => 'स्थान आवश्यक';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'लवकरच येत आहे';
 
   @override
-  String get additionalInformation => 'Additional Information';
+  String get additionalInformation => 'अतिरिक्त माहिती';
 
   @override
-  String get posted => 'Posted';
+  String get posted => 'पोस्ट केले';
 
   @override
-  String get weeksAgo => 'weeks ago';
+  String get weeksAgo => 'आठवड्यांपूर्वी';
 
   @override
-  String get fixedOnly => 'fixed only';
+  String get fixedOnly => 'फिक्स्ड फक्त';
 
   @override
-  String get account => 'Account';
+  String get account => 'खाते';
 
   @override
   String get areYouSureLogout =>
-      'Are you sure you want to logout from your account?';
+      'तुम्हाला खरोखर तुमच्या खात्यातून लॉगआउट करायचे आहे का?';
 
   @override
-  String get selectLanguage => 'Select Language';
+  String get selectLanguage => 'भाषा निवडा';
 
   @override
-  String get english => 'English';
+  String get english => 'इंग्रजी';
 
   @override
   String get hindi => 'हिंदी';
 
   @override
-  String get punjabi => 'ਪੰਜਾਬੀ';
+  String get punjabi => 'पंजाबी';
 
   @override
-  String get gujarati => 'ગુજરાતી';
+  String get gujarati => 'गुजराती';
 
   @override
   String get marathi => 'मराठी';
 
   @override
-  String get jobsFound => 'Jobs Found';
+  String get jobsFound => 'नोकऱ्या सापडल्या';
 
   @override
-  String get findYourPerfectMatch => 'Find your perfect match';
+  String get findYourPerfectMatch => 'तुमचा परफेक्ट मॅच शोधा';
 
   @override
-  String get searchJobsCompaniesLocations =>
-      'Search jobs, companies, locations...';
+  String get searchJobsCompaniesLocations => 'नोकऱ्या, कंपन्या, स्थाने शोधा...';
 
   @override
-  String get workFromHome => 'Work From Home';
+  String get workFromHome => 'घरून काम';
 
   @override
-  String get workFromOffice => 'Work From Office';
+  String get workFromOffice => 'ऑफिसमधून काम';
 
   @override
-  String get itSoftware => 'IT & Software';
+  String get itSoftware => 'IT आणि सॉफ्टवेअर';
 
   @override
-  String get salesMarketing => 'Sales & Marketing';
+  String get salesMarketing => 'सेल्स आणि मार्केटिंग';
 
   @override
-  String get customerService => 'Customer Service';
+  String get customerService => 'कस्टमर सर्व्हिस';
 
   @override
   String get howWasYourJobSearchExperience =>
-      'How was your job search experience?';
+      'तुमचा नोकरी शोधाचा अनुभव कसा होता?';
 
   @override
-  String get submitRating => 'Submit Rating';
+  String get submitRating => 'रेटिंग सबमिट करा';
 
   @override
-  String get resumeBuildingTips => 'Resume Building Tips';
+  String get resumeBuildingTips => 'रिझ्यूमे तयार करण्याच्या टिप्स';
 
   @override
-  String get interviewPreparation => 'Interview Preparation';
+  String get interviewPreparation => 'मुलाखतीची तयारी';
 
   @override
-  String get skillDevelopment => 'Skill Development';
+  String get skillDevelopment => 'कौशल्य विकास';
 
   @override
-  String get years => 'Years';
+  String get years => 'वर्षे';
 
   @override
-  String get email => 'Email';
+  String get email => 'ईमेल';
 
   @override
-  String get educationLevel => 'Education Level';
+  String get educationLevel => 'शिक्षण पातळी';
 
   @override
-  String get notProvided => 'Not Provided';
+  String get notProvided => 'प्रदान केले नाही';
 
   @override
-  String get resume => 'Resume';
+  String get resume => 'रिझ्यूमे';
 
   @override
-  String get noResumeUploaded => 'No resume uploaded';
+  String get noResumeUploaded => 'कोणता रिझ्यूमे अपलोड केला नाही';
 
   @override
-  String get tapToView => 'Tap to view';
+  String get tapToView => 'पाहण्यासाठी टॅप करा';
 
   @override
-  String get noResumeAvailable => 'No resume available to open';
+  String get noResumeAvailable => 'पाहण्यासाठी कोणता रिझ्यूमे उपलब्ध नाही';
 
   @override
-  String get resumeUrl => 'Resume URL';
+  String get resumeUrl => 'रिझ्यूमे URL';
 
   @override
-  String get copyUrlToBrowser => 'Copy this URL to open in browser:';
+  String get copyUrlToBrowser => 'ब्राउझरमध्ये उघडण्यासाठी हा URL कॉपी करा:';
 
   @override
-  String get close => 'Close';
+  String get close => 'बंद करा';
 
   @override
-  String get errorOpeningResume => 'Error opening resume';
+  String get errorOpeningResume => 'रिझ्यूमे उघडण्यात त्रुटी';
 
   @override
-  String get active => 'Active';
+  String get active => 'सक्रिय';
 
   @override
-  String get thankYou => 'Thank You!';
+  String get thankYou => 'धन्यवाद!';
 
   @override
-  String get appreciateFeedback => 'We appreciate your valuable feedback';
+  String get appreciateFeedback =>
+      'आम्ही तुमच्या मौल्यवान फीडबॅकची प्रशंसा करतो';
 
   @override
-  String get howWasProfileExperience => 'How was your profile experience?';
+  String get howWasProfileExperience => 'तुमचा प्रोफाइल अनुभव कसा होता?';
 
   @override
-  String get guestUser => 'Guest User';
+  String get guestUser => 'अतिथी वापरकर्ता';
 
   @override
-  String get jobSeeker => 'Job Seeker';
+  String get jobSeeker => 'नोकरी शोधणारा';
 }
