@@ -187,7 +187,12 @@ class _OtpVerifyState extends State<OtpVerify> with TickerProviderStateMixin {
             children: [
               const Icon(Icons.verified, color: Colors.white),
               const SizedBox(width: 8),
-              Text(result['message'] ?? "OTP Verified Successfully!"),
+              Expanded(
+                child: Text(
+                  result['message'] ?? "OTP Verified Successfully!",
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
           backgroundColor: Colors.green,
