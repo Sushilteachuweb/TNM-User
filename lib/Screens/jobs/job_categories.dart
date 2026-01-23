@@ -1,8 +1,34 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:http/http.dart' as http;
 import 'package:naukri_mitra_jobs/Screens/jobs/job_cate1.dart';
 import '../../generated/l10n/app_localizations.dart';
+
+// Job Category Model
+class JobCategory {
+  final String id;
+  final String image;
+  final String jobCategory;
+  final List<String> subcategories;
+
+  JobCategory({
+    required this.id,
+    required this.image,
+    required this.jobCategory,
+    required this.subcategories,
+  });
+
+  factory JobCategory.fromJson(Map<String, dynamic> json) {
+    return JobCategory(
+      id: json['_id'] ?? '',
+      image: json['image'] ?? '',
+      jobCategory: json['jobCategory'] ?? '',
+      subcategories: List<String>.from(json['subcategories'] ?? []),
+    );
+  }
+}
 
 class JobCategories extends StatefulWidget {
   final String fullName;
@@ -10,6 +36,11 @@ class JobCategories extends StatefulWidget {
   final String education;
   final String workExperience;
   final File imageFile;
+  final String? language; // Add language
+  final String? userLocation; // Add location
+  final String? email; // Add email
+  final String? phone; // Add phone
+  
   const JobCategories({
     super.key,
     required this.fullName,
@@ -18,6 +49,10 @@ class JobCategories extends StatefulWidget {
     required this.workExperience,
     required this.imageFile, 
     required List skills,
+    this.language,
+    this.userLocation,
+    this.email,
+    this.phone,
   });
 
   @override
@@ -25,21 +60,11 @@ class JobCategories extends StatefulWidget {
 }
 
 class _JobCategoriesState extends State<JobCategories> with TickerProviderStateMixin {
-  final List<Map<String, String>> jobList = [
-    {'title': 'Graphic Designer', 'image': 'images/man.jpg'},
-    {'title': 'Sales / Business Development', 'image': 'images/man.jpg'},
-    {'title': 'Data Entry Operator', 'image': 'images/man.jpg'},
-    {'title': 'Delivery Executive', 'image': 'images/man.jpg'},
-    {'title': 'Customer Support', 'image': 'images/man.jpg'},
-    {'title': 'Sales / Business Development', 'image': 'images/man.jpg'},
-    {'title': 'Data Entry Operator', 'image': 'images/man.jpg'},
-    {'title': 'Delivery Executive', 'image': 'images/man.jpg'},
-    {'title': 'Customer Support', 'image': 'images/man.jpg'},
-    {'title': 'Field Executive', 'image': 'images/man.jpg'},
-  ];
-  
+  List<JobCategory> jobCategories = [];
+  List<JobCategory> filteredCategories = [];
   String searchQuery = '';
   bool isLoading = true;
+  String? errorMessage;
   
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -69,12 +94,73 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
     
     _animationController.forward();
 
-    // Simulate API load
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
+    // Fetch job categories from API
+    _fetchJobCategories();
+  }
+
+  Future<void> _fetchJobCategories() async {
+    try {
+      setState(() {
+        isLoading = true;
+        errorMessage = null;
+      });
+
+      final response = await http.get(
+        Uri.parse('https://api.thenaukrimitra.com/api/jobs/categories'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('📡 API Response Status: ${response.statusCode}');
+      print('📡 API Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        
+        if (data['success'] == true && data['data'] != null) {
+          final List<dynamic> categoriesJson = data['data'];
+          
+          setState(() {
+            jobCategories = categoriesJson
+                .map((json) => JobCategory.fromJson(json))
+                .toList();
+            filteredCategories = jobCategories;
+            isLoading = false;
+          });
+          
+          print('✅ Loaded ${jobCategories.length} job categories');
+        } else {
+          setState(() {
+            errorMessage = data['message'] ?? 'Failed to load categories';
+            isLoading = false;
+          });
+        }
+      } else {
         setState(() {
+          errorMessage = 'Server error: ${response.statusCode}';
           isLoading = false;
         });
+      }
+    } catch (e) {
+      print('❌ Error fetching job categories: $e');
+      setState(() {
+        errorMessage = 'Network error: Please check your connection';
+        isLoading = false;
+      });
+    }
+  }
+
+  void _filterCategories(String query) {
+    setState(() {
+      searchQuery = query;
+      if (query.isEmpty) {
+        filteredCategories = jobCategories;
+      } else {
+        filteredCategories = jobCategories
+            .where((category) => 
+                category.jobCategory.toLowerCase().contains(query.toLowerCase()))
+            .toList();
       }
     });
   }
@@ -87,10 +173,6 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final filteredList = jobList
-        .where((job) => job['title']!.toLowerCase().contains(searchQuery.toLowerCase()))
-        .toList();
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -121,7 +203,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                           ),
                           Expanded(
                             child: Text(
-                            AppLocalizations.of(context)!.jobCategories,
+                            AppLocalizations.of(context).jobCategories,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 18,
@@ -138,7 +220,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                       
                       // Main Title
                       Text(
-                        AppLocalizations.of(context)!.chooseYourCareerPath,
+                        AppLocalizations.of(context).chooseYourCareerPath,
                         style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w800,
@@ -150,7 +232,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                       const SizedBox(height: 8),
                       
                       Text(
-                        AppLocalizations.of(context)!.selectJobCategoryMatching,
+                        AppLocalizations.of(context).selectJobCategoryMatching,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
@@ -168,18 +250,14 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                           border: Border.all(color: Colors.grey[200]!, width: 1.5),
                         ),
                         child: TextField(
-                          onChanged: (value) {
-                            setState(() {
-                              searchQuery = value;
-                            });
-                          },
+                          onChanged: _filterCategories,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Colors.black87,
                           ),
                           decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!.searchJobCategoriesPlaceholder,
+                            hintText: AppLocalizations.of(context).searchJobCategoriesPlaceholder,
                             hintStyle: TextStyle(
                               color: Colors.grey[400],
                               fontSize: 16,
@@ -220,16 +298,18 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: isLoading
                       ? _buildShimmerList()
-                      : filteredList.isEmpty
-                          ? _buildEmptyState()
-                          : ListView.builder(
-                              itemCount: filteredList.length,
-                              padding: const EdgeInsets.only(top: 8),
-                              itemBuilder: (context, index) {
-                                final job = filteredList[index];
-                                return _buildJobCategoryCard(job, index);
-                              },
-                            ),
+                      : errorMessage != null
+                          ? _buildErrorState()
+                          : filteredCategories.isEmpty
+                              ? _buildEmptyState()
+                              : ListView.builder(
+                                  itemCount: filteredCategories.length,
+                                  padding: const EdgeInsets.only(top: 8),
+                                  itemBuilder: (context, index) {
+                                    final category = filteredCategories[index];
+                                    return _buildJobCategoryCard(category, index);
+                                  },
+                                ),
                 ),
               ),
             ],
@@ -240,7 +320,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
   }
 
   // Professional Job Category Card
-  Widget _buildJobCategoryCard(Map<String, String> job, int index) {
+  Widget _buildJobCategoryCard(JobCategory category, int index) {
     return TweenAnimationBuilder<double>(
       duration: Duration(milliseconds: 300 + (index * 100)),
       tween: Tween(begin: 0.0, end: 1.0),
@@ -275,13 +355,18 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                 context,
                 MaterialPageRoute(
                   builder: (context) => JobCate1(
-                    title: job['title']!,
-                    image: job['image']!,
+                    title: category.jobCategory,
+                    image: 'images/man.jpg', // Using default image for now
                     fullName: widget.fullName,
                     gender: widget.gender,
                     education: widget.education,
                     workExperience: widget.workExperience,
                     imageFile: widget.imageFile,
+                    jobCategoryId: category.id, // Pass the job category ID
+                    language: widget.language, // Pass language
+                    userLocation: widget.userLocation, // Pass location
+                    email: widget.email, // Pass email
+                    phone: widget.phone, // Pass phone
                   ),
                 ),
               );
@@ -301,10 +386,21 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        job['image']!,
-                        fit: BoxFit.cover,
-                      ),
+                      child: category.image.isNotEmpty
+                          ? Image.network(
+                              'https://api.thenaukrimitra.com/uploads/${category.image}',
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'images/man.jpg',
+                                  fit: BoxFit.cover,
+                                );
+                              },
+                            )
+                          : Image.asset(
+                              'images/man.jpg',
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   
@@ -315,14 +411,32 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
                     child: Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            job['title']!,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                              height: 1.3,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                category.jobCategory,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black87,
+                                  height: 1.3,
+                                ),
+                              ),
+                              if (category.subcategories.isNotEmpty) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  category.subcategories.take(2).join(', '),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                    height: 1.2,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ],
                           ),
                         ),
                         Container(
@@ -371,7 +485,7 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
           ),
           const SizedBox(height: 24),
           Text(
-            AppLocalizations.of(context)!.noCategoriesFound,
+            AppLocalizations.of(context).noCategoriesFound,
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
@@ -380,11 +494,66 @@ class _JobCategoriesState extends State<JobCategories> with TickerProviderStateM
           ),
           const SizedBox(height: 8),
           Text(
-            AppLocalizations.of(context)!.trySearchingDifferentKeywords,
+            AppLocalizations.of(context).trySearchingDifferentKeywords,
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey[600],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Error State
+  Widget _buildErrorState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(40),
+            ),
+            child: Icon(
+              Icons.error_outline_rounded,
+              size: 40,
+              color: Colors.red[400],
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Error Loading Categories',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            errorMessage ?? 'Something went wrong',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: _fetchJobCategories,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF2196F3),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text('Retry'),
           ),
         ],
       ),

@@ -349,7 +349,10 @@
 
 
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:naukri_mitra_jobs/Screens/profile/fresher_screen.dart';
 import 'package:naukri_mitra_jobs/Screens/home/main_screen.dart';
 import '../../generated/l10n/app_localizations.dart';
@@ -362,6 +365,11 @@ class JobCate1 extends StatefulWidget {
   final String education;
   final String workExperience;
   final File imageFile;
+  final String jobCategoryId; // Add job category ID
+  final String? language; // Add language
+  final String? userLocation; // Add location
+  final String? email; // Add email
+  final String? phone; // Add phone
 
   const JobCate1({
     super.key,
@@ -372,6 +380,11 @@ class JobCate1 extends StatefulWidget {
     required this.education,
     required this.workExperience,
     required this.imageFile,
+    required this.jobCategoryId,
+    this.language,
+    this.userLocation,
+    this.email,
+    this.phone,
   });
 
   @override
@@ -410,6 +423,45 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
     ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic));
     
     _animationController.forward();
+
+    // Check the workExperience from initial form and navigate accordingly
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleExperienceNavigation();
+    });
+  }
+
+  void _handleExperienceNavigation() {
+    print("📝 Work Experience from initial form: ${widget.workExperience}");
+    
+    // Check if user selected "Fresher" in the initial profile creation form
+    if (widget.workExperience == "Fresher") {
+      // Navigate directly to FresherScreen (Skills page)
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FresherScreen(
+            title: widget.title,
+            image: widget.image,
+            fullName: widget.fullName,
+            gender: widget.gender,
+            education: widget.education,
+            workExperience: "Fresher",
+            salary: "0",
+            imageFile: widget.imageFile,
+            jobCategoryId: widget.jobCategoryId,
+            language: widget.language,
+            userLocation: widget.userLocation,
+            email: widget.email,
+            phone: widget.phone,
+          ),
+        ),
+      );
+    } else {
+      // User selected "Experienced" - show the experience details form
+      setState(() {
+        isExperienced = true;
+      });
+    }
   }
 
   @override
@@ -421,6 +473,8 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    // If user is a fresher, the navigation will happen in initState
+    // This build method will only be shown for experienced users
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -448,13 +502,13 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
                       _buildJobCard(),
                       const SizedBox(height: 24),
 
-                      // Experience fields
-                      if (isExperienced) _buildExperienceFields(),
+                      // Experience fields (only for experienced users)
+                      if (widget.workExperience != "Fresher") _buildExperienceFields(),
 
                       const Spacer(),
 
-                      // Bottom buttons
-                      if (isExperienced) _buildBottomButtons(),
+                      // Bottom buttons (only for experienced users)
+                      if (widget.workExperience != "Fresher") _buildBottomButtons(),
                       const SizedBox(height: 24),
                     ],
                   ),
@@ -483,7 +537,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
         ),
         const SizedBox(width: 16),
         Text(
-          AppLocalizations.of(context)!.experienceLevel,
+          AppLocalizations.of(context).experienceLevel,
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -511,7 +565,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 16),
           Text(
-            AppLocalizations.of(context)!.rozgarDigitalSaathi,
+            AppLocalizations.of(context).rozgarDigitalSaathi,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -574,78 +628,42 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 24),
           
-          // Experience toggle buttons
-          Row(
-            children: [
-              Expanded(
-                child: _buildToggleButton(
-                  AppLocalizations.of(context)!.imExperienced, 
-                  isExperienced, 
-                  () => setState(() => isExperienced = true),
-                ),
+          // Show selected experience type (no toggle buttons)
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFF4A90E2), Color(0xFF357ABD)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildToggleButton(
-                  AppLocalizations.of(context)!.imFresher, 
-                  !isExperienced, 
-                  () {
-                    setState(() => isExperienced = false);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FresherScreen(
-                          title: widget.title,
-                          image: widget.image,
-                          fullName: widget.fullName,
-                          gender: widget.gender,
-                          education: widget.education,
-                          workExperience: "Fresher",
-                          salary: "0",
-                          imageFile: widget.imageFile,
-                        ),
-                      ),
-                    );
-                  },
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  widget.workExperience == "Fresher" 
+                    ? Icons.school_outlined 
+                    : Icons.work_outline,
+                  color: Colors.white,
+                  size: 20,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Text(
+                  widget.workExperience == "Fresher" 
+                    ? AppLocalizations.of(context).imFresher
+                    : AppLocalizations.of(context).imExperienced,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildToggleButton(String text, bool isSelected, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          gradient: isSelected
-              ? const LinearGradient(
-                  colors: [Color(0xFF4A90E2), Color(0xFF357ABD)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
-              : null,
-          color: isSelected ? null : Colors.grey[100],
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? Colors.transparent : Colors.grey[300]!,
-            width: 1,
-          ),
-        ),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: isSelected ? Colors.white : const Color(0xFF2E3A59),
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
-        ),
       ),
     );
   }
@@ -655,7 +673,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.experienceDetails,
+          AppLocalizations.of(context).experienceDetails,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -680,7 +698,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
           child: DropdownButtonFormField<String>(
             value: selectedExperience,
             hint: Text(
-              AppLocalizations.of(context)!.selectExperienceLevel,
+              AppLocalizations.of(context).selectExperienceLevel,
               style: const TextStyle(color: Colors.grey),
             ),
             isExpanded: true,
@@ -730,7 +748,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
               fontWeight: FontWeight.w500,
             ),
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context)!.currentSalary,
+              hintText: AppLocalizations.of(context).currentSalary,
               hintStyle: const TextStyle(color: Colors.grey),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -755,7 +773,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
             child: TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                AppLocalizations.of(context)!.back,
+                AppLocalizations.of(context).back,
                 style: const TextStyle(
                   color: Color(0xFF4A90E2),
                   fontSize: 16,
@@ -778,11 +796,11 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
               borderRadius: BorderRadius.circular(16),
             ),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (selectedExperience == null || salaryController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(AppLocalizations.of(context)!.pleaseCompleteAllFields),
+                      content: Text(AppLocalizations.of(context).pleaseCompleteAllFields),
                       backgroundColor: Colors.red[400],
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(
@@ -792,22 +810,9 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
                   );
                   return;
                 }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainScreen(
-                      title: widget.title,
-                      image: widget.image,
-                      fullName: widget.fullName,
-                      gender: widget.gender,
-                      education: widget.education,
-                      workExperience: selectedExperience!,
-                      salary: salaryController.text,
-                      imageFile: widget.imageFile,
-                      skills: [""],
-                    ),
-                  ),
-                );
+                
+                // Call Create Profile API for experienced users
+                await _createProfileForExperienced();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
@@ -817,7 +822,7 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
                 ),
               ),
               child: Text(
-                AppLocalizations.of(context)!.continueButton,
+                AppLocalizations.of(context).continueButton,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -829,6 +834,158 @@ class _JobCate1State extends State<JobCate1> with TickerProviderStateMixin {
         ),
       ],
     );
+  }
+
+  // Create Profile API call for experienced users
+  Future<void> _createProfileForExperienced() async {
+    try {
+      // Get the authentication cookie
+      final prefs = await SharedPreferences.getInstance();
+      final cookie = prefs.getString("cookie") ?? "";
+      
+      if (cookie.isEmpty) {
+        _showErrorMessage('Authentication required. Please login again.');
+        return;
+      }
+
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // Prepare form data
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('https://api.thenaukrimitra.com/api/user/create'),
+      );
+
+      // Add authentication cookie to headers
+      request.headers['Cookie'] = cookie;
+
+      // Add form fields for experienced users
+      request.fields['fullName'] = widget.fullName;
+      request.fields['gender'] = widget.gender;
+      request.fields['education'] = widget.education;
+      request.fields['jobCategory'] = widget.jobCategoryId;
+      request.fields['isExperienced'] = 'true'; // Experienced user
+      request.fields['totalExperience'] = _experienceToInt(selectedExperience!).toString();
+      request.fields['currentSalary'] = salaryController.text;
+      
+      // Add required email and phone fields
+      if (widget.email != null && widget.email!.isNotEmpty) {
+        request.fields['email'] = widget.email!;
+      }
+      if (widget.phone != null && widget.phone!.isNotEmpty) {
+        request.fields['phone'] = widget.phone!;
+      }
+      
+      // Add optional fields if available
+      if (widget.language != null && widget.language!.isNotEmpty) {
+        request.fields['language'] = widget.language!;
+      }
+      if (widget.userLocation != null && widget.userLocation!.isNotEmpty) {
+        request.fields['userLocation'] = widget.userLocation!;
+      }
+
+      // Add image file
+      if (widget.imageFile.existsSync()) {
+        request.files.add(
+          await http.MultipartFile.fromPath('image', widget.imageFile.path),
+        );
+      }
+
+      print('📤 Sending Create Profile request for experienced user');
+      print('📑 Fields: ${request.fields}');
+      print('🍪 Cookie: $cookie');
+
+      // Send request
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      print('🔵 Status Code: ${response.statusCode}');
+      print('🟢 Raw Response: $responseBody');
+
+      // Close loading dialog
+      Navigator.pop(context);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> data = json.decode(responseBody);
+        
+        if (data['success'] == true || response.statusCode == 201) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Profile created successfully!'),
+              backgroundColor: Colors.green[400],
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          );
+
+          // Navigate to MainScreen
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainScreen(
+                title: widget.title,
+                image: widget.image,
+                fullName: widget.fullName,
+                gender: widget.gender,
+                education: widget.education,
+                workExperience: selectedExperience!,
+                salary: salaryController.text,
+                imageFile: widget.imageFile,
+                skills: [], // No skills for experienced users
+              ),
+            ),
+            (route) => false, // Remove all previous routes
+          );
+        } else {
+          _showErrorMessage(data['message'] ?? 'Failed to create profile');
+        }
+      } else {
+        final Map<String, dynamic> errorData = json.decode(responseBody);
+        _showErrorMessage(errorData['message'] ?? 'Server error occurred');
+      }
+    } catch (e) {
+      // Close loading dialog if still open
+      Navigator.pop(context);
+      print('❌ Error creating profile: $e');
+      _showErrorMessage('Network error: Please check your connection');
+    }
+  }
+
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red[400],
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
+  }
+
+  int _experienceToInt(String exp) {
+    switch (exp) {
+      case "6 months":
+        return 0;
+      case "1 year":
+        return 1;
+      case "2 years":
+        return 2;
+      case "3 years":
+        return 3;
+      case "5+ years":
+        return 5;
+      default:
+        return 0;
+    }
   }
 }
 

@@ -696,6 +696,11 @@ class ProfileProvider with ChangeNotifier {
           print("   Name: ${user?.fullName}");
           print("   Email: ${user?.email}");
           print("   Phone: ${user?.phone}");
+          print("   Skills: ${user?.skills}");
+          print("   Languages: ${user?.language}");
+          print("   Current Salary: ${user?.currentSalary}");
+          print("   User Location: ${user?.userLocation}");
+          print("   Job Category: ${user?.jobCategory}");
           print("   Image URL from API: ${data["user"]["image"]}");
           print("   Image in model: ${user?.image}");
         } else {

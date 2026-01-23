@@ -284,7 +284,10 @@
 
 
 import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:naukri_mitra_jobs/Screens/home/main_screen.dart';
 import '../../generated/l10n/app_localizations.dart';
 
@@ -297,6 +300,11 @@ class FresherScreen extends StatefulWidget {
   final String workExperience;
   final String salary;
   final File imageFile;
+  final String jobCategoryId; // Add job category ID
+  final String? language; // Add language
+  final String? userLocation; // Add location
+  final String? email; // Add email
+  final String? phone; // Add phone
 
   const FresherScreen({
     super.key,
@@ -308,6 +316,11 @@ class FresherScreen extends StatefulWidget {
     required this.workExperience,
     required this.salary,
     required this.imageFile,
+    required this.jobCategoryId,
+    this.language,
+    this.userLocation,
+    this.email,
+    this.phone,
   });
 
   @override
@@ -1004,7 +1017,7 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
               borderRadius: BorderRadius.circular(16),
             ),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_selectedSkills.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -1018,22 +1031,9 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
                   );
                   return;
                 }
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainScreen(
-                      title: widget.title,
-                      image: widget.image,
-                      fullName: widget.fullName,
-                      gender: widget.gender,
-                      education: widget.education,
-                      workExperience: widget.workExperience,
-                      salary: widget.salary,
-                      imageFile: widget.imageFile,
-                      skills: _selectedSkills,
-                    ),
-                  ),
-                );
+                
+                // Call Create Profile API for freshers
+                await _createProfileForFresher();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
@@ -1054,6 +1054,140 @@ class _FresherScreenState extends State<FresherScreen> with TickerProviderStateM
           ),
         ),
       ],
+    );
+  }
+
+  // Create Profile API call for freshers
+  Future<void> _createProfileForFresher() async {
+    try {
+      // Get the authentication cookie
+      final prefs = await SharedPreferences.getInstance();
+      final cookie = prefs.getString("cookie") ?? "";
+      
+      if (cookie.isEmpty) {
+        _showErrorMessage('Authentication required. Please login again.');
+        return;
+      }
+
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // Prepare form data
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('https://api.thenaukrimitra.com/api/user/create'),
+      );
+
+      // Add authentication cookie to headers
+      request.headers['Cookie'] = cookie;
+
+      // Add form fields for freshers
+      request.fields['fullName'] = widget.fullName;
+      request.fields['gender'] = widget.gender;
+      request.fields['education'] = widget.education;
+      request.fields['jobCategory'] = widget.jobCategoryId;
+      request.fields['isExperienced'] = 'false'; // Fresher user
+      request.fields['skills'] = _selectedSkills.join(','); // Join skills with comma
+      
+      // Add required email and phone fields
+      if (widget.email != null && widget.email!.isNotEmpty) {
+        request.fields['email'] = widget.email!;
+      }
+      if (widget.phone != null && widget.phone!.isNotEmpty) {
+        request.fields['phone'] = widget.phone!;
+      }
+      
+      // Add optional fields if available
+      if (widget.language != null && widget.language!.isNotEmpty) {
+        request.fields['language'] = widget.language!;
+      }
+      if (widget.userLocation != null && widget.userLocation!.isNotEmpty) {
+        request.fields['userLocation'] = widget.userLocation!;
+      }
+
+      // Add image file
+      if (widget.imageFile.existsSync()) {
+        request.files.add(
+          await http.MultipartFile.fromPath('image', widget.imageFile.path),
+        );
+      }
+
+      print('📤 Sending Create Profile request for fresher');
+      print('📑 Fields: ${request.fields}');
+      print('🍪 Cookie: $cookie');
+
+      // Send request
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      print('🔵 Status Code: ${response.statusCode}');
+      print('🟢 Raw Response: $responseBody');
+
+      // Close loading dialog
+      Navigator.pop(context);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> data = json.decode(responseBody);
+        
+        if (data['success'] == true || response.statusCode == 201) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Profile created successfully!'),
+              backgroundColor: Colors.green[400],
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          );
+
+          // Navigate to MainScreen
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainScreen(
+                title: widget.title,
+                image: widget.image,
+                fullName: widget.fullName,
+                gender: widget.gender,
+                education: widget.education,
+                workExperience: widget.workExperience,
+                salary: widget.salary,
+                imageFile: widget.imageFile,
+                skills: _selectedSkills,
+              ),
+            ),
+            (route) => false, // Remove all previous routes
+          );
+        } else {
+          _showErrorMessage(data['message'] ?? 'Failed to create profile');
+        }
+      } else {
+        final Map<String, dynamic> errorData = json.decode(responseBody);
+        _showErrorMessage(errorData['message'] ?? 'Server error occurred');
+      }
+    } catch (e) {
+      // Close loading dialog if still open
+      Navigator.pop(context);
+      print('❌ Error creating profile: $e');
+      _showErrorMessage('Network error: Please check your connection');
+    }
+  }
+
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red[400],
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 }

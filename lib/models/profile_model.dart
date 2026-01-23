@@ -45,7 +45,10 @@ class ProfileModel {
       image: json["image"]?.toString(),
       resume: json["resume"]?.toString(),
       education: json["education"].toString(),
-      jobCategory: json["jobCategory"]?.toString(),
+      // Handle jobCategory as object, string, or null
+      jobCategory: json["jobCategory"] is Map<String, dynamic>
+          ? json["jobCategory"]["jobCategory"]?.toString()
+          : json["jobCategory"]?.toString(),
       isExperienced: json["isExperienced"],
       totalExperience: json["totalExperience"] != null
           ? json["totalExperience"].toString()

@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:naukri_mitra_jobs/Screens/jobs/job_categories.dart';
-import '../../providers/CreateProfileProvider.dart';
 import '../../generated/l10n/app_localizations.dart';
 
 class CreateProfile extends StatefulWidget {
@@ -19,6 +17,8 @@ class CreateProfile extends StatefulWidget {
 class _CreateProfileState extends State<CreateProfile> with TickerProviderStateMixin {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController languageController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
   String? selectedGender;
   String? selectedEducation;
   String? selectedExperience;
@@ -86,6 +86,8 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
     _animationController.dispose();
     nameController.dispose();
     emailController.dispose();
+    languageController.dispose();
+    locationController.dispose();
     super.dispose();
   }
 
@@ -332,8 +334,6 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CreateProfileProvider>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -579,6 +579,100 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                         ),
                       ),
 
+                      const SizedBox(height: 20),
+
+                      // Language Field
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          AppLocalizations.of(context).language,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey[200]!, width: 1.5),
+                        ),
+                        child: TextField(
+                          controller: languageController,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Enter languages (comma separated, e.g., English, Hindi)',
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Location Field
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          AppLocalizations.of(context).location,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey[200]!, width: 1.5),
+                        ),
+                        child: TextField(
+                          controller: locationController,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Enter your location (e.g., Mumbai, Delhi)',
+                            hintStyle: TextStyle(
+                              color: Colors.grey[400],
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+
                       // Professional Option Sections
                       _buildOptions(
                         title: AppLocalizations.of(context).gender,
@@ -614,7 +708,7 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: provider.isLoading ? null : () async {
+                      onPressed: () async {
                         // ✅ Validate email format
                         final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                         
@@ -672,65 +766,77 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                           return;
                         }
                         
+                        if (languageController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Row(
+                                children: [
+                                  Icon(Icons.error, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text("Please enter your language"),
+                                ],
+                              ),
+                              backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            ),
+                          );
+                          return;
+                        }
+                        
+                        if (locationController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Row(
+                                children: [
+                                  Icon(Icons.error, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text("Please enter your location"),
+                                ],
+                              ),
+                              backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            ),
+                          );
+                          return;
+                        }
+                        
                         if (nameController.text.isNotEmpty &&
                             emailController.text.isNotEmpty &&
+                            languageController.text.isNotEmpty &&
+                            locationController.text.isNotEmpty &&
                             selectedGender != null &&
                             selectedEducation != null &&
                             selectedExperience != null &&
                             selectedImage != null) {
                           final boolExp = selectedExperience == AppLocalizations.of(context).iHaveExperience;
 
-                          final result = await provider.saveProfile(
-                            context,
-                            fullName: nameController.text.trim(),
-                            gender: _getApiGenderValue(selectedGender!),
-                            education: _getApiEducationValue(selectedEducation!),
-                            isExperienced: boolExp,
-                            currentSalary: 50000,
-                            email: emailController.text.trim(),
-                            totalExperience: 2,
-                            jobCategory: "Software",
-                            skills: "Flutter",
-                            image: selectedImage,
-                            phone: widget.phone,
-                          );
+                          // TODO: Language and Location will be sent to API later
+                          // languageController.text and locationController.text are collected but not sent yet
+                          print("📝 Language entered: ${languageController.text}");
+                          print("📝 Location entered: ${locationController.text}");
+                          print("📝 Experience: $boolExp (isExperienced: $boolExp)");
 
+                          // Navigate directly to JobCategories without API call
                           if (mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Row(
-                                  children: [
-                                    Icon(
-                                      result['success'] == true ? Icons.check_circle : Icons.error,
-                                      color: Colors.white,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(result['message'] ?? 'No message'),
-                                  ],
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => JobCategories(
+                                  fullName: nameController.text,
+                                  gender: _getApiGenderValue(selectedGender!),
+                                  education: _getApiEducationValue(selectedEducation!),
+                                  workExperience: _getApiExperienceValue(selectedExperience!),
+                                  imageFile: selectedImage!,
+                                  skills: [],
+                                  language: languageController.text, // Pass language
+                                  userLocation: locationController.text, // Pass location
+                                  email: emailController.text, // Pass email
+                                  phone: widget.phone, // Pass phone from CreateProfile constructor
                                 ),
-                                backgroundColor: result['success'] == true ? Colors.green : Colors.red,
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                               ),
                             );
-                          }
-
-                          if (result['success'] == true) {
-                            if (mounted) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => JobCategories(
-                                    fullName: nameController.text,
-                                    gender: _getApiGenderValue(selectedGender!),
-                                    education: _getApiEducationValue(selectedEducation!),
-                                    workExperience: _getApiExperienceValue(selectedExperience!),
-                                    imageFile: selectedImage!,
-                                    skills: [],
-                                  ),
-                                ),
-                              );
-                            }
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -750,38 +856,29 @@ class _CreateProfileState extends State<CreateProfile> with TickerProviderStateM
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: provider.isLoading ? Colors.grey[300] : const Color(0xFF2196F3),
+                        backgroundColor: const Color(0xFF2196F3),
                         foregroundColor: Colors.white,
-                        elevation: provider.isLoading ? 0 : 2,
+                        elevation: 2,
                         shadowColor: const Color(0xFF2196F3).withOpacity(0.3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: provider.isLoading
-                          ? const SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2.5,
-                              ),
-                            )
-                          : const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.arrow_forward_rounded, size: 20),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Continue',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.3,
-                                  ),
-                                ),
-                              ],
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.arrow_forward_rounded, size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            'Continue',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.3,
                             ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   

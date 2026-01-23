@@ -431,7 +431,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
   String? resumeFilePath;
-  List<String> skills = ["PHP", "Dart", "Flutter"];
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -849,18 +848,61 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
   // Languages Section
   Widget _buildLanguagesSection() {
+    final provider = Provider.of<ProfileProvider>(context);
+    final profile = provider.user;
+    
     return Column(
       children: [
         _buildSectionHeader(AppLocalizations.of(context)!.languages, AppLocalizations.of(context)!.comingSoon, AppColors.info, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: _buildModernCard(
-            icon: Icons.language,
-            title: AppLocalizations.of(context)!.englishLevel,
-            subtitle: AppLocalizations.of(context)!.goodEnglish,
-            color: AppColors.info,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
+          child: profile?.language != null && profile!.language!.isNotEmpty
+              ? Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: profile.language!.map((lang) => Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.info.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: AppColors.info.withOpacity(0.3)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.language, color: AppColors.info, size: 14),
+                        const SizedBox(width: 6),
+                        Text(
+                          lang,
+                          style: TextStyle(
+                            color: AppColors.info,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )).toList(),
+                )
+              : _buildModernCard(
+                  icon: Icons.language,
+                  title: AppLocalizations.of(context)!.englishLevel,
+                  subtitle: AppLocalizations.of(context)!.goodEnglish,
+                  color: AppColors.info,
+                ),
         ),
       ],
     );
@@ -868,16 +910,21 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
   // Skills Section
   Widget _buildSkillsSection() {
+    final provider = Provider.of<ProfileProvider>(context);
+    final profile = provider.user;
+    
     return Column(
       children: [
         _buildSectionHeader(AppLocalizations.of(context)!.skills, AppLocalizations.of(context)!.edit, AppColors.success, () async {
           final updatedSkills = await BottomSheetHelper.showSkillsSelector(
             context: context,
-            currentSkills: skills,
+            currentSkills: profile?.skills ?? [],
           );
           if (updatedSkills != null) {
+            // Update skills in the profile - you might want to call an API to update this
             setState(() {
-              skills = updatedSkills;
+              // For now, just refresh the profile to get latest data
+              Provider.of<ProfileProvider>(context, listen: false).fetchProfile();
             });
           }
         }),
@@ -896,26 +943,36 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               ),
             ],
           ),
-          child: Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: skills.map((skill) => Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.success.withOpacity(0.3)),
-              ),
-              child: Text(
-                skill,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.success,
+          child: profile?.skills != null && profile!.skills!.isNotEmpty
+              ? Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: profile.skills!.where((skill) => skill.isNotEmpty).map((skill) => Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.success.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppColors.success.withOpacity(0.3)),
+                    ),
+                    child: Text(
+                      skill,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.success,
+                      ),
+                    ),
+                  )).toList(),
+                )
+              : Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.noDataFound,
+                    style: TextStyle(
+                      color: AppColors.bodyText,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
-              ),
-            )).toList(),
-          ),
         ),
       ],
     );
