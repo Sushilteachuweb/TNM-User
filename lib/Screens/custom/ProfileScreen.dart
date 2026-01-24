@@ -420,6 +420,7 @@ import '../../utils/image_helper.dart';
 import 'Setting_Screen.dart';
 import 'resume_service.dart';
 import 'bottom_sheet_helper.dart';
+import '../help/help_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
 
@@ -555,6 +556,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       _buildSkillsSection(),
                       const SizedBox(height: 20),
                       _buildResumeSection(profile),
+                      const SizedBox(height: 20),
+                      _buildHelpSection(),
                       const SizedBox(height: 20),
                       _buildRatingSection(),
                       const SizedBox(height: 16),
@@ -775,7 +778,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildWorkExperienceSection(dynamic profile) {
     return Column(
       children: [
-        _buildSectionHeader(AppLocalizations.of(context)!.workExperience, AppLocalizations.of(context)!.addNew, AppColors.primary, null),
+        _buildSectionHeader(AppLocalizations.of(context)!.workExperience, "", AppColors.primary, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -797,28 +800,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   Widget _buildPersonalInfoSection(dynamic profile) {
     return Column(
       children: [
-        _buildSectionHeader(AppLocalizations.of(context)!.personalInformation, AppLocalizations.of(context)!.edit, AppColors.secondary, () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            builder: (context) => Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: UpdateProfileSheet(
-                fullName: profile?.fullName ?? "",
-                email: profile?.email ?? "",
-                gender: profile?.gender ?? "",
-                education: profile?.education ?? "",
-              ),
-            ),
-          ).then((_) {
-            Provider.of<ProfileProvider>(context, listen: false).fetchProfile();
-          });
-        }),
+        _buildSectionHeader(AppLocalizations.of(context)!.personalInformation, "", AppColors.secondary, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -900,7 +882,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     
     return Column(
       children: [
-        _buildSectionHeader(AppLocalizations.of(context)!.languages, AppLocalizations.of(context)!.comingSoon, AppColors.info, null),
+        _buildSectionHeader(AppLocalizations.of(context)!.languages, "", AppColors.info, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -917,26 +899,19 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
             ],
           ),
           child: profile?.language != null && profile!.language!.isNotEmpty
-              ? Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: profile.language!.map((lang) => Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.info.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: AppColors.info.withOpacity(0.3)),
-                    ),
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: profile.language!.map((lang) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.language, color: AppColors.info, size: 14),
-                        const SizedBox(width: 6),
+                        Icon(Icons.language, color: AppColors.info, size: 16),
+                        const SizedBox(width: 12),
                         Text(
                           lang,
                           style: TextStyle(
-                            color: AppColors.info,
-                            fontSize: 12,
+                            color: AppColors.headingText,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -944,11 +919,14 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                     ),
                   )).toList(),
                 )
-              : _buildModernCard(
-                  icon: Icons.language,
-                  title: AppLocalizations.of(context)!.englishLevel,
-                  subtitle: AppLocalizations.of(context)!.goodEnglish,
-                  color: AppColors.info,
+              : Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.noDataFound,
+                    style: TextStyle(
+                      color: AppColors.bodyText,
+                      fontSize: 14,
+                    ),
+                  ),
                 ),
         ),
       ],
@@ -962,19 +940,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     
     return Column(
       children: [
-        _buildSectionHeader(AppLocalizations.of(context)!.skills, AppLocalizations.of(context)!.edit, AppColors.success, () async {
-          final updatedSkills = await BottomSheetHelper.showSkillsSelector(
-            context: context,
-            currentSkills: profile?.skills ?? [],
-          );
-          if (updatedSkills != null) {
-            // Update skills in the profile - you might want to call an API to update this
-            setState(() {
-              // For now, just refresh the profile to get latest data
-              Provider.of<ProfileProvider>(context, listen: false).fetchProfile();
-            });
-          }
-        }),
+        _buildSectionHeader(AppLocalizations.of(context)!.skills, "", AppColors.success, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -991,23 +957,23 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
             ],
           ),
           child: profile?.skills != null && profile!.skills!.isNotEmpty && profile.skills!.any((skill) => skill.isNotEmpty)
-              ? Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: profile.skills!.where((skill) => skill.isNotEmpty).map((skill) => Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.success.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.success.withOpacity(0.3)),
-                    ),
-                    child: Text(
-                      skill,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.success,
-                      ),
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: profile.skills!.where((skill) => skill.isNotEmpty).map((skill) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Icon(Icons.star, color: AppColors.success, size: 16),
+                        const SizedBox(width: 12),
+                        Text(
+                          skill,
+                          style: TextStyle(
+                            color: AppColors.headingText,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   )).toList(),
                 )
@@ -1049,11 +1015,36 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     );
   }
 
+  // Help Section
+  Widget _buildHelpSection() {
+    return Column(
+      children: [
+        _buildSectionHeader("Help & Support", "", AppColors.info, null),
+        const SizedBox(height: 12),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: _buildModernCard(
+            icon: Icons.help_outline,
+            title: "Help & Support",
+            subtitle: "Get assistance and support",
+            color: AppColors.info,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HelpScreen()),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
   // Rating Section matching home screen
   Widget _buildRatingSection() {
     return Column(
       children: [
-        _buildSectionHeader(AppLocalizations.of(context)!.rateYourExperience, AppLocalizations.of(context)!.comingSoon, Colors.purple, null),
+        _buildSectionHeader(AppLocalizations.of(context)!.rateYourExperience, "", Colors.purple, null),
         const SizedBox(height: 12),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -1110,54 +1101,57 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     required String subtitle,
     required Color color,
     bool isUrgent = false,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            child: Icon(icon, color: color, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.headingText,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: AppColors.bodyText,
-                  ),
-                ),
-              ],
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, color: color, size: 24),
             ),
-          ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.headingText,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.bodyText,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           if (isUrgent)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -1178,6 +1172,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
             ),
         ],
       ),
+    ),
     );
   }
 
@@ -1373,6 +1368,8 @@ class _ModernRatingWidget extends StatefulWidget {
 class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerProviderStateMixin {
   int _rating = 0;
   bool _submitted = false;
+  bool _isSubmitting = false;
+  bool _alreadyRated = false;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -1386,6 +1383,20 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.elasticOut),
     );
+    
+    // Check if user has already rated
+    _checkRatingStatus();
+  }
+
+  void _checkRatingStatus() async {
+    final provider = Provider.of<ProfileProvider>(context, listen: false);
+    final hasRated = await provider.hasUserRated();
+    
+    if (mounted && hasRated) {
+      setState(() {
+        _alreadyRated = true;
+      });
+    }
   }
 
   @override
@@ -1449,7 +1460,44 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                 ),
               ],
             )
-          : Column(
+          : _alreadyRated
+              ? Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Colors.orange, Colors.deepOrange],
+                        ),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Icon(
+                        Icons.star,
+                        color: Colors.white,
+                        size: 40,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Already Rated",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "You have already submitted your rating. Thank you for your feedback!",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                )
+              : Column(
               children: [
                 Text(
                   AppLocalizations.of(context)!.howWasProfileExperience,
@@ -1489,11 +1537,57 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: _isSubmitting ? null : () async {
                         setState(() {
-                          _submitted = true;
+                          _isSubmitting = true;
                         });
-                        _animationController.forward();
+                        
+                        // Call the rating API
+                        final provider = Provider.of<ProfileProvider>(context, listen: false);
+                        final result = await provider.submitRating(_rating);
+                        
+                        setState(() {
+                          _isSubmitting = false;
+                        });
+                        
+                        if (result["success"] == true) {
+                          setState(() {
+                            _submitted = true;
+                          });
+                          _animationController.forward();
+                          
+                          // Show success message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Rating submitted successfully! Thank you for your feedback.'),
+                              backgroundColor: AppColors.success,
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        } else if (result["alreadyRated"] == true) {
+                          // User has already submitted a rating
+                          setState(() {
+                            _alreadyRated = true;
+                          });
+                          
+                          // Show info message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(result["message"] ?? 'You have already submitted a rating.'),
+                              backgroundColor: Colors.orange,
+                              duration: Duration(seconds: 4),
+                            ),
+                          );
+                        } else {
+                          // Show error message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(result["message"] ?? 'Failed to submit rating. Please try again.'),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
@@ -1503,14 +1597,23 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                         ),
                         elevation: 0,
                       ),
-                      child: Text(
-                        AppLocalizations.of(context)!.submitRating,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      child: _isSubmitting
+                          ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text(
+                              AppLocalizations.of(context)!.submitRating,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                     ),
                   ),
               ],

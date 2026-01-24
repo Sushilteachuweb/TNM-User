@@ -885,6 +885,90 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
     return false;
   }
+
+  // Check if user has already submitted a rating
+  Future<bool> hasUserRated() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cookie = prefs.getString("cookie") ?? "";
+
+      if (cookie.isEmpty) {
+        return false;
+      }
+
+      final response = await http.get(
+        Uri.parse("https://api.thenaukrimitra.com/api/rating/check"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Cookie": cookie,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data["hasRated"] == true;
+      }
+    } catch (e) {
+      print("❌ Error checking rating status: $e");
+    }
+    
+    return false;
+  }
+
+  // Submit Rating
+  Future<Map<String, dynamic>> submitRating(int rating) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cookie = prefs.getString("cookie") ?? "";
+      print("🍪 Cookie used for rating: $cookie");
+
+      if (cookie.isEmpty) {
+        print("❌ No cookie found! Cannot submit rating.");
+        return {"success": false, "message": "Authentication required"};
+      }
+
+      final response = await http.post(
+        Uri.parse("https://api.thenaukrimitra.com/api/rating"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Cookie": cookie,
+        },
+        body: json.encode({
+          "rating": rating,
+        }),
+      );
+
+      print("📡 Rating response status: ${response.statusCode}");
+      print("📩 Rating response body: ${response.body}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = json.decode(response.body);
+        if (data["success"] == true) {
+          print("✅ Rating submitted successfully!");
+          print("   Rating: $rating");
+          print("   User ID: ${data["data"]["userId"]}");
+          return {"success": true, "message": "Rating submitted successfully"};
+        } else {
+          print("❌ Rating submission failed: ${data["message"]}");
+          return {"success": false, "message": data["message"] ?? "Unknown error"};
+        }
+      } else if (response.statusCode == 409) {
+        final data = json.decode(response.body);
+        print("⚠️ User has already submitted a rating");
+        return {"success": false, "message": data["message"] ?? "You have already submitted a rating", "alreadyRated": true};
+      } else {
+        print("❌ Server error during rating submission: ${response.statusCode}");
+        final data = json.decode(response.body);
+        return {"success": false, "message": data["message"] ?? "Server error"};
+      }
+    } catch (e, stackTrace) {
+      print("❌ SubmitRating error: $e");
+      print("Stack trace: $stackTrace");
+      return {"success": false, "message": "Network error. Please try again."};
+    }
+  }
 }
 
 
