@@ -1,719 +1,23 @@
-//
-//
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import '../provider/ProfileProvider.dart';
-//
-// class UpdateProfileSheet extends StatefulWidget {
-//   final String fullName;
-//   final String email;
-//   final String gender;
-//   final String education;
-//
-//   const UpdateProfileSheet({
-//     super.key,
-//     required this.fullName,
-//     required this.email,
-//     required this.gender,
-//     required this.education,
-//   });
-//
-//   @override
-//   State<UpdateProfileSheet> createState() => _UpdateProfileSheetState();
-// }
-//
-// class _UpdateProfileSheetState extends State<UpdateProfileSheet> {
-//   final _formKey = GlobalKey<FormState>();
-//
-//   late TextEditingController _nameController;
-//   late TextEditingController _emailController;
-//   late TextEditingController _educationController;
-//   String? _selectedGender;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameController = TextEditingController(text: widget.fullName);
-//     _emailController = TextEditingController(text: widget.email);
-//     _educationController = TextEditingController(text: widget.education);
-//
-//     // ✅ Normalize incoming gender
-//     String g = widget.gender.trim().toLowerCase();
-//     if (g == "male") {
-//       _selectedGender = "Male";
-//     } else if (g == "female") {
-//       _selectedGender = "Female";
-//     } else if (g == "other") {
-//       _selectedGender = "Other";
-//     } else {
-//       _selectedGender = null;
-//     }
-//   }
-//
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _educationController.dispose();
-//     super.dispose();
-//   }
-//
-//   void _saveProfile() async {
-//     if (_formKey.currentState!.validate()) {
-//       final provider = Provider.of<ProfileProvider>(context, listen: false);
-//
-//       bool success = await provider.updateProfile({
-//         "fullName": _nameController.text.trim(),
-//         "email": _emailController.text.trim(),
-//         "gender": _selectedGender, // Provider auto lowercase karega ✅
-//         "education": _educationController.text.trim(),
-//       });
-//
-//       if (success) {
-//         if (mounted) {
-//           Navigator.pop(context); // ✅ sheet close
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Profile updated successfully ✅")),
-//           );
-//         }
-//       } else {
-//         if (mounted) {
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Failed to update profile ❌")),
-//           );
-//         }
-//       }
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<ProfileProvider>(context);
-//
-//     return Padding(
-//       padding: EdgeInsets.only(
-//         left: 16,
-//         right: 16,
-//         top: 16,
-//         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-//       ),
-//       child: provider.isLoading
-//           ? const Center(child: CircularProgressIndicator())
-//           : Form(
-//         key: _formKey,
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               // ✅ Drag handle
-//               Container(
-//                 width: 40,
-//                 height: 5,
-//                 margin: const EdgeInsets.only(bottom: 20),
-//                 decoration: BoxDecoration(
-//                   color: Colors.grey[400],
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//
-//               const Text(
-//                 "Update Profile",
-//                 style: TextStyle(
-//                   fontSize: 18,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.blue,
-//                 ),
-//               ),
-//               const SizedBox(height: 20),
-//
-//               TextFormField(
-//                 controller: _nameController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Full Name",
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter full name" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               TextFormField(
-//                 controller: _emailController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Email",
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter email" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               DropdownButtonFormField<String>(
-//                 value: _selectedGender,
-//                 items: ["Male", "Female", "Other"]
-//                     .map((g) =>
-//                     DropdownMenuItem(value: g, child: Text(g)))
-//                     .toList(),
-//                 onChanged: (val) =>
-//                     setState(() => _selectedGender = val),
-//                 decoration: const InputDecoration(
-//                   labelText: "Gender",
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v == null ? "Select gender" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               TextFormField(
-//                 controller: _educationController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Education",
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter education" : null,
-//               ),
-//               const SizedBox(height: 20),
-//
-//               SizedBox(
-//                 width: double.infinity,
-//                 child: ElevatedButton(
-//                   onPressed: _saveProfile,
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Colors.blue.shade300,
-//                     padding: const EdgeInsets.symmetric(vertical: 14),
-//                   ),
-//                   child: const Text(
-//                     "Save",
-//                     style: TextStyle(
-//                         color: Colors.white, fontSize: 16),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-
-
-// resume ke sath Update hoga
-// import 'dart:io';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:provider/provider.dart';
-// import '../provider/ProfileProvider.dart';
-//
-// class UpdateProfileSheet extends StatefulWidget {
-//   final String fullName;
-//   final String email;
-//   final String gender;
-//   final String education;
-//
-//   const UpdateProfileSheet({
-//     super.key,
-//     required this.fullName,
-//     required this.email,
-//     required this.gender,
-//     required this.education,
-//   });
-//
-//   @override
-//   State<UpdateProfileSheet> createState() => _UpdateProfileSheetState();
-// }
-//
-// class _UpdateProfileSheetState extends State<UpdateProfileSheet> {
-//   final _formKey = GlobalKey<FormState>();
-//
-//   late TextEditingController _nameController;
-//   late TextEditingController _emailController;
-//   late TextEditingController _educationController;
-//   String? _selectedGender;
-//
-//   File? _profileImage;
-//   File? _resumeFile;
-//
-//   final ImagePicker _picker = ImagePicker();
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameController = TextEditingController(text: widget.fullName);
-//     _emailController = TextEditingController(text: widget.email);
-//     _educationController = TextEditingController(text: widget.education);
-//
-//     String g = widget.gender.trim().toLowerCase();
-//     if (g == "male") {
-//       _selectedGender = "Male";
-//     } else if (g == "female") {
-//       _selectedGender = "Female";
-//     } else if (g == "other") {
-//       _selectedGender = "Other";
-//     } else {
-//       _selectedGender = null;
-//     }
-//   }
-//
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _educationController.dispose();
-//     super.dispose();
-//   }
-//
-//   Future<void> pickProfileImage() async {
-//     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-//     if (image != null) {
-//       setState(() => _profileImage = File(image.path));
-//     }
-//   }
-//
-//   Future<void> pickResumeFile() async {
-//     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
-//     if (file != null) {
-//       setState(() => _resumeFile = File(file.path));
-//     }
-//   }
-//
-//   void _saveProfile() async {
-//     if (_formKey.currentState!.validate()) {
-//       final provider = Provider.of<ProfileProvider>(context, listen: false);
-//
-//       bool success = await provider.updateProfile(
-//         updatedData: {
-//           "fullName": _nameController.text.trim(),
-//           "email": _emailController.text.trim(),
-//           "gender": _selectedGender,
-//           "education": _educationController.text.trim(),
-//         },
-//         profileImage: _profileImage,
-//         resumeFile: _resumeFile,
-//       );
-//
-//       if (success) {
-//         if (mounted) {
-//           Navigator.pop(context); // close sheet
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Profile updated successfully ✅")),
-//           );
-//         }
-//       } else {
-//         if (mounted) {
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Failed to update profile ❌")),
-//           );
-//         }
-//       }
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<ProfileProvider>(context);
-//
-//     return Padding(
-//       padding: EdgeInsets.only(
-//         left: 16,
-//         right: 16,
-//         top: 16,
-//         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-//       ),
-//       child: provider.isLoading
-//           ? const Center(child: CircularProgressIndicator())
-//           : Form(
-//         key: _formKey,
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               Container(
-//                 width: 50,
-//                 height: 5,
-//                 margin: const EdgeInsets.only(bottom: 20),
-//                 decoration: BoxDecoration(
-//                   color: Colors.grey[400],
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//               const Text(
-//                 "Update Profile",
-//                 style: TextStyle(
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.blueAccent,
-//                 ),
-//               ),
-//               const SizedBox(height: 20),
-//
-//               // Name field
-//               _buildInputField(
-//                 controller: _nameController,
-//                 label: "Full Name",
-//                 icon: Icons.person,
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter full name" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Email field
-//               _buildInputField(
-//                 controller: _emailController,
-//                 label: "Email",
-//                 icon: Icons.email,
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter email" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Gender Dropdown
-//               Card(
-//                 shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(12)),
-//                 elevation: 2,
-//                 child: Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 12),
-//                   child: DropdownButtonFormField<String>(
-//                     value: _selectedGender,
-//                     items: ["Male", "Female", "Other"]
-//                         .map((g) =>
-//                         DropdownMenuItem(value: g, child: Text(g)))
-//                         .toList(),
-//                     onChanged: (val) =>
-//                         setState(() => _selectedGender = val),
-//                     decoration: const InputDecoration(
-//                       border: InputBorder.none,
-//                       labelText: "Gender",
-//                       prefixIcon:
-//                       Icon(Icons.transgender, color: Colors.blue),
-//                     ),
-//                     validator: (v) =>
-//                     v == null ? "Select gender" : null,
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Education field
-//               _buildInputField(
-//                 controller: _educationController,
-//                 label: "Education",
-//                 icon: Icons.school,
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter education" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Profile Image picker
-//               _buildFilePicker(
-//                 icon: Icons.image,
-//                 label: "Choose Profile Image",
-//                 fileName: _profileImage != null
-//                     ? _profileImage!.path.split('/').last
-//                     : "No image selected",
-//                 onPressed: pickProfileImage,
-//                 color: Colors.blue.shade300,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Resume picker
-//               _buildFilePicker(
-//                 icon: Icons.description,
-//                 label: "Choose Resume",
-//                 fileName: _resumeFile != null
-//                     ? _resumeFile!.path.split('/').last
-//                     : "No resume selected",
-//                 onPressed: pickResumeFile,
-//                 color: Colors.green.shade300,
-//               ),
-//               const SizedBox(height: 20),
-//
-//               // Save button
-//               SizedBox(
-//                 width: double.infinity,
-//                 child: ElevatedButton(
-//                   onPressed: _saveProfile,
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Colors.blueAccent,
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(12),
-//                     ),
-//                     padding: const EdgeInsets.symmetric(vertical: 16),
-//                   ),
-//                   child: const Text(
-//                     "Save Changes",
-//                     style: TextStyle(
-//                         color: Colors.white, fontSize: 16),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   // 🔹 Reusable input field widget
-//   Widget _buildInputField({
-//     required TextEditingController controller,
-//     required String label,
-//     required IconData icon,
-//     String? Function(String?)? validator,
-//   }) {
-//     return Card(
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-//       elevation: 2,
-//       child: TextFormField(
-//         controller: controller,
-//         validator: validator,
-//         decoration: InputDecoration(
-//           prefixIcon: Icon(icon, color: Colors.blue),
-//           labelText: label,
-//           border: InputBorder.none,
-//           contentPadding:
-//           const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   // 🔹 Reusable file picker widget
-//   Widget _buildFilePicker({
-//     required IconData icon,
-//     required String label,
-//     required String fileName,
-//     required VoidCallback onPressed,
-//     required Color color,
-//   }) {
-//     return Card(
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-//       elevation: 2,
-//       child: ListTile(
-//         leading: Icon(icon, color: color),
-//         title: Text(
-//           fileName,
-//           overflow: TextOverflow.ellipsis,
-//         ),
-//         trailing: ElevatedButton(
-//           onPressed: onPressed,
-//           style: ElevatedButton.styleFrom(
-//             backgroundColor: color,
-//             shape: RoundedRectangleBorder(
-//               borderRadius: BorderRadius.circular(8),
-//             ),
-//           ),
-//           child: const Text("Choose"),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-// working code 10-09-2025
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import '../provider/ProfileProvider.dart';
-//
-// class UpdateProfileSheet extends StatefulWidget {
-//   final String fullName;
-//   final String email;
-//   final String gender;
-//   final String education;
-//
-//   const UpdateProfileSheet({
-//     super.key,
-//     required this.fullName,
-//     required this.email,
-//     required this.gender,
-//     required this.education,
-//   });
-//
-//   @override
-//   State<UpdateProfileSheet> createState() => _UpdateProfileSheetState();
-// }
-//
-// class _UpdateProfileSheetState extends State<UpdateProfileSheet> {
-//   final _formKey = GlobalKey<FormState>();
-//
-//   late TextEditingController _nameController;
-//   late TextEditingController _emailController;
-//   late TextEditingController _educationController;
-//   String? _selectedGender;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameController = TextEditingController(text: widget.fullName);
-//     _emailController = TextEditingController(text: widget.email);
-//     _educationController = TextEditingController(text: widget.education);
-//
-//     _selectedGender = widget.gender[0].toUpperCase() + widget.gender.substring(1);
-//   }
-//
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _educationController.dispose();
-//     super.dispose();
-//   }
-//
-//   void _saveProfile() async {
-//     if (_formKey.currentState!.validate()) {
-//       final provider = Provider.of<ProfileProvider>(context, listen: false);
-//
-//       bool success = await provider.updateProfile(
-//         fullName: _nameController.text.trim(),
-//         email: _emailController.text.trim(),
-//         gender: _selectedGender ?? "male",
-//         education: _educationController.text.trim(),
-//       );
-//
-//       if (success) {
-//         if (mounted) {
-//           Navigator.pop(context);
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Profile updated successfully ✅")),
-//           );
-//         }
-//       } else {
-//         if (mounted) {
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Failed to update profile ❌")),
-//           );
-//         }
-//       }
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<ProfileProvider>(context);
-//
-//     return Padding(
-//       padding: EdgeInsets.only(
-//         left: 16,
-//         right: 16,
-//         top: 16,
-//         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-//       ),
-//       child: provider.isLoading
-//           ? const Center(child: CircularProgressIndicator())
-//           : Form(
-//         key: _formKey,
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               const Text(
-//                 "Update Profile",
-//                 style: TextStyle(
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.blueAccent,
-//                 ),
-//               ),
-//               const SizedBox(height: 20),
-//
-//               // Name
-//               TextFormField(
-//                 controller: _nameController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Full Name",
-//                   prefixIcon: Icon(Icons.person),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v!.isEmpty ? "Enter full name" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Email
-//               TextFormField(
-//                 controller: _emailController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Email",
-//                   prefixIcon: Icon(Icons.email),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v!.isEmpty ? "Enter email" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Gender
-//               DropdownButtonFormField<String>(
-//                 value: _selectedGender,
-//                 items: ["Male", "Female", "Other"]
-//                     .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-//                     .toList(),
-//                 onChanged: (val) => setState(() => _selectedGender = val),
-//                 decoration: const InputDecoration(
-//                   labelText: "Gender",
-//                   prefixIcon: Icon(Icons.transgender),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v == null ? "Select gender" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               // Education
-//               TextFormField(
-//                 controller: _educationController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Education",
-//                   prefixIcon: Icon(Icons.school),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v!.isEmpty ? "Enter education" : null,
-//               ),
-//               const SizedBox(height: 20),
-//
-//               // Save button
-//               SizedBox(
-//                 width: double.infinity,
-//                 child: ElevatedButton(
-//                   onPressed: _saveProfile,
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Colors.blueAccent,
-//                     padding: const EdgeInsets.symmetric(vertical: 16),
-//                   ),
-//                   child: const Text(
-//                     "Save Changes",
-//                     style: TextStyle(color: Colors.white, fontSize: 16),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/ProfileProvider.dart';
-import '../../utils/app_colors.dart';
+import '../../models/job_category_model.dart';
 
 class UpdateProfileSheet extends StatefulWidget {
   final String fullName;
   final String email;
   final String gender;
   final String education;
+  final String? userLocation;
+  final String? jobCategory;
+  final bool? isExperienced;
+  final String? totalExperience;
+  final String? currentSalary;
+  final List<String>? skills;
+  final List<String>? language;
 
   const UpdateProfileSheet({
     super.key,
@@ -721,6 +25,13 @@ class UpdateProfileSheet extends StatefulWidget {
     required this.email,
     required this.gender,
     required this.education,
+    this.userLocation,
+    this.jobCategory,
+    this.isExperienced,
+    this.totalExperience,
+    this.currentSalary,
+    this.skills,
+    this.language,
   });
 
   @override
@@ -729,15 +40,29 @@ class UpdateProfileSheet extends StatefulWidget {
 
 class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  
+  // Text Controllers
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _educationController;
+  late TextEditingController _locationController;
+  late TextEditingController _jobCategoryController;
+  late TextEditingController _totalExperienceController;
+  late TextEditingController _currentSalaryController;
+  late TextEditingController _skillsController;
+  late TextEditingController _languageController;
+  
+  // Dropdown values
   String? _selectedGender;
-
+  bool? _isExperienced;
+  String? _selectedJobCategoryId; // Add job category ID
+  
+  // File handling
   File? _profileImage;
   File? _resumeFile;
   final ImagePicker _picker = ImagePicker();
   
+  // Animation
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -745,21 +70,29 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
   @override
   void initState() {
     super.initState();
+    
+    // Initialize controllers
     _nameController = TextEditingController(text: widget.fullName);
     _emailController = TextEditingController(text: widget.email);
     _educationController = TextEditingController(text: widget.education);
+    _locationController = TextEditingController(text: widget.userLocation ?? '');
+    _jobCategoryController = TextEditingController(text: widget.jobCategory ?? '');
+    _totalExperienceController = TextEditingController(text: widget.totalExperience ?? '');
+    _currentSalaryController = TextEditingController(text: widget.currentSalary ?? '');
+    _skillsController = TextEditingController(text: widget.skills?.join(', ') ?? '');
+    _languageController = TextEditingController(text: widget.language?.join(', ') ?? '');
     
-    // Fix: Check if gender is not empty before accessing
+    // Initialize dropdown values
     if (widget.gender.isNotEmpty) {
-      _selectedGender =
-          widget.gender[0].toUpperCase() + widget.gender.substring(1);
+      _selectedGender = widget.gender[0].toUpperCase() + widget.gender.substring(1);
     } else {
-      _selectedGender = "Male"; // Default value
+      _selectedGender = "Male";
     }
+    _isExperienced = widget.isExperienced;
     
     // Initialize animations
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -771,6 +104,52 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
     ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic));
     
     _animationController.forward();
+    
+    // Fetch job categories and initialize selected category
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<ProfileProvider>(context, listen: false);
+      if (provider.jobCategories.isEmpty) {
+        provider.fetchJobCategories().then((_) {
+          // After categories are loaded, try to find the matching category ID
+          _initializeJobCategory(provider);
+        });
+      } else {
+        _initializeJobCategory(provider);
+      }
+    });
+  }
+  
+  void _initializeJobCategory(ProfileProvider provider) {
+    if (widget.jobCategory != null && widget.jobCategory!.isNotEmpty) {
+      // Try to find the category ID by matching the category name
+      try {
+        final matchingCategory = provider.jobCategories.firstWhere(
+          (category) => category.jobCategory.toLowerCase() == widget.jobCategory!.toLowerCase(),
+        );
+        
+        if (mounted) {
+          setState(() {
+            _selectedJobCategoryId = matchingCategory.id;
+          });
+        }
+      } catch (e) {
+        // If no matching category found by name, try by ID
+        try {
+          final matchingCategoryById = provider.jobCategories.firstWhere(
+            (category) => category.id == widget.jobCategory,
+          );
+          
+          if (mounted) {
+            setState(() {
+              _selectedJobCategoryId = matchingCategoryById.id;
+            });
+          }
+        } catch (e) {
+          // If still no match, leave it as null (no selection)
+          print("No matching job category found for: ${widget.jobCategory}");
+        }
+      }
+    }
   }
 
   @override
@@ -779,6 +158,12 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
     _nameController.dispose();
     _emailController.dispose();
     _educationController.dispose();
+    _locationController.dispose();
+    _jobCategoryController.dispose();
+    _totalExperienceController.dispose();
+    _currentSalaryController.dispose();
+    _skillsController.dispose();
+    _languageController.dispose();
     super.dispose();
   }
 
@@ -790,7 +175,6 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
     return "${(bytes / (1024 * 1024)).toStringAsFixed(2)} MB";
   }
 
-  // 📸 BottomSheet to choose Camera/Gallery
   void _showImagePickerSheet() {
     showModalBottomSheet(
       context: context,
@@ -807,7 +191,6 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Handle bar
                 Container(
                   width: 40,
                   height: 4,
@@ -818,12 +201,12 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
                 ),
                 const SizedBox(height: 20),
                 
-                Text(
+                const Text(
                   "Choose Profile Photo",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.headingText,
+                    color: Color(0xFF2D3748),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -832,7 +215,7 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
                   children: [
                     Expanded(
                       child: _buildImageSourceButton(
-                        icon: Icons.camera_alt_rounded,
+                        icon: Icons.camera_alt_outlined,
                         label: "Camera",
                         onTap: () => _pickProfileImage(ImageSource.camera),
                         gradient: const LinearGradient(
@@ -843,7 +226,7 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildImageSourceButton(
-                        icon: Icons.photo_library_rounded,
+                        icon: Icons.photo_library_outlined,
                         label: "Gallery",
                         onTap: () => _pickProfileImage(ImageSource.gallery),
                         gradient: const LinearGradient(
@@ -873,11 +256,11 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          gradient: gradient,
-          borderRadius: BorderRadius.circular(16),
+          color: const Color(0xFF3B82F6),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: const Color(0xFF3B82F6).withOpacity(0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -885,7 +268,7 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
         ),
         child: Column(
           children: [
-            Icon(icon, color: Colors.white, size: 32),
+            Icon(icon, color: Colors.white, size: 28),
             const SizedBox(height: 8),
             Text(
               label,
@@ -910,80 +293,73 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
         imageQuality: 70,
       );
       
-      if (mounted) Navigator.pop(context); // Close sheet
+      if (mounted) Navigator.pop(context);
 
       if (image != null) {
         final file = File(image.path);
-        final fileSize = file.lengthSync() / (1024 * 1024); // MB
+        final fileSize = file.lengthSync() / (1024 * 1024);
         
         if (fileSize > 5) {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Image too large: ${fileSize.toStringAsFixed(1)}MB. Max 5MB allowed."),
-                backgroundColor: Colors.orange,
-                duration: const Duration(seconds: 3),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-            );
+            _showSnackBar("Image too large: ${fileSize.toStringAsFixed(1)}MB. Max 5MB allowed.", Colors.orange);
           }
           return;
         }
         
         setState(() => _profileImage = file);
+        if (mounted) {
+          _showSnackBar("Profile image selected: ${_getFileSize(file)}", Colors.green);
+        }
       }
     } catch (e) {
       if (mounted) {
-        Navigator.pop(context); // Close sheet on error
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Failed to pick image"),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        );
+        Navigator.pop(context);
+        _showSnackBar("Failed to pick image", Colors.red);
       }
     }
   }
 
-  Future<void> pickResumeFile() async {
-    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
-    if (file != null) {
-      final resumeFile = File(file.path);
-      final fileSize = resumeFile.lengthSync() / (1024 * 1024); // MB
-      
-      if (fileSize > 5) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Resume too large: ${fileSize.toStringAsFixed(1)}MB. Max 5MB allowed."),
-              backgroundColor: Colors.orange,
-              duration: const Duration(seconds: 3),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
-          );
+  Future<void> _pickResumeFile() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx'],
+        allowMultiple: false,
+      );
+
+      if (result != null && result.files.single.path != null) {
+        final file = File(result.files.single.path!);
+        final fileSize = file.lengthSync() / (1024 * 1024);
+        
+        if (fileSize > 5) {
+          if (mounted) {
+            _showSnackBar("Resume too large: ${fileSize.toStringAsFixed(1)}MB. Max 5MB allowed.", Colors.orange);
+          }
+          return;
         }
-        return;
+        
+        setState(() => _resumeFile = file);
+        if (mounted) {
+          _showSnackBar("Resume selected: ${_getFileSize(file)}", Colors.green);
+        }
       }
-      
-      setState(() => _resumeFile = resumeFile);
-      
-      // Show success message with file size
+    } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Resume selected: ${_getFileSize(resumeFile)}"),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        );
+        _showSnackBar("Failed to pick resume file", Colors.red);
       }
     }
+  }
+
+  void _showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 
   void _saveProfile() async {
@@ -991,51 +367,39 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
       final provider = Provider.of<ProfileProvider>(context, listen: false);
 
       try {
-        // ✅ Now sending image and resume files if selected
         bool success = await provider.updateProfile(
           fullName: _nameController.text.trim(),
           email: _emailController.text.trim(),
           gender: _selectedGender ?? "male",
           education: _educationController.text.trim(),
-          profileImage: _profileImage, // ✅ Send selected image
-          resumeFile: _resumeFile,     // ✅ Send selected resume
+          userLocation: _locationController.text.trim().isNotEmpty ? _locationController.text.trim() : null,
+          jobCategoryId: _selectedJobCategoryId, // Pass the selected job category ID
+          isExperienced: _isExperienced, // Pass the experience level
+          totalExperience: _isExperienced == true && _totalExperienceController.text.trim().isNotEmpty 
+              ? _totalExperienceController.text.trim() 
+              : null,
+          currentSalary: _isExperienced == true && _currentSalaryController.text.trim().isNotEmpty 
+              ? _currentSalaryController.text.trim() 
+              : null,
+          skills: _skillsController.text.trim().isNotEmpty ? _skillsController.text.trim() : null,
+          language: _languageController.text.trim().isNotEmpty ? _languageController.text.trim() : null,
+          profileImage: _profileImage,
+          resumeFile: _resumeFile,
         );
 
         if (success) {
           if (mounted) {
             Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text("Profile updated successfully ✅"),
-                backgroundColor: Colors.green,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-            );
+            _showSnackBar("Profile updated successfully ✅", Colors.green);
           }
         } else {
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text("Failed to update profile ❌"),
-                backgroundColor: Colors.red,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              ),
-            );
+            _showSnackBar("Failed to update profile ❌", Colors.red);
           }
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(e.toString().replaceAll('Exception: ', '')),
-              backgroundColor: Colors.orange,
-              duration: const Duration(seconds: 4),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            ),
-          );
+          _showSnackBar(e.toString().replaceAll('Exception: ', ''), Colors.orange);
         }
       }
     }
@@ -1055,7 +419,7 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
           left: 24,
           right: 24,
           top: 16,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+          bottom: 24, // Remove the viewInsets.bottom since it's already handled by ProfileScreen
         ),
         child: provider.isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -1083,85 +447,155 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
                                 ),
                               ),
                               
-                              // Header with gradient text
-                              Container(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                child: ShaderMask(
-                                  shaderCallback: (bounds) => const LinearGradient(
-                                    colors: [Color(0xFF667eea), Color(0xFF764ba2)],
-                                  ).createShader(bounds),
-                                  child: const Text(
-                                    "Update Profile",
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
+                              // Header
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                child: Text(
+                                  "Update Profile",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF1F2937),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 32),
-                              
-                              // Form fields
-                              _buildModernTextField(
-                                controller: _nameController,
-                                label: "Full Name",
-                                icon: Icons.person_rounded,
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF667eea), Color(0xFF764ba2)],
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              
-                              _buildModernTextField(
-                                controller: _emailController,
-                                label: "Email",
-                                icon: Icons.email_rounded,
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF4facfe), Color(0xFF00f2fe)],
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              
-                              _buildModernDropdown(),
-                              const SizedBox(height: 20),
-                              
-                              _buildModernTextField(
-                                controller: _educationController,
-                                label: "Education",
-                                icon: Icons.school_rounded,
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF43e97b), Color(0xFF38f9d7)],
                                 ),
                               ),
                               const SizedBox(height: 24),
                               
-                              // File pickers
+                              // Basic Information Section
+                              _buildSectionHeader("Basic Information", Icons.person_outline),
+                              const SizedBox(height: 12),
+                              
+                              _buildModernTextField(
+                                controller: _nameController,
+                                label: "Full Name",
+                                icon: Icons.person_outline,
+                              ),
+                              const SizedBox(height: 16),
+                              
+                              _buildModernTextField(
+                                controller: _emailController,
+                                label: "Email",
+                                icon: Icons.email_outlined,
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+                              const SizedBox(height: 16),
+                              
+                              _buildModernDropdown(),
+                              const SizedBox(height: 16),
+                              
+                              _buildModernTextField(
+                                controller: _educationController,
+                                label: "Education",
+                                icon: Icons.school_outlined,
+                              ),
+                              const SizedBox(height: 16),
+                              
+                              _buildModernTextField(
+                                controller: _locationController,
+                                label: "Location",
+                                icon: Icons.location_on_outlined,
+                                validator: null,
+                              ),
+                              const SizedBox(height: 24),
+                              
+                              // Professional Information Section
+                              _buildSectionHeader("Professional Information", Icons.work_outline),
+                              const SizedBox(height: 12),
+                              
+                              _buildJobCategoryDropdown(),
+                              const SizedBox(height: 16),
+                              
+                              _buildExperienceDropdown(),
+                              const SizedBox(height: 12),
+                              
+                              // Experience Level Hint
+                              _buildHintCard(),
+                              const SizedBox(height: 16),
+                              
+                              if (_isExperienced == true) ...[
+                                _buildModernTextField(
+                                  controller: _totalExperienceController,
+                                  label: "Total Experience (Years)",
+                                  icon: Icons.timeline_outlined,
+                                  keyboardType: TextInputType.number,
+                                  validator: null,
+                                  hintText: "e.g., 2, 3.5, 5",
+                                ),
+                                const SizedBox(height: 16),
+                                
+                                _buildModernTextField(
+                                  controller: _currentSalaryController,
+                                  label: "Current Salary (₹)",
+                                  icon: Icons.currency_rupee_outlined,
+                                  keyboardType: TextInputType.number,
+                                  validator: null,
+                                  hintText: "e.g., 25000, 50000, 100000",
+                                ),
+                                const SizedBox(height: 16),
+                              ],
+                              
+                              if (_isExperienced == false) ...[
+                                _buildInfoCard(
+                                  "💡 Fresher Tip",
+                                  "Don't worry about experience fields! As a fresher, focus on your skills and education. You can update experience details later as you grow in your career.",
+                                  const LinearGradient(colors: [Color(0xFF4facfe), Color(0xFF00f2fe)]),
+                                ),
+                                const SizedBox(height: 16),
+                              ],
+                              
+                              // Skills Section
+                              _buildSectionHeader("Skills & Languages", Icons.psychology_outlined),
+                              const SizedBox(height: 12),
+                              
+                              _buildModernTextField(
+                                controller: _skillsController,
+                                label: "Skills (comma separated)",
+                                icon: Icons.star_outline,
+                                validator: null,
+                                maxLines: 2,
+                                hintText: "e.g., Flutter, Dart, Firebase, UI/UX",
+                              ),
+                              const SizedBox(height: 16),
+                              
+                              _buildModernTextField(
+                                controller: _languageController,
+                                label: "Languages (comma separated)",
+                                icon: Icons.language_outlined,
+                                validator: null,
+                                maxLines: 2,
+                                hintText: "e.g., English, Hindi, Gujarati",
+                              ),
+                              const SizedBox(height: 24),
+                              
+                              // Profile Image Section
+                              _buildSectionHeader("Profile Image", Icons.image_outlined),
+                              const SizedBox(height: 12),
+                              
                               _buildModernFilePicker(
-                                icon: Icons.image_rounded,
+                                icon: Icons.image_outlined,
                                 label: "Profile Image",
                                 fileName: _profileImage != null
                                     ? "${_profileImage!.path.split('/').last} (${_getFileSize(_profileImage)})"
                                     : "No image selected",
                                 onPressed: _showImagePickerSheet,
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF667eea), Color(0xFF764ba2)],
-                                ),
+                                gradient: const LinearGradient(colors: [Color(0xFF667eea), Color(0xFF764ba2)]),
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 24),
+                              
+                              // Resume Section
+                              _buildSectionHeader("Resume", Icons.description_outlined),
+                              const SizedBox(height: 12),
                               
                               _buildModernFilePicker(
-                                icon: Icons.description_rounded,
-                                label: "Resume",
+                                icon: Icons.description_outlined,
+                                label: "Resume (PDF, DOC, DOCX)",
                                 fileName: _resumeFile != null
                                     ? "${_resumeFile!.path.split('/').last} (${_getFileSize(_resumeFile)})"
                                     : "No resume selected",
-                                onPressed: pickResumeFile,
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFF43e97b), Color(0xFF38f9d7)],
-                                ),
+                                onPressed: _pickResumeFile,
+                                gradient: const LinearGradient(colors: [Color(0xFF4facfe), Color(0xFF00f2fe)]),
                               ),
-                              const SizedBox(height: 32),
+                              const SizedBox(height: 24),
                               
                               // Save button
                               _buildModernSaveButton(),
@@ -1178,60 +612,100 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
     );
   }
 
+  Widget _buildSectionHeader(String title, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(
+            icon, 
+            color: const Color(0xFF6B7280), 
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF374151),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildModernTextField({
     required TextEditingController controller,
     required String label,
     required IconData icon,
-    required Gradient gradient,
+    String? Function(String?)? validator,
+    TextInputType? keyboardType,
+    int maxLines = 1,
+    String? hintText,
   }) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: TextFormField(
         controller: controller,
-        validator: (v) => v!.isEmpty ? "Enter $label" : null,
-        style: TextStyle(
+        validator: validator ?? (v) => v!.isEmpty ? "Enter $label" : null,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        style: const TextStyle(
           fontSize: 16,
-          color: AppColors.headingText,
+          color: Color(0xFF374151),
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(
-            color: Colors.grey[600],
+          hintText: hintText,
+          labelStyle: const TextStyle(
+            color: Color(0xFF6B7280),
             fontWeight: FontWeight.w500,
+            fontSize: 14,
           ),
-          prefixIcon: Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              gradient: gradient,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, color: Colors.white, size: 20),
+          hintStyle: const TextStyle(
+            color: Color(0xFF9CA3AF),
+            fontSize: 14,
+          ),
+          prefixIcon: Icon(
+            icon, 
+            color: const Color(0xFF6B7280), 
+            size: 20,
           ),
           filled: true,
-          fillColor: Colors.grey[50],
+          fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Colors.grey[200]!, width: 1),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: AppColors.primary, width: 2),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFEF4444)),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFEF4444), width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         ),
       ),
     );
@@ -1240,12 +714,12 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
   Widget _buildModernDropdown() {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -1256,42 +730,187 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
             .toList(),
         onChanged: (val) => setState(() => _selectedGender = val),
         validator: (v) => v == null ? "Select gender" : null,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
-          color: AppColors.headingText,
+          color: Color(0xFF374151),
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
           labelText: "Gender",
-          labelStyle: TextStyle(
-            color: Colors.grey[600],
+          labelStyle: const TextStyle(
+            color: Color(0xFF6B7280),
             fontWeight: FontWeight.w500,
+            fontSize: 14,
           ),
-          prefixIcon: Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFfa709a), Color(0xFFfee140)],
-              ),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.transgender_rounded, color: Colors.white, size: 20),
+          prefixIcon: const Icon(
+            Icons.person_outline, 
+            color: Color(0xFF6B7280), 
+            size: 20,
           ),
           filled: true,
-          fillColor: Colors.grey[50],
+          fillColor: const Color(0xFFF9FAFB),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: Colors.grey[200]!, width: 1),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: AppColors.primary, width: 2),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildJobCategoryDropdown() {
+    final provider = Provider.of<ProfileProvider>(context);
+    
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: provider.isCategoriesLoading
+          ? Container(
+              height: 56,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF9FAFB),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
+              ),
+              child: const Center(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            )
+          : DropdownButtonFormField<String>(
+              value: _selectedJobCategoryId,
+              items: [
+                const DropdownMenuItem<String>(
+                  value: null,
+                  child: Text("Select Job Category"),
+                ),
+                ...provider.jobCategories.map((category) => 
+                  DropdownMenuItem<String>(
+                    value: category.id,
+                    child: Text(category.jobCategory),
+                  ),
+                ).toList(),
+              ],
+              onChanged: (val) => setState(() => _selectedJobCategoryId = val),
+              validator: null, // Make it optional
+              style: const TextStyle(
+                fontSize: 16,
+                color: Color(0xFF374151),
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: InputDecoration(
+                labelText: "Job Category",
+                labelStyle: const TextStyle(
+                  color: Color(0xFF6B7280),
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+                prefixIcon: const Icon(
+                  Icons.category_outlined, 
+                  color: Color(0xFF6B7280), 
+                  size: 20,
+                ),
+                filled: true,
+                fillColor: const Color(0xFFF9FAFB),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
+                ),
+                contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              ),
+            ),
+    );
+  }
+
+  Widget _buildExperienceDropdown() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: DropdownButtonFormField<bool>(
+        value: _isExperienced,
+        items: const [
+          DropdownMenuItem(value: true, child: Text("Experienced")),
+          DropdownMenuItem(value: false, child: Text("Fresher")),
+        ],
+        onChanged: (val) {
+          setState(() {
+            _isExperienced = val;
+            // Clear experience fields when switching to fresher
+            if (val == false) {
+              _totalExperienceController.clear();
+              _currentSalaryController.clear();
+            }
+          });
+        },
+        validator: (v) => v == null ? "Select experience level" : null,
+        style: const TextStyle(
+          fontSize: 16,
+          color: Color(0xFF374151),
+          fontWeight: FontWeight.w500,
+        ),
+        decoration: InputDecoration(
+          labelText: "Experience Level",
+          labelStyle: const TextStyle(
+            color: Color(0xFF6B7280),
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
+          prefixIcon: const Icon(
+            Icons.work_outline, 
+            color: Color(0xFF6B7280), 
+            size: 20,
+          ),
+          filled: true,
+          fillColor: const Color(0xFFF9FAFB),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
+          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         ),
       ),
     );
@@ -1306,48 +925,41 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        color: const Color(0xFFF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                gradient: gradient,
-                borderRadius: BorderRadius.circular(12),
+                color: const Color(0xFF3B82F6).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon, color: Colors.white, size: 24),
+              child: Icon(icon, color: const Color(0xFF3B82F6), size: 20),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.headingText,
+                      color: Color(0xFF374151),
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     fileName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: Color(0xFF6B7280),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -1357,29 +969,22 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
             const SizedBox(width: 12),
             Container(
               decoration: BoxDecoration(
-                gradient: gradient,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+                color: const Color(0xFF3B82F6),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onPressed,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                   child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
                       "Choose",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 14,
+                        fontSize: 12,
                       ),
                     ),
                   ),
@@ -1392,22 +997,90 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
     );
   }
 
+  Widget _buildHintCard() {
+    if (_isExperienced == null) return const SizedBox.shrink();
+    
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: _isExperienced == true
+          ? _buildInfoCard(
+              "✨ Experienced Professional",
+              "You can add your skills to showcase your expertise and help employers find you for relevant opportunities.",
+              const LinearGradient(colors: [Color(0xFF43e97b), Color(0xFF38f9d7)]),
+            )
+          : _buildInfoCard(
+              "🌟 Fresh Start",
+              "Complete your profile to increase your chances of getting hired! Add your skills, upload a resume, and keep your information updated.",
+              const LinearGradient(colors: [Color(0xFF4facfe), Color(0xFF00f2fe)]),
+            ),
+    );
+  }
+
+  Widget _buildInfoCard(String title, String message, Gradient gradient) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF0F9FF),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE0F2FE)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF3B82F6).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.info_outline,
+              color: Color(0xFF3B82F6),
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Color(0xFF1E40AF),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  message,
+                  style: const TextStyle(
+                    color: Color(0xFF1E40AF),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildModernSaveButton() {
     return Container(
       width: double.infinity,
-      height: 56,
+      height: 48,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF667eea), Color(0xFF764ba2)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
+        color: const Color(0xFF3B82F6),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF667eea).withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+            color: const Color(0xFF3B82F6).withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -1415,14 +1088,14 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
         color: Colors.transparent,
         child: InkWell(
           onTap: _saveProfile,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           child: const Center(
             child: Text(
               "Save Changes",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -1431,724 +1104,3 @@ class _UpdateProfileSheetState extends State<UpdateProfileSheet> with TickerProv
     );
   }
 }
-
-
-
-
-
-
-
-
-//
-// import 'dart:io';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:provider/provider.dart';
-// import '../provider/ProfileProvider.dart';
-//
-// class UpdateProfileSheet extends StatefulWidget {
-//   final String fullName;
-//   final String email;
-//   final String gender;
-//   final String education;
-//
-//   const UpdateProfileSheet({
-//     super.key,
-//     required this.fullName,
-//     required this.email,
-//     required this.gender,
-//     required this.education,
-//   });
-//
-//   @override
-//   State<UpdateProfileSheet> createState() => _UpdateProfileSheetState();
-// }
-//
-// class _UpdateProfileSheetState extends State<UpdateProfileSheet> {
-//   final _formKey = GlobalKey<FormState>();
-//   late TextEditingController _nameController;
-//   late TextEditingController _emailController;
-//   late TextEditingController _educationController;
-//   String? _selectedGender;
-//
-//   File? _profileImage;
-//   File? _resumeFile;
-//   final ImagePicker _picker = ImagePicker();
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameController = TextEditingController(text: widget.fullName);
-//     _emailController = TextEditingController(text: widget.email);
-//     _educationController = TextEditingController(text: widget.education);
-//     _selectedGender =
-//         widget.gender[0].toUpperCase() + widget.gender.substring(1);
-//   }
-//
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _educationController.dispose();
-//     super.dispose();
-//   }
-//
-//   Future<void> pickProfileImage() async {
-//     final XFile? image = await _picker.pickImage(
-//       source: ImageSource.gallery,
-//       maxWidth: 800,
-//       maxHeight: 800,
-//       imageQuality: 70,
-//     );
-//     if (image != null) {
-//       setState(() => _profileImage = File(image.path));
-//     }
-//   }
-//
-//   Future<void> pickResumeFile() async {
-//     final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
-//     if (file != null) {
-//       setState(() => _resumeFile = File(file.path));
-//     }
-//   }
-//
-//   void _saveProfile() async {
-//     if (_formKey.currentState!.validate()) {
-//       final provider = Provider.of<ProfileProvider>(context, listen: false);
-//       bool success = await provider.updateProfile(
-//         fullName: _nameController.text.trim(),
-//         email: _emailController.text.trim(),
-//         gender: _selectedGender ?? "male",
-//         education: _educationController.text.trim(),
-//         profileImage: _profileImage,
-//         resumeFile: _resumeFile,
-//       );
-//
-//       if (success) {
-//         if (mounted) {
-//           Navigator.pop(context);
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Profile updated successfully ✅")),
-//           );
-//         }
-//       } else {
-//         if (mounted) {
-//           ScaffoldMessenger.of(context).showSnackBar(
-//             const SnackBar(content: Text("Failed to update profile ❌")),
-//           );
-//         }
-//       }
-//     }
-//   }
-//
-//   Widget _filePickerButton({
-//     required String label,
-//     required IconData icon,
-//     required Color color,
-//     File? file,
-//     required VoidCallback onPressed,
-//   }) {
-//     return Card(
-//       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-//       elevation: 2,
-//       child: ListTile(
-//         leading: Icon(icon, color: color, size: 28),
-//         title: Text(
-//           file != null ? file.path.split('/').last : label,
-//           overflow: TextOverflow.ellipsis,
-//           style: TextStyle(fontSize: 14),
-//         ),
-//         trailing: ElevatedButton(
-//           onPressed: onPressed,
-//           style: ElevatedButton.styleFrom(
-//             backgroundColor: color,
-//             shape:
-//             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-//             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-//           ),
-//           child: const Text("Choose"),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<ProfileProvider>(context);
-//
-//     return Padding(
-//       padding: EdgeInsets.only(
-//         left: 16,
-//         right: 16,
-//         top: 16,
-//         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-//       ),
-//       child: provider.isLoading
-//           ? const Center(child: CircularProgressIndicator())
-//           : Form(
-//         key: _formKey,
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               Container(
-//                 width: 50,
-//                 height: 5,
-//                 margin: const EdgeInsets.only(bottom: 16),
-//                 decoration: BoxDecoration(
-//                   color: Colors.grey[300],
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//               const Text(
-//                 "Update Profile",
-//                 style: TextStyle(
-//                   fontSize: 22,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.blueAccent,
-//                 ),
-//               ),
-//               const SizedBox(height: 20),
-//               TextFormField(
-//                 controller: _nameController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Full Name",
-//                   prefixIcon: Icon(Icons.person),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v!.isEmpty ? "Enter full name" : null,
-//               ),
-//               const SizedBox(height: 12),
-//               TextFormField(
-//                 controller: _emailController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Email",
-//                   prefixIcon: Icon(Icons.email),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v!.isEmpty ? "Enter email" : null,
-//               ),
-//               const SizedBox(height: 12),
-//               DropdownButtonFormField<String>(
-//                 value: _selectedGender,
-//                 items: ["Male", "Female", "Other"]
-//                     .map((g) => DropdownMenuItem(
-//                   value: g,
-//                   child: Text(g),
-//                 ))
-//                     .toList(),
-//                 onChanged: (val) =>
-//                     setState(() => _selectedGender = val),
-//                 decoration: const InputDecoration(
-//                   labelText: "Gender",
-//                   prefixIcon: Icon(Icons.transgender),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v == null ? "Select gender" : null,
-//               ),
-//               const SizedBox(height: 12),
-//               TextFormField(
-//                 controller: _educationController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Education",
-//                   prefixIcon: Icon(Icons.school),
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) => v!.isEmpty ? "Enter education" : null,
-//               ),
-//               const SizedBox(height: 12),
-//               _filePickerButton(
-//                 label: "Choose Profile Image",
-//                 icon: Icons.image,
-//                 color: Colors.blue.shade300,
-//                 file: _profileImage,
-//                 onPressed: pickProfileImage,
-//               ),
-//               _filePickerButton(
-//                 label: "Choose Resume",
-//                 icon: Icons.description,
-//                 color: Colors.green.shade300,
-//                 file: _resumeFile,
-//                 onPressed: pickResumeFile,
-//               ),
-//               const SizedBox(height: 20),
-//               SizedBox(
-//                 width: double.infinity,
-//                 child: ElevatedButton(
-//                   onPressed: _saveProfile,
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Colors.blueAccent,
-//                     padding: const EdgeInsets.symmetric(vertical: 16),
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.circular(12)),
-//                   ),
-//                   child: const Text(
-//                     "Save Changes",
-//                     style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 16,
-//                         fontWeight: FontWeight.bold),
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(height: 16),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-//
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import '../provider/ProfileProvider.dart';
-//
-// class UpdateProfileSheet extends StatefulWidget {
-//   final String fullName;
-//   final String email;
-//   final String gender;
-//   final String education;
-//
-//   const UpdateProfileSheet({
-//     super.key,
-//     required this.fullName,
-//     required this.email,
-//     required this.gender,
-//     required this.education,
-//   });
-//
-//   @override
-//   State<UpdateProfileSheet> createState() => _UpdateProfileSheetState();
-// }
-//
-// class _UpdateProfileSheetState extends State<UpdateProfileSheet> {
-//   final _formKey = GlobalKey<FormState>();
-//
-//   late TextEditingController _nameController;
-//   late TextEditingController _emailController;
-//   late TextEditingController _educationController;
-//   String? _selectedGender;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameController = TextEditingController(text: widget.fullName);
-//     _emailController = TextEditingController(text: widget.email);
-//     _educationController = TextEditingController(text: widget.education);
-//
-//     // ✅ Gender ko properly normalize karke set karenge
-//     String g = widget.gender.trim().toLowerCase();
-//     if (g == "male") {
-//       _selectedGender = "Male";
-//     } else if (g == "female") {
-//       _selectedGender = "Female";
-//     } else if (g == "other") {
-//       _selectedGender = "Other";
-//     } else {
-//       _selectedGender = null; // agar match na ho
-//     }
-//   }
-//
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _educationController.dispose();
-//     super.dispose();
-//   }
-//
-//   void _saveProfile() async {
-//     if (_formKey.currentState!.validate()) {
-//       final provider = Provider.of<ProfileProvider>(context, listen: false);
-//
-//       bool success = await provider.updateProfile({
-//         "fullName": _nameController.text.trim(),
-//         "email": _emailController.text.trim(),
-//         "gender": _selectedGender,
-//         "education": _educationController.text.trim(),
-//       });
-//
-//       if (success) {
-//         Navigator.pop(context);
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(content: Text("Profile updated successfully ✅")),
-//         );
-//       } else {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(content: Text("Failed to update profile ❌")),
-//         );
-//       }
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<ProfileProvider>(context);
-//
-//     return Padding(
-//       padding: EdgeInsets.only(
-//         left: 16,
-//         right: 16,
-//         top: 16,
-//         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-//       ),
-//       child: provider.isLoading
-//           ? const Center(child: CircularProgressIndicator())
-//           : Form(
-//         key: _formKey,
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               // ✅ Small drag handle
-//               Container(
-//                 width: 40,
-//                 height: 5,
-//                 margin: const EdgeInsets.only(bottom: 20),
-//                 decoration: BoxDecoration(
-//                   color: Colors.grey[400],
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//               ),
-//
-//               Text(
-//                 "Update Profile",
-//                 style: const TextStyle(
-//                   fontSize: 18,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.blue,
-//                 ),
-//               ),
-//               const SizedBox(height: 20),
-//
-//               TextFormField(
-//                 controller: _nameController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Full Name",
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter full name" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               TextFormField(
-//                 controller: _emailController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Email",
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter email" : null,
-//               ),
-//               const SizedBox(height: 12),
-//
-//               DropdownButtonFormField<String>(
-//                 value: _selectedGender,
-//                 items: ["Male", "Female", "Other"]
-//                     .map((g) =>
-//                     DropdownMenuItem(value: g, child: Text(g)))
-//                     .toList(),
-//                 onChanged: (val) => setState(() => _selectedGender = val),
-//                 decoration: const InputDecoration(
-//                   labelText: "Gender",
-//                   border: OutlineInputBorder(),
-//                 ),
-//               ),
-//               const SizedBox(height: 12),
-//
-//               TextFormField(
-//                 controller: _educationController,
-//                 decoration: const InputDecoration(
-//                   labelText: "Education",
-//                   border: OutlineInputBorder(),
-//                 ),
-//                 validator: (v) =>
-//                 v!.isEmpty ? "Enter education" : null,
-//               ),
-//               const SizedBox(height: 20),
-//
-//               SizedBox(
-//                 width: double.infinity,
-//                 child: ElevatedButton(
-//                   onPressed: _saveProfile,
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Colors.blue.shade300,
-//                     padding:
-//                     const EdgeInsets.symmetric(vertical: 14),
-//                   ),
-//                   child: const Text(
-//                     "Save",
-//                     style:
-//                     TextStyle(color: Colors.white, fontSize: 16),
-//                   ),
-//                 ),
-//               ),
-//
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import '../provider/ProfileProvider.dart';
-//
-// class UpdateProfileScreen extends StatefulWidget {
-//   final String fullName;
-//   final String email;
-//   final String gender;
-//   final String education;
-//
-//   const UpdateProfileScreen({
-//     super.key,
-//     required this.fullName,
-//     required this.email,
-//     required this.gender,
-//     required this.education,
-//   });
-//
-//   @override
-//   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
-// }
-//
-// class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-//   final _formKey = GlobalKey<FormState>();
-//
-//   late TextEditingController _nameController;
-//   late TextEditingController _emailController;
-//   late TextEditingController _educationController;
-//   String? _selectedGender;
-//
-//   final List<String> genderOptions = ["Male", "Female", "Other"];
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameController = TextEditingController(text: widget.fullName);
-//     _emailController = TextEditingController(text: widget.email);
-//     _educationController = TextEditingController(text: widget.education);
-//
-//     // ✅ Match gender safely (case-insensitive)
-//     _selectedGender = genderOptions.firstWhere(
-//           (g) => g.toLowerCase() == widget.gender.toLowerCase(),
-//       orElse: () => "Male", // default agar match na ho
-//     );
-//   }
-//
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _educationController.dispose();
-//     super.dispose();
-//   }
-//
-//   void _saveProfile() async {
-//     if (_formKey.currentState!.validate()) {
-//       final provider = Provider.of<ProfileProvider>(context, listen: false);
-//
-//       bool success = await provider.updateProfile({
-//         "fullName": _nameController.text.trim(),
-//         "email": _emailController.text.trim(),
-//         "gender": _selectedGender,
-//         "education": _educationController.text.trim(),
-//       });
-//
-//       if (success) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(content: Text("Profile updated successfully ✅")),
-//         );
-//         Navigator.pop(context); // back to ProfileScreen
-//       } else {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(content: Text("Failed to update profile ❌")),
-//         );
-//       }
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<ProfileProvider>(context);
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Update Profile"),
-//         backgroundColor: Colors.blue,
-//       ),
-//       body: provider.isLoading
-//           ? const Center(child: CircularProgressIndicator())
-//           : Padding(
-//         padding: const EdgeInsets.all(16),
-//         child: Form(
-//           key: _formKey,
-//           child: ListView(
-//             children: [
-//               TextFormField(
-//                 controller: _nameController,
-//                 decoration: const InputDecoration(labelText: "Full Name"),
-//                 validator: (value) =>
-//                 value!.isEmpty ? "Enter full name" : null,
-//               ),
-//               const SizedBox(height: 12),
-//               TextFormField(
-//                 controller: _emailController,
-//                 decoration: const InputDecoration(labelText: "Email"),
-//                 validator: (value) =>
-//                 value!.isEmpty ? "Enter email" : null,
-//               ),
-//               const SizedBox(height: 12),
-//               DropdownButtonFormField<String>(
-//                 value: _selectedGender,
-//                 items: genderOptions
-//                     .map((gender) => DropdownMenuItem(
-//                   value: gender,
-//                   child: Text(gender),
-//                 ))
-//                     .toList(),
-//                 onChanged: (value) {
-//                   setState(() => _selectedGender = value);
-//                 },
-//                 decoration: const InputDecoration(labelText: "Gender"),
-//               ),
-//               const SizedBox(height: 12),
-//               TextFormField(
-//                 controller: _educationController,
-//                 decoration: const InputDecoration(
-//                     labelText: "Education Level"),
-//                 validator: (value) =>
-//                 value!.isEmpty ? "Enter education level" : null,
-//               ),
-//               const SizedBox(height: 20),
-//               ElevatedButton(
-//                 onPressed: _saveProfile,
-//                 style: ElevatedButton.styleFrom(
-//                   backgroundColor: Colors.blue,
-//                   padding: const EdgeInsets.symmetric(vertical: 14),
-//                 ),
-//                 child: const Text(
-//                   "Save",
-//                   style: TextStyle(color: Colors.white),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import '../provider/ProfileProvider.dart';
-//
-// class UpdateProfileScreen extends StatefulWidget {
-//   final String fullName;
-//   final String email;
-//   final String gender;
-//   final String education;
-//
-//   const UpdateProfileScreen({
-//     super.key,
-//     required this.fullName,
-//     required this.email,
-//     required this.gender,
-//     required this.education,
-//   });
-//
-//   @override
-//   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
-// }
-//
-// class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-//   late TextEditingController _nameController;
-//   late TextEditingController _emailController;
-//   late TextEditingController _genderController;
-//   late TextEditingController _educationController;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     _nameController = TextEditingController(text: widget.fullName);
-//     _emailController = TextEditingController(text: widget.email);
-//     _genderController = TextEditingController(text: widget.gender);
-//     _educationController = TextEditingController(text: widget.education);
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<ProfileProvider>(context);
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Update Profile"),
-//         backgroundColor: Colors.blue,
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16),
-//         child: Column(
-//           children: [
-//             TextField(
-//               controller: _nameController,
-//               decoration: const InputDecoration(labelText: "Full Name"),
-//             ),
-//             TextField(
-//               controller: _emailController,
-//               decoration: const InputDecoration(labelText: "Email"),
-//             ),
-//             TextField(
-//               controller: _genderController,
-//               decoration: const InputDecoration(labelText: "Gender"),
-//             ),
-//             TextField(
-//               controller: _educationController,
-//               decoration: const InputDecoration(labelText: "Education"),
-//             ),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () async {
-//                 final success = await provider.updateProfile(
-//                   fullName: _nameController.text,
-//                   email: _emailController.text,
-//                   gender: _genderController.text,
-//                   education: _educationController.text,
-//                 );
-//
-//                 if (success) {
-//                   ScaffoldMessenger.of(context).showSnackBar(
-//                     const SnackBar(content: Text("Profile Updated Successfully")),
-//                   );
-//                   Navigator.pop(context); // back to ProfileScreen
-//                 } else {
-//                   ScaffoldMessenger.of(context).showSnackBar(
-//                     const SnackBar(content: Text("Update Failed")),
-//                   );
-//                 }
-//               },
-//               child: provider.isLoading
-//                   ? const CircularProgressIndicator(color: Colors.white)
-//                   : const Text("Save"),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

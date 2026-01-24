@@ -4,6 +4,8 @@ import '../jobs/job_full_details.dart';
 
 import '../../models/job_model.dart';
 import '../../providers/JobProvider.dart';
+import '../../providers/LocationProvider.dart';
+import '../../providers/ProfileProvider.dart';
 import '../../utils/app_colors.dart';
 import '../../generated/l10n/app_localizations.dart';
 
@@ -80,8 +82,6 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
             children: [
               _buildModernHeader(),
               const SizedBox(height: 16),
-              _buildJobStats(),
-              const SizedBox(height: 20),
               _buildModernSearchBar(jobProvider.jobs),
               const SizedBox(height: 16),
               Expanded(
@@ -113,28 +113,36 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
           // Left side - Location
           Align(
             alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: AppColors.primary.withOpacity(0.3)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.location_on, color: AppColors.primary, size: 14),
-                  const SizedBox(width: 4),
-                  Text(
-                    AppLocalizations.of(context).location,
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                    ),
+            child: Consumer2<LocationProvider, ProfileProvider>(
+              builder: (context, locationProvider, profileProvider, child) {
+                // Use profile location if available, otherwise use GPS location
+                String displayLocation = profileProvider.user?.userLocation ?? 
+                                       locationProvider.city;
+                
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                   ),
-                ],
-              ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.location_on, color: AppColors.primary, size: 14),
+                      const SizedBox(width: 4),
+                      Text(
+                        displayLocation,
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
           
@@ -215,64 +223,6 @@ class _JobSearchState extends State<JobSearch> with TickerProviderStateMixin {
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
         style: const TextStyle(fontSize: 14),
-      ),
-    );
-  }
-
-  // Job Statistics Section
-  Widget _buildJobStats() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${filteredJobs.length} ${AppLocalizations.of(context).jobsFound}",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  AppLocalizations.of(context).findYourPerfectMatch,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(
-              Icons.work_outline,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-        ],
       ),
     );
   }

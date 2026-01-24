@@ -689,6 +689,13 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                           email: profile?.email ?? "",
                           gender: profile?.gender ?? "",
                           education: profile?.education ?? "",
+                          userLocation: profile?.userLocation,
+                          jobCategory: profile?.jobCategory,
+                          isExperienced: profile?.isExperienced,
+                          totalExperience: profile?.totalExperience,
+                          currentSalary: profile?.currentSalary,
+                          skills: profile?.skills,
+                          language: profile?.language,
                         ),
                       ),
                     ).then((_) {
@@ -811,6 +818,13 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                 email: profile?.email ?? "",
                 gender: profile?.gender ?? "",
                 education: profile?.education ?? "",
+                userLocation: profile?.userLocation,
+                jobCategory: profile?.jobCategory,
+                isExperienced: profile?.isExperienced,
+                totalExperience: profile?.totalExperience,
+                currentSalary: profile?.currentSalary,
+                skills: profile?.skills,
+                language: profile?.language,
               ),
             ),
           ).then((_) {
@@ -983,8 +997,11 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     return Column(
       children: [
         _buildSectionHeader(AppLocalizations.of(context)!.resume, AppLocalizations.of(context)!.update, AppColors.warning, () async {
-          final filePath = await ResumeService.pickResume(context);
+          final filePath = await ResumeService.pickAndUploadResume(context);
           if (filePath != null) {
+            // The resume has been uploaded to the API, refresh the profile
+            final provider = Provider.of<ProfileProvider>(context, listen: false);
+            await provider.fetchProfile();
             setState(() {
               resumeFilePath = filePath;
             });

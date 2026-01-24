@@ -43,6 +43,74 @@ class JobProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  /// Fetch jobs by category
+  Future<void> fetchJobsByCategory(String categoryId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // Ensure we have all jobs first
+      await fetchJobs();
+      
+      // Filter jobs by category ID or category name
+      _filteredJobs = _jobs.where((job) => 
+        job.jobCategory.toLowerCase().contains(categoryId.toLowerCase())
+      ).toList();
+    } catch (e) {
+      _filteredJobs = [];
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  /// Fetch jobs by type (Full Time, Part Time, Remote, etc.)
+  Future<void> fetchJobsByType(String jobType) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // Ensure we have all jobs first
+      await fetchJobs();
+      
+      // Filter jobs by job type or work location
+      _filteredJobs = _jobs.where((job) {
+        final type = jobType.toLowerCase();
+        final jobTypeMatch = job.jobType.toLowerCase().contains(type);
+        final workLocationMatch = job.workLocation.toLowerCase().contains(type);
+        
+        // Special handling for different job types
+        if (type.contains('remote') || type.contains('work from home')) {
+          return job.workLocation.toLowerCase().contains('remote') ||
+                 job.workLocation.toLowerCase().contains('home') ||
+                 job.jobType.toLowerCase().contains('remote');
+        } else if (type.contains('office') || type.contains('work from office')) {
+          return job.workLocation.toLowerCase().contains('office') ||
+                 job.workLocation.toLowerCase().contains('onsite') ||
+                 (!job.workLocation.toLowerCase().contains('remote') && 
+                  !job.workLocation.toLowerCase().contains('home'));
+        } else if (type.contains('full time') || type.contains('fulltime')) {
+          return job.jobType.toLowerCase().contains('full') ||
+                 job.jobType.toLowerCase().contains('permanent');
+        } else if (type.contains('part time') || type.contains('parttime')) {
+          return job.jobType.toLowerCase().contains('part');
+        } else if (type.contains('internship')) {
+          return job.jobType.toLowerCase().contains('intern');
+        } else if (type.contains('freelance')) {
+          return job.jobType.toLowerCase().contains('freelance') ||
+                 job.jobType.toLowerCase().contains('contract');
+        }
+        
+        return jobTypeMatch || workLocationMatch;
+      }).toList();
+    } catch (e) {
+      _filteredJobs = [];
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
 }
 
 

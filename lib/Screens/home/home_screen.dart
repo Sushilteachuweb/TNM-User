@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'video_player_screen.dart';
 import '../video/VideoScreen.dart';
 import '../jobs/job_full_details.dart';
+import '../jobs/jobs_by_category_screen.dart';
+import '../jobs/jobs_by_type_screen.dart';
 import 'main_screen.dart';
 import '../../providers/JobProvider.dart';
 import '../../providers/ProfileProvider.dart';
@@ -81,6 +83,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
       await _checkAndFetchLocation();
       context.read<JobProvider>().fetchJobs();
       context.read<ProfileProvider>().fetchProfile();
+      // Fetch job categories for the home screen
+      context.read<ProfileProvider>().fetchJobCategories();
     });
   }
 
@@ -107,7 +111,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildModernHeader(),
-                  _buildWelcomeSection(),
                   _buildModernSearchBox(),
                   const SizedBox(height: 20),
                   _buildFeaturedJobsSection(),
@@ -152,8 +155,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
           // Left side - Location
           Align(
             alignment: Alignment.centerLeft,
-            child: Consumer<LocationProvider>(
-              builder: (context, locationProvider, child) {
+            child: Consumer2<LocationProvider, ProfileProvider>(
+              builder: (context, locationProvider, profileProvider, child) {
+                // Use profile location if available, otherwise use GPS location
+                String displayLocation = profileProvider.user?.userLocation ?? 
+                                       locationProvider.city;
+                
                 return GestureDetector(
                   onTap: () => locationProvider.refreshLocation(),
                   child: Container(
@@ -169,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                         Icon(Icons.location_on, color: AppColors.primary, size: 14),
                         const SizedBox(width: 4),
                         Text(
-                          AppLocalizations.of(context).location,
+                          displayLocation,
                           style: TextStyle(
                             color: AppColors.primary,
                             fontWeight: FontWeight.w600,
@@ -209,53 +216,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
                 border: Border.all(color: AppColors.primary.withOpacity(0.3)),
               ),
               child: Icon(Icons.notifications_outlined, color: AppColors.primary, size: 18),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Welcome Text Section (separate from app bar with white background)
-  Widget _buildWelcomeSection() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Text(
-            AppLocalizations.of(context).findYourDreamJob,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  color: Colors.black.withOpacity(0.3),
-                  blurRadius: 3,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            AppLocalizations.of(context).discoverOpportunities,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
-              fontSize: 12,
             ),
           ),
         ],
@@ -433,59 +393,131 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
 
   // Job Categories Section
   Widget _buildJobCategoriesSection() {
-    return Column(
-      children: [
-        _buildSectionHeader(AppLocalizations.of(context).jobCategories, AppLocalizations.of(context).comingSoon, AppColors.success, null),
-        const SizedBox(height: 15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            children: [
-              Expanded(child: _buildModernCategoryCard("IT & Software", "images/man.jpg", AppColors.primary)),
-              const SizedBox(width: 12),
-              Expanded(child: _buildModernCategoryCard("Sales & Marketing", "images/man.jpg", AppColors.secondary)),
-              const SizedBox(width: 12),
-              Expanded(child: _buildModernCategoryCard("Customer Service", "images/man.jpg", AppColors.accent)),
-            ],
-          ),
-        ),
-      ],
+    return Consumer<ProfileProvider>(
+      builder: (context, provider, child) {
+        return Column(
+          children: [
+            _buildSectionHeader(AppLocalizations.of(context).jobCategories, "", AppColors.success, null),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: provider.isCategoriesLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : provider.jobCategories.isEmpty
+                      ? const Center(child: Text("No categories available"))
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: provider.jobCategories.take(6).map((category) {
+                              final colors = [
+                                AppColors.primary,
+                                AppColors.secondary,
+                                AppColors.accent,
+                                AppColors.warning,
+                                AppColors.success,
+                                AppColors.error,
+                              ];
+                              final colorIndex = provider.jobCategories.indexOf(category) % colors.length;
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: _buildModernCategoryCard(
+                                  category.jobCategory,
+                                  "images/man.jpg",
+                                  colors[colorIndex],
+                                  category.id,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+            ),
+          ],
+        );
+      },
     );
   }
 
   // All Jobs Grid
   Widget _buildAllJobsGrid() {
-    return Column(
-      children: [
-        _buildSectionHeader(AppLocalizations.of(context).allJobs, AppLocalizations.of(context).comingSoon, AppColors.info, null),
-        const SizedBox(height: 15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Row(
+    return Consumer<JobProvider>(
+      builder: (context, jobProvider, child) {
+        // Calculate job counts by type from real data
+        final jobs = jobProvider.jobs;
+        
+        final fullTimeJobs = jobs.where((job) => 
+          job.jobType.toLowerCase().contains('full') ||
+          job.jobType.toLowerCase().contains('permanent')
+        ).length;
+        
+        final partTimeJobs = jobs.where((job) => 
+          job.jobType.toLowerCase().contains('part')
+        ).length;
+        
+        final remoteJobs = jobs.where((job) => 
+          job.workLocation.toLowerCase().contains('remote') ||
+          job.workLocation.toLowerCase().contains('home')
+        ).length;
+        
+        final officeJobs = jobs.where((job) => 
+          job.workLocation.toLowerCase().contains('office') ||
+          job.workLocation.toLowerCase().contains('onsite') ||
+          (!job.workLocation.toLowerCase().contains('remote') && 
+           !job.workLocation.toLowerCase().contains('home'))
+        ).length;
+
+        return Column(
+          children: [
+            _buildSectionHeader(AppLocalizations.of(context).allJobs, "", AppColors.info, null),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
                 children: [
-                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).fullTime, "150+ Jobs", Icons.work, AppColors.primary)),
-                  const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).partTime, "80+ Jobs", Icons.access_time, AppColors.secondary)),
-                  const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).remote, "45+ Jobs", Icons.home_work, AppColors.accent)),
+                  Row(
+                    children: [
+                      Expanded(child: _buildModernJobTypeCard(
+                        AppLocalizations.of(context).fullTime, 
+                        "$fullTimeJobs+ Jobs", 
+                        Icons.work, 
+                        AppColors.primary,
+                        "full time"
+                      )),
+                      const SizedBox(width: 12),
+                      Expanded(child: _buildModernJobTypeCard(
+                        AppLocalizations.of(context).partTime, 
+                        "$partTimeJobs+ Jobs", 
+                        Icons.access_time, 
+                        AppColors.secondary,
+                        "part time"
+                      )),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _buildModernJobTypeCard(
+                        "Remote", 
+                        "$remoteJobs+ Jobs", 
+                        Icons.home_work, 
+                        AppColors.accent,
+                        "remote"
+                      )),
+                      const SizedBox(width: 12),
+                      Expanded(child: _buildModernJobTypeCard(
+                        "Office", 
+                        "$officeJobs+ Jobs", 
+                        Icons.business, 
+                        AppColors.warning,
+                        "office"
+                      )),
+                    ],
+                  ),
                 ],
               ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).internships, "25+ Jobs", Icons.school, AppColors.warning)),
-                  const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).freelance, "60+ Jobs", Icons.laptop_mac, AppColors.success)),
-                  const SizedBox(width: 12),
-                  Expanded(child: _buildModernJobTypeCard(AppLocalizations.of(context).contract, "35+ Jobs", Icons.assignment, AppColors.error)),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -493,11 +525,97 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
   Widget _buildRatingSection() {
     return Column(
       children: [
-        _buildSectionHeader(AppLocalizations.of(context).rateYourExperience, AppLocalizations.of(context).comingSoon, Colors.purple, null),
+        _buildSectionHeader(AppLocalizations.of(context).rateYourExperience, "", Colors.purple, null),
         const SizedBox(height: 15),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: _ModernRatingWidget(),
+          child: Consumer<ProfileProvider>(
+            builder: (context, profileProvider, child) {
+              return FutureBuilder<bool>(
+                future: profileProvider.hasUserRated(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      padding: const EdgeInsets.all(40),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 15,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  
+                  bool hasRated = snapshot.data ?? false;
+                  
+                  if (hasRated) {
+                    // Show thank you message if already rated
+                    return Container(
+                      padding: const EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 15,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [AppColors.success, Color(0xFF66BB6A)],
+                              ),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            "Thank You!",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: AppColors.success,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "We appreciate your valuable feedback",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  
+                  // Show rating widget if not rated yet
+                  return _ModernRatingWidget();
+                },
+              );
+            },
+          ),
         ),
       ],
     );
@@ -1013,105 +1131,136 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver, Ti
     );
   }
 
-  Widget _buildModernCategoryCard(String title, String imagePath, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [color, color.withOpacity(0.8)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
+  Widget _buildModernCategoryCard(String title, String imagePath, Color color, String categoryId) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to jobs filtered by this category
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => JobsByCategoryScreen(
+              categoryId: categoryId,
+              categoryName: title,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                imagePath,
-                height: 40,
-                width: 40,
-                fit: BoxFit.cover,
+          ),
+        );
+      },
+      child: Container(
+        width: 120, // Fixed width for uniform cards
+        height: 120, // Fixed height for uniform cards
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [color, color.withOpacity(0.8)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  imagePath,
+                  height: 40,
+                  width: 40,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 11,
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 11,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildModernJobTypeCard(String title, String subtitle, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+  Widget _buildModernJobTypeCard(String title, String subtitle, IconData icon, Color color, String jobType) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to jobs filtered by this type
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => JobsByTypeScreen(
+              jobType: jobType,
+              displayName: title,
+            ),
           ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withOpacity(0.2)),
+          boxShadow: [
+            BoxShadow(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            child: Icon(icon, color: color, size: 24),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, color: color, size: 24),
             ),
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.grey[600],
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+            const SizedBox(height: 2),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 10,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1323,11 +1472,85 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _submitted = true;
-                        });
-                        _animationController.forward();
+                      onPressed: () async {
+                        // Submit rating using ProfileProvider
+                        final provider = Provider.of<ProfileProvider>(context, listen: false);
+                        final result = await provider.submitRating(_rating);
+                        
+                        if (result["success"] == true) {
+                          setState(() {
+                            _submitted = true;
+                          });
+                          _animationController.forward();
+                          
+                          // Show success message
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Row(
+                                  children: [
+                                    Icon(Icons.check_circle, color: Colors.white),
+                                    SizedBox(width: 8),
+                                    Text("Thank you for your rating!"),
+                                  ],
+                                ),
+                                backgroundColor: AppColors.success,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              ),
+                            );
+                          }
+                        } else {
+                          // Check if it's a duplicate rating attempt
+                          if (result["alreadyRated"] == true) {
+                            // Show friendly message for duplicate rating
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Row(
+                                    children: [
+                                      Icon(Icons.star, color: Colors.white),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          "You've already shared your valuable feedback with us. Thank you!",
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  backgroundColor: Colors.orange,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  duration: const Duration(seconds: 4),
+                                ),
+                              );
+                            }
+                            // Also update the UI to show "already rated" state
+                            setState(() {
+                              _submitted = true;
+                            });
+                            _animationController.forward();
+                          } else {
+                            // Show generic error message
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Row(
+                                    children: [
+                                      const Icon(Icons.error, color: Colors.white),
+                                      const SizedBox(width: 8),
+                                      Expanded(child: Text(result["message"] ?? "Failed to submit rating")),
+                                    ],
+                                  ),
+                                  backgroundColor: AppColors.error,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                ),
+                              );
+                            }
+                          }
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,

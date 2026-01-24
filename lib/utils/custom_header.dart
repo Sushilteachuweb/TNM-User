@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/LocationProvider.dart';
+import '../providers/ProfileProvider.dart';
 
 class CustomHeader extends StatelessWidget {
   final bool showNotification;
@@ -26,8 +27,12 @@ class CustomHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Location Section
-              Consumer<LocationProvider>(
-                builder: (context, locationProvider, child) {
+              Consumer2<LocationProvider, ProfileProvider>(
+                builder: (context, locationProvider, profileProvider, child) {
+                  // Use profile location if available, otherwise use GPS location
+                  String displayLocation = profileProvider.user?.userLocation ?? 
+                                         locationProvider.city;
+                  
                   return GestureDetector(
                     onTap: () {
                       locationProvider.refreshLocation();
@@ -44,7 +49,7 @@ class CustomHeader extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              locationProvider.city,
+                              displayLocation,
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,

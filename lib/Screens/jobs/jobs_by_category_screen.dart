@@ -1,0 +1,236 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/JobProvider.dart';
+import '../../utils/app_colors.dart';
+import 'job_full_details.dart';
+
+class JobsByCategoryScreen extends StatefulWidget {
+  final String categoryId;
+  final String categoryName;
+
+  const JobsByCategoryScreen({
+    super.key,
+    required this.categoryId,
+    required this.categoryName,
+  });
+
+  @override
+  State<JobsByCategoryScreen> createState() => _JobsByCategoryScreenState();
+}
+
+class _JobsByCategoryScreenState extends State<JobsByCategoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch jobs for this category
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<JobProvider>().fetchJobsByCategory(widget.categoryId);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        title: Text(
+          widget.categoryName,
+          style: TextStyle(
+            color: AppColors.headingText,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: AppColors.headingText),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Consumer<JobProvider>(
+        builder: (context, jobProvider, child) {
+          if (jobProvider.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final categoryJobs = jobProvider.jobs.where((job) => 
+            job.jobCategory.toLowerCase() == widget.categoryName.toLowerCase()
+          ).toList();
+
+          if (categoryJobs.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.work_off,
+                    size: 80,
+                    color: AppColors.bodyText,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "No jobs found in ${widget.categoryName}",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.headingText,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Check back later for new opportunities",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.bodyText,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: categoryJobs.length,
+            itemBuilder: (context, index) {
+              final job = categoryJobs[index];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => JobFullDetails(job: job),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Icon(
+                              Icons.work,
+                              color: AppColors.primary,
+                              size: 24,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  job.title,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.headingText,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  job.companyName,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.bodyText,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            size: 16,
+                            color: AppColors.bodyText,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            job.workLocation,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.bodyText,
+                            ),
+                          ),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.success.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              job.jobType,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: AppColors.success,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (job.minSalary > 0 || job.maxSalary > 0) ...[
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.currency_rupee,
+                              size: 16,
+                              color: AppColors.primary,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              job.minSalary > 0 && job.maxSalary > 0
+                                  ? "₹${job.minSalary} - ₹${job.maxSalary}"
+                                  : job.minSalary > 0
+                                      ? "₹${job.minSalary}+"
+                                      : "₹${job.maxSalary}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

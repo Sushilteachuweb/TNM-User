@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:provider/provider.dart';
+import '../../providers/LocationProvider.dart';
+import '../../providers/ProfileProvider.dart';
 import '../../utils/app_colors.dart';
 import '../../generated/l10n/app_localizations.dart';
 
@@ -92,28 +95,36 @@ class _VideoFeedScreenState extends State<VideoScreen> with TickerProviderStateM
           // Left side - Location
           Align(
             alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: AppColors.primary.withOpacity(0.3)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.location_on, color: AppColors.primary, size: 14),
-                  const SizedBox(width: 4),
-                  Text(
-                    AppLocalizations.of(context).location,
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                    ),
+            child: Consumer2<LocationProvider, ProfileProvider>(
+              builder: (context, locationProvider, profileProvider, child) {
+                // Use profile location if available, otherwise use GPS location
+                String displayLocation = profileProvider.user?.userLocation ?? 
+                                       locationProvider.city;
+                
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: AppColors.primary.withOpacity(0.3)),
                   ),
-                ],
-              ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.location_on, color: AppColors.primary, size: 14),
+                      const SizedBox(width: 4),
+                      Text(
+                        displayLocation,
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
           

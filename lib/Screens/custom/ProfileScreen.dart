@@ -694,6 +694,13 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                           email: profile?.email ?? "",
                           gender: profile?.gender ?? "",
                           education: profile?.education ?? "",
+                          userLocation: profile?.userLocation,
+                          jobCategory: profile?.jobCategory,
+                          isExperienced: profile?.isExperienced,
+                          totalExperience: profile?.totalExperience,
+                          currentSalary: profile?.currentSalary,
+                          skills: profile?.skills,
+                          language: profile?.language,
                         ),
                       ),
                     ).then((_) {
@@ -1570,21 +1577,47 @@ class _ModernRatingWidgetState extends State<_ModernRatingWidget> with TickerPro
                             _alreadyRated = true;
                           });
                           
-                          // Show info message
+                          // Show friendly message for duplicate rating
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(result["message"] ?? 'You have already submitted a rating.'),
+                              content: const Row(
+                                children: [
+                                  Icon(Icons.star, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      "You've already shared your valuable feedback with us. Thank you!",
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               backgroundColor: Colors.orange,
-                              duration: Duration(seconds: 4),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              duration: const Duration(seconds: 4),
                             ),
                           );
                         } else {
                           // Show error message
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(result["message"] ?? 'Failed to submit rating. Please try again.'),
+                              content: Row(
+                                children: [
+                                  const Icon(Icons.error, color: Colors.white),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      result["message"] ?? 'Failed to submit rating. Please try again.',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                ],
+                              ),
                               backgroundColor: Colors.red,
-                              duration: Duration(seconds: 3),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              duration: const Duration(seconds: 3),
                             ),
                           );
                         }

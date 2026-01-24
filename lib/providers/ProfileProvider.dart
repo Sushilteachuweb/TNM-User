@@ -644,11 +644,17 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart';
 import '../models/profile_model.dart';
+import '../models/job_category_model.dart';
+
 class ProfileProvider with ChangeNotifier {
 
   bool isLoading = false;
   bool hasSessionError = false; // Track session errors to prevent infinite loops
   ProfileModel? user;
+  
+  // Job Categories
+  List<JobCategoryModel> jobCategories = [];
+  bool isCategoriesLoading = false;
 
   Future<void> fetchProfile() async {
     // Prevent multiple simultaneous calls
@@ -759,11 +765,59 @@ class ProfileProvider with ChangeNotifier {
     print("✅ Session error flag reset");
   }
 
+  // Fetch Job Categories
+  Future<void> fetchJobCategories() async {
+    isCategoriesLoading = true;
+    notifyListeners();
+    
+    try {
+      final response = await http.get(
+        Uri.parse("https://api.thenaukrimitra.com/api/jobs/categories"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+      );
+
+      print("📡 Categories response status: ${response.statusCode}");
+      print("📩 Categories response body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        
+        if (data["success"] == true && data["data"] != null) {
+          final List<dynamic> categoriesJson = data["data"];
+          jobCategories = categoriesJson
+              .map((json) => JobCategoryModel.fromJson(json))
+              .toList();
+          print("✅ Loaded ${jobCategories.length} job categories");
+        } else {
+          print("❌ Failed to load categories: ${data["message"]}");
+        }
+      } else {
+        print("❌ Server error loading categories: ${response.statusCode}");
+      }
+    } catch (e, stackTrace) {
+      print("❌ Error fetching job categories: $e");
+      print("Stack trace: $stackTrace");
+    }
+    
+    isCategoriesLoading = false;
+    notifyListeners();
+  }
+
   Future<bool> updateProfile({
     required String fullName,
     required String email,
     required String gender,
     required String education,
+    String? userLocation,
+    String? jobCategoryId, // Add job category ID parameter
+    bool? isExperienced, // Add experience level parameter
+    String? totalExperience, // Add total experience parameter
+    String? currentSalary, // Add current salary parameter
+    String? skills, // Add skills parameter
+    String? language, // Add language parameter
     File? profileImage,
     File? resumeFile,
   }) async {
@@ -792,12 +846,40 @@ class ProfileProvider with ChangeNotifier {
       request.fields["email"] = email;
       request.fields["gender"] = gender.toLowerCase();
       request.fields["education"] = education;
+      if (userLocation != null && userLocation.isNotEmpty) {
+        request.fields["userLocation"] = userLocation;
+      }
+      if (jobCategoryId != null && jobCategoryId.isNotEmpty) {
+        request.fields["jobCategory"] = jobCategoryId; // Send category ID
+      }
+      if (isExperienced != null) {
+        request.fields["isExperienced"] = isExperienced.toString();
+      }
+      if (totalExperience != null && totalExperience.isNotEmpty) {
+        request.fields["totalExperience"] = totalExperience;
+      }
+      if (currentSalary != null && currentSalary.isNotEmpty) {
+        request.fields["currentSalary"] = currentSalary;
+      }
+      if (skills != null && skills.isNotEmpty) {
+        request.fields["skills"] = skills;
+      }
+      if (language != null && language.isNotEmpty) {
+        request.fields["language"] = language;
+      }
 
       print("📤 Updating profile with:");
       print("   Name: $fullName");
       print("   Email: $email");
       print("   Gender: ${gender.toLowerCase()}");
       print("   Education: $education");
+      print("   Location: $userLocation");
+      print("   Job Category ID: $jobCategoryId");
+      print("   Is Experienced: $isExperienced");
+      print("   Total Experience: $totalExperience");
+      print("   Current Salary: $currentSalary");
+      print("   Skills: $skills");
+      print("   Language: $language");
 
       if (profileImage != null && profileImage.existsSync()) {
         // Check image size (limit to 5MB)
@@ -968,6 +1050,92 @@ class ProfileProvider with ChangeNotifier {
       print("Stack trace: $stackTrace");
       return {"success": false, "message": "Network error. Please try again."};
     }
+  }
+
+  // Dedicated method for resume upload only
+  Future<bool> uploadResume(File resumeFile) async {
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cookie = prefs.getString("cookie") ?? "";
+      print("🍪 Cookie used for resume upload: $cookie");
+
+      if (cookie.isEmpty) {
+        print("❌ No cookie found! Cannot upload resume.");
+        isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
+      var request = http.MultipartRequest(
+        "PUT",
+        Uri.parse("https://api.thenaukrimitra.com/api/user/update-profile"),
+      );
+
+      // Check file size (limit to 5MB)
+      final fileSize = resumeFile.lengthSync();
+      final fileSizeInMB = fileSize / (1024 * 1024);
+      print("📄 Resume file size: ${fileSizeInMB.toStringAsFixed(2)} MB");
+      
+      if (fileSizeInMB > 5) {
+        print("❌ Resume file too large: ${fileSizeInMB.toStringAsFixed(2)} MB (max 5MB)");
+        isLoading = false;
+        notifyListeners();
+        throw Exception("Resume file is too large. Maximum size is 5MB. Your file is ${fileSizeInMB.toStringAsFixed(1)}MB");
+      }
+      
+      // Add only the resume file
+      request.files.add(await http.MultipartFile.fromPath(
+        'resume',
+        resumeFile.path,
+      ));
+      print("📄 Resume file added for upload (${fileSizeInMB.toStringAsFixed(2)} MB)");
+
+      request.headers.addAll({
+        "Cookie": cookie,
+        "Accept": "application/json",
+      });
+
+      print("📡 Sending resume upload request...");
+      var response = await request.send();
+      final respStr = await response.stream.bytesToString();
+      
+      print("📡 Resume upload response status: ${response.statusCode}");
+      print("📩 Resume upload response body: $respStr");
+
+      if (response.statusCode == 200) {
+        final data = json.decode(respStr);
+        if (data["success"] == true) {
+          print("✅ Resume uploaded successfully!");
+          if (data["user"] != null) {
+            user = ProfileModel.fromJson(data["user"]);
+            print("📄 Updated resume URL: ${user?.resume}");
+          }
+          await fetchProfile(); // Refresh profile data
+          isLoading = false;
+          notifyListeners();
+          return true;
+        } else {
+          print("❌ Resume upload failed: ${data["message"]}");
+        }
+      } else if (response.statusCode == 413) {
+        print("❌ File too large (413): Server rejected the resume upload");
+        isLoading = false;
+        notifyListeners();
+        throw Exception("Resume file size exceeds server limits. Please use a smaller file.");
+      } else {
+        print("❌ Server error during resume upload: ${response.statusCode}");
+      }
+    } catch (e, stackTrace) {
+      print("❌ Resume upload error: $e");
+      print("Stack trace: $stackTrace");
+    }
+    
+    isLoading = false;
+    notifyListeners();
+    return false;
   }
 }
 
